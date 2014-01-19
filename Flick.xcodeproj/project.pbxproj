@@ -1,0 +1,527 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C93683EB183B29D30058851A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93683EA183B29D30058851A /* Foundation.framework */; };
+		C93683ED183B29D30058851A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93683EC183B29D30058851A /* CoreGraphics.framework */; };
+		C93683EF183B29D30058851A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93683EE183B29D30058851A /* UIKit.framework */; };
+		C93683F5183B29D30058851A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C93683F3183B29D30058851A /* InfoPlist.strings */; };
+		C93683F7183B29D30058851A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C93683F6183B29D30058851A /* main.m */; };
+		C93683FB183B29D30058851A /* FLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C93683FA183B29D30058851A /* FLAppDelegate.m */; };
+		C93683FD183B29D30058851A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C93683FC183B29D30058851A /* Images.xcassets */; };
+		C9368404183B29D30058851A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9368403183B29D30058851A /* XCTest.framework */; };
+		C9368405183B29D30058851A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93683EA183B29D30058851A /* Foundation.framework */; };
+		C9368406183B29D30058851A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93683EE183B29D30058851A /* UIKit.framework */; };
+		C936840E183B29D30058851A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C936840C183B29D30058851A /* InfoPlist.strings */; };
+		C9368410183B29D30058851A /* FlickTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C936840F183B29D30058851A /* FlickTests.m */; };
+		C936841B183B2A050058851A /* FLMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C936841A183B2A050058851A /* FLMainViewController.m */; };
+		C936841E183B2A730058851A /* FLPasteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C936841D183B2A730058851A /* FLPasteView.m */; };
+		C973775E1842DBCF00145975 /* FLHistoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */; };
+		C97377621849274F00145975 /* FLDropboxHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C97377611849274F00145975 /* FLDropboxHelper.m */; };
+		C973776418492D1F00145975 /* Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776318492D1F00145975 /* Dropbox.framework */; };
+		C973776618492D9500145975 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776518492D9500145975 /* CFNetwork.framework */; };
+		C973776818492DA000145975 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776718492DA000145975 /* Security.framework */; };
+		C973776A18492DAB00145975 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776918492DAB00145975 /* SystemConfiguration.framework */; };
+		C973776C18492DB400145975 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776B18492DB400145975 /* QuartzCore.framework */; };
+		C973776E18492DC800145975 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776D18492DC800145975 /* libc++.dylib */; };
+		C973777118493ECE00145975 /* FLEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = C973777018493ECE00145975 /* FLEntity.m */; };
+		C97377731849478800145975 /* angry horse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C97377721849478800145975 /* angry horse.jpg */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C9368407183B29D30058851A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C93683DF183B29D30058851A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C93683E6183B29D30058851A;
+			remoteInfo = Flick;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C93683E7183B29D30058851A /* Flick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flick.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C93683EA183B29D30058851A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C93683EC183B29D30058851A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C93683EE183B29D30058851A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C93683F2183B29D30058851A /* Flick-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Flick-Info.plist"; sourceTree = "<group>"; };
+		C93683F4183B29D30058851A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C93683F6183B29D30058851A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C93683F8183B29D30058851A /* Flick-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Flick-Prefix.pch"; sourceTree = "<group>"; };
+		C93683F9183B29D30058851A /* FLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLAppDelegate.h; sourceTree = "<group>"; };
+		C93683FA183B29D30058851A /* FLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLAppDelegate.m; sourceTree = "<group>"; };
+		C93683FC183B29D30058851A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		C9368402183B29D30058851A /* FlickTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9368403183B29D30058851A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		C936840B183B29D30058851A /* FlickTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FlickTests-Info.plist"; sourceTree = "<group>"; };
+		C936840D183B29D30058851A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C936840F183B29D30058851A /* FlickTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlickTests.m; sourceTree = "<group>"; };
+		C9368419183B2A050058851A /* FLMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLMainViewController.h; sourceTree = "<group>"; };
+		C936841A183B2A050058851A /* FLMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLMainViewController.m; sourceTree = "<group>"; };
+		C936841C183B2A730058851A /* FLPasteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLPasteView.h; sourceTree = "<group>"; };
+		C936841D183B2A730058851A /* FLPasteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLPasteView.m; sourceTree = "<group>"; };
+		C973775C1842DBCF00145975 /* FLHistoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLHistoryTableViewController.h; sourceTree = "<group>"; };
+		C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLHistoryTableViewController.m; sourceTree = "<group>"; };
+		C97377601849274F00145975 /* FLDropboxHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDropboxHelper.h; sourceTree = "<group>"; };
+		C97377611849274F00145975 /* FLDropboxHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDropboxHelper.m; sourceTree = "<group>"; };
+		C973776318492D1F00145975 /* Dropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Dropbox.framework; path = "../../../Downloads/dropbox-ios-sync-sdk-2.0.3/Dropbox.framework"; sourceTree = "<group>"; };
+		C973776518492D9500145975 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		C973776718492DA000145975 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C973776918492DAB00145975 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C973776B18492DB400145975 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C973776D18492DC800145975 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		C973776F18493ECE00145975 /* FLEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLEntity.h; sourceTree = "<group>"; };
+		C973777018493ECE00145975 /* FLEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLEntity.m; sourceTree = "<group>"; };
+		C97377721849478800145975 /* angry horse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "angry horse.jpg"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C93683E4183B29D30058851A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C973776E18492DC800145975 /* libc++.dylib in Frameworks */,
+				C973776C18492DB400145975 /* QuartzCore.framework in Frameworks */,
+				C973776A18492DAB00145975 /* SystemConfiguration.framework in Frameworks */,
+				C973776818492DA000145975 /* Security.framework in Frameworks */,
+				C973776618492D9500145975 /* CFNetwork.framework in Frameworks */,
+				C93683ED183B29D30058851A /* CoreGraphics.framework in Frameworks */,
+				C93683EF183B29D30058851A /* UIKit.framework in Frameworks */,
+				C93683EB183B29D30058851A /* Foundation.framework in Frameworks */,
+				C973776418492D1F00145975 /* Dropbox.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C93683FF183B29D30058851A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9368404183B29D30058851A /* XCTest.framework in Frameworks */,
+				C9368406183B29D30058851A /* UIKit.framework in Frameworks */,
+				C9368405183B29D30058851A /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C93683DE183B29D30058851A = {
+			isa = PBXGroup;
+			children = (
+				C93683F0183B29D30058851A /* Flick */,
+				C9368409183B29D30058851A /* FlickTests */,
+				C93683E9183B29D30058851A /* Frameworks */,
+				C93683E8183B29D30058851A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C93683E8183B29D30058851A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C93683E7183B29D30058851A /* Flick.app */,
+				C9368402183B29D30058851A /* FlickTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C93683E9183B29D30058851A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C973776D18492DC800145975 /* libc++.dylib */,
+				C973776B18492DB400145975 /* QuartzCore.framework */,
+				C973776918492DAB00145975 /* SystemConfiguration.framework */,
+				C973776718492DA000145975 /* Security.framework */,
+				C973776518492D9500145975 /* CFNetwork.framework */,
+				C973776318492D1F00145975 /* Dropbox.framework */,
+				C93683EA183B29D30058851A /* Foundation.framework */,
+				C93683EC183B29D30058851A /* CoreGraphics.framework */,
+				C93683EE183B29D30058851A /* UIKit.framework */,
+				C9368403183B29D30058851A /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C93683F0183B29D30058851A /* Flick */ = {
+			isa = PBXGroup;
+			children = (
+				C97377721849478800145975 /* angry horse.jpg */,
+				C93683F9183B29D30058851A /* FLAppDelegate.h */,
+				C93683FA183B29D30058851A /* FLAppDelegate.m */,
+				C93683FC183B29D30058851A /* Images.xcassets */,
+				C93683F1183B29D30058851A /* Supporting Files */,
+				C9368419183B2A050058851A /* FLMainViewController.h */,
+				C936841A183B2A050058851A /* FLMainViewController.m */,
+				C973775C1842DBCF00145975 /* FLHistoryTableViewController.h */,
+				C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */,
+				C936841C183B2A730058851A /* FLPasteView.h */,
+				C936841D183B2A730058851A /* FLPasteView.m */,
+				C97377601849274F00145975 /* FLDropboxHelper.h */,
+				C97377611849274F00145975 /* FLDropboxHelper.m */,
+				C973776F18493ECE00145975 /* FLEntity.h */,
+				C973777018493ECE00145975 /* FLEntity.m */,
+			);
+			path = Flick;
+			sourceTree = "<group>";
+		};
+		C93683F1183B29D30058851A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C93683F2183B29D30058851A /* Flick-Info.plist */,
+				C93683F3183B29D30058851A /* InfoPlist.strings */,
+				C93683F6183B29D30058851A /* main.m */,
+				C93683F8183B29D30058851A /* Flick-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C9368409183B29D30058851A /* FlickTests */ = {
+			isa = PBXGroup;
+			children = (
+				C936840F183B29D30058851A /* FlickTests.m */,
+				C936840A183B29D30058851A /* Supporting Files */,
+			);
+			path = FlickTests;
+			sourceTree = "<group>";
+		};
+		C936840A183B29D30058851A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C936840B183B29D30058851A /* FlickTests-Info.plist */,
+				C936840C183B29D30058851A /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C93683E6183B29D30058851A /* Flick */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C9368413183B29D30058851A /* Build configuration list for PBXNativeTarget "Flick" */;
+			buildPhases = (
+				C93683E3183B29D30058851A /* Sources */,
+				C93683E4183B29D30058851A /* Frameworks */,
+				C93683E5183B29D30058851A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Flick;
+			productName = Flick;
+			productReference = C93683E7183B29D30058851A /* Flick.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C9368401183B29D30058851A /* FlickTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C9368416183B29D30058851A /* Build configuration list for PBXNativeTarget "FlickTests" */;
+			buildPhases = (
+				C93683FE183B29D30058851A /* Sources */,
+				C93683FF183B29D30058851A /* Frameworks */,
+				C9368400183B29D30058851A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C9368408183B29D30058851A /* PBXTargetDependency */,
+			);
+			name = FlickTests;
+			productName = FlickTests;
+			productReference = C9368402183B29D30058851A /* FlickTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C93683DF183B29D30058851A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = FL;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Matt Nichols";
+				TargetAttributes = {
+					C9368401183B29D30058851A = {
+						TestTargetID = C93683E6183B29D30058851A;
+					};
+				};
+			};
+			buildConfigurationList = C93683E2183B29D30058851A /* Build configuration list for PBXProject "Flick" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C93683DE183B29D30058851A;
+			productRefGroup = C93683E8183B29D30058851A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C93683E6183B29D30058851A /* Flick */,
+				C9368401183B29D30058851A /* FlickTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C93683E5183B29D30058851A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C93683F5183B29D30058851A /* InfoPlist.strings in Resources */,
+				C97377731849478800145975 /* angry horse.jpg in Resources */,
+				C93683FD183B29D30058851A /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C9368400183B29D30058851A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C936840E183B29D30058851A /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C93683E3183B29D30058851A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C93683FB183B29D30058851A /* FLAppDelegate.m in Sources */,
+				C973777118493ECE00145975 /* FLEntity.m in Sources */,
+				C93683F7183B29D30058851A /* main.m in Sources */,
+				C936841E183B2A730058851A /* FLPasteView.m in Sources */,
+				C973775E1842DBCF00145975 /* FLHistoryTableViewController.m in Sources */,
+				C97377621849274F00145975 /* FLDropboxHelper.m in Sources */,
+				C936841B183B2A050058851A /* FLMainViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C93683FE183B29D30058851A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9368410183B29D30058851A /* FlickTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C9368408183B29D30058851A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C93683E6183B29D30058851A /* Flick */;
+			targetProxy = C9368407183B29D30058851A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C93683F3183B29D30058851A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C93683F4183B29D30058851A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C936840C183B29D30058851A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C936840D183B29D30058851A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C9368411183B29D30058851A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C9368412183B29D30058851A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C9368414183B29D30058851A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/matt/Downloads/dropbox-ios-sync-sdk-2.0.3",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Flick/Flick-Prefix.pch";
+				INFOPLIST_FILE = "Flick/Flick-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C9368415183B29D30058851A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/matt/Downloads/dropbox-ios-sync-sdk-2.0.3",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Flick/Flick-Prefix.pch";
+				INFOPLIST_FILE = "Flick/Flick-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C9368417183B29D30058851A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Flick.app/Flick";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Flick/Flick-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "FlickTests/FlickTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		C9368418183B29D30058851A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Flick.app/Flick";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Flick/Flick-Prefix.pch";
+				INFOPLIST_FILE = "FlickTests/FlickTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C93683E2183B29D30058851A /* Build configuration list for PBXProject "Flick" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9368411183B29D30058851A /* Debug */,
+				C9368412183B29D30058851A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C9368413183B29D30058851A /* Build configuration list for PBXNativeTarget "Flick" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9368414183B29D30058851A /* Debug */,
+				C9368415183B29D30058851A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C9368416183B29D30058851A /* Build configuration list for PBXNativeTarget "FlickTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9368417183B29D30058851A /* Debug */,
+				C9368418183B29D30058851A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C93683DF183B29D30058851A /* Project object */;
+}
