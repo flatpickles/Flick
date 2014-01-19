@@ -9,9 +9,15 @@
 #import "FLHistoryTableViewController.h"
 #import "FLEntity.h"
 
+#define TITLE_FADE_IN 0.3f
+#define TITLE_FADE_OUT 0.1f
+#define HIDDEN_TITLE_OPACITY 0.15f
+
 #define CELL_IDENTIFIER @"FLCell"
 
 @interface FLHistoryTableViewController ()
+
+@property (nonatomic) UILabel *navigationLabel;
 
 @end
 
@@ -30,7 +36,29 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = @"Your Previous Pastes";
+    // setup a replacement navigation label so we can control opacity directly
+    self.navigationLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.navigationLabel.backgroundColor = [UIColor clearColor];
+    self.navigationLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    self.navigationLabel.textAlignment = NSTextAlignmentCenter;
+    self.navigationLabel.textColor = [UIColor blackColor];
+    self.navigationLabel.text = @"Your Previous Pastes";
+    self.navigationItem.titleView = self.navigationLabel;
+    [self.navigationLabel sizeToFit];
+}
+
+- (void)setTitleHidden:(BOOL)titleHidden
+{
+    _titleHidden = titleHidden;
+    if (titleHidden) {
+        [UIView animateWithDuration:TITLE_FADE_OUT animations:^{
+            self.navigationLabel.layer.opacity = HIDDEN_TITLE_OPACITY;
+        }];
+    } else {
+        [UIView animateWithDuration:TITLE_FADE_IN animations:^{
+            self.navigationLabel.layer.opacity = 1.0f;
+        }];
+    }
 }
 
 - (void)fadeToOpacity:(CGFloat)opacity withDuration:(NSTimeInterval)duration
@@ -45,6 +73,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 #pragma mark - Table view data source
 

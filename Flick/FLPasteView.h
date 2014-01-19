@@ -15,6 +15,7 @@
 - (void)didDismissPaste:(id)pasteObject;
 - (void)pasteViewActive;
 - (void)pasteViewReset;
+- (void)pasteViewMoved:(CGFloat)yOffset;
 
 @end
 

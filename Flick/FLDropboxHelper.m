@@ -41,7 +41,7 @@
     DBAccountManager *manager = [DBAccountManager sharedManager];
     if (![manager linkedAccount]) {
         [manager linkFromController:controller];
-        _linkCompletion = completionBlock;
+        self.linkCompletion = completionBlock;
     } else if (![DBFilesystem sharedFilesystem]) {
         [DBFilesystem setSharedFilesystem:[[DBFilesystem alloc] initWithAccount:[manager linkedAccount]]];
         completionBlock(YES);
@@ -61,7 +61,7 @@
     }
 
     BOOL success = !!account;
-    _linkCompletion(success);
+    self.linkCompletion(success);
     return success;
 }
 

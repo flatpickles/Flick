@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matt Nichols. All rights reserved.
 //
 
-#define SCALE_FACTOR 1.07f
+#define SCALE_FACTOR 1.04f
 #define START_SPEED 0.05f
 #define RETURN_SPEED 0.25f
 #define EXIT_DISTANCE 960.0f
@@ -187,6 +187,7 @@
         pasteView.center = center;
         [pgr setTranslation:CGPointZero inView:pasteView];
         pasteView.lastVelocity = [pgr velocityInView:pasteView];
+        [self.delegate pasteViewMoved:pasteView.center.y - self.originalCenter.y];
     } else if (pgr.state == UIGestureRecognizerStateEnded) {
         [pasteView endAnimation];
     }

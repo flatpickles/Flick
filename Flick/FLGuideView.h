@@ -12,4 +12,6 @@
 
 @property (nonatomic) BOOL hidden;
 
+- (void)fadeRelativeToPasteOffset:(CGFloat)yOffset;
+
 @end

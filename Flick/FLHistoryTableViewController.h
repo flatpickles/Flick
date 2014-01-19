@@ -10,7 +10,8 @@
 
 @interface FLHistoryTableViewController : UITableViewController
 
-@property NSArray *backingData;
+@property (nonatomic) NSArray *backingData;
+@property (nonatomic) BOOL titleHidden;
 
 - (void)fadeToOpacity:(CGFloat)opacity withDuration:(NSTimeInterval)duration;
 

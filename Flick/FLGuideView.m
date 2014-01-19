@@ -8,7 +8,7 @@
 
 #import "FLGuideView.h"
 
-#define GUIDE_HEIGHT 50.0f
+#define GUIDE_HEIGHT 45.0f
 #define GUIDE_SHOW_DURATION 0.15f
 #define GUIDE_HIDE_DURATION 0.3f
 #define GUIDE_FONT [UIFont boldSystemFontOfSize:16.0f]
@@ -74,11 +74,32 @@
             self.dismissView.center = CGPointMake(self.dismissView.center.x, self.dismissView.center.y - GUIDE_HEIGHT);
         } completion:nil];
     } else {
-        [UIView animateWithDuration:GUIDE_HIDE_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration:GUIDE_HIDE_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+            _uploadView.layer.opacity = 1.0f;
+            _dismissView.layer.opacity = 1.0f;
             self.uploadView.center = CGPointMake(self.uploadView.center.x, self.uploadView.center.y - (GUIDE_HEIGHT + [[UIApplication sharedApplication] statusBarFrame].size.height));
             self.dismissView.center = CGPointMake(self.dismissView.center.x, self.dismissView.center.y + GUIDE_HEIGHT);
         } completion:nil];
     }
+}
+
+- (void)fadeRelativeToPasteOffset:(CGFloat)yOffset
+{
+    CGFloat maxDistance = [[UIScreen mainScreen] bounds].size.height/2;
+    CGFloat newOpacity = 1 - MIN(1, ABS(yOffset) / maxDistance);
+    if (yOffset > 0.0f) {
+        self.dismissView.layer.opacity = 1.0f;
+        self.uploadView.layer.opacity = newOpacity;
+    } else {
+        self.uploadView.layer.opacity = 1.0f;
+        self.dismissView.layer.opacity = newOpacity;
+    }
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    // pass on any touch events if hidden
+    return (self.hidden) ? nil : self;
 }
 
 @end

@@ -11,16 +11,19 @@
 
 #define HASH_LENGTH 12
 
+@interface FLEntity ()
+
+@property (nonatomic) id backingObject;
+
+@end
+
 @implementation FLEntity
-{
-    id _backingObject;
-}
 
 - (FLEntity *)initWithObject:(id)object
 {
     self = [super init];
     if (self) {
-        _backingObject = object;
+        self.backingObject = object;
         if ([object isKindOfClass:[UIImage class]]) {
             self.type = PhotoEntity;
         } else if ([object isKindOfClass:[NSString class]]) {
@@ -41,7 +44,7 @@
 - (NSString *)text
 {
     if (self.type == TextEntity) {
-        return _backingObject;
+        return self.backingObject;
     } else {
         return nil;
     }
@@ -53,14 +56,14 @@
     switch (self.type) {
         case PhotoEntity:
         {
-            UIImage *img = _backingObject;
+            UIImage *img = self.backingObject;
             NSData *photoData = UIImagePNGRepresentation(img);
             someStr = [NSString stringWithFormat:@"img:\"data:image/png;base64,%@\"", [photoData base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength]];
             break;
         }
         case TextEntity:
         {
-            someStr = _backingObject;
+            someStr = self.backingObject;
             break;
         }
     }

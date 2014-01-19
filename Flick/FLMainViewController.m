@@ -100,14 +100,20 @@
     self.pasteView.text = [UIPasteboard generalPasteboard].string;
 }
 
+- (void)_setupForHistoryViewing
+{
+    self.historyViewController.titleHidden = NO;
+    [self.historyViewController fadeToOpacity:1.0f withDuration:HISTORY_FADE_DURATION];
+    self.guideView.hidden = YES;
+}
+
 #pragma mark - FLPasteViewDelegate
 
 - (BOOL)shouldStorePaste:(id)pasteObject
 {
     BOOL success = [[FLDropboxHelper sharedHelper] storeObject:self.pasteView.text];
     if (success) {
-        [self.historyViewController fadeToOpacity:1.0f withDuration:HISTORY_FADE_DURATION];
-        self.guideView.hidden = YES;
+        [self _setupForHistoryViewing];
     }
 
     return success;
@@ -115,18 +121,24 @@
 
 - (void)didDismissPaste:(id)pasteObject
 {
-    [self.historyViewController fadeToOpacity:1.0f withDuration:HISTORY_FADE_DURATION];
-    self.guideView.hidden = YES;
+    [self _setupForHistoryViewing];
 }
 
 - (void)pasteViewActive
 {
+    self.historyViewController.titleHidden = YES;
     self.guideView.hidden = NO;
 }
 
 - (void)pasteViewReset
 {
     self.guideView.hidden = YES;
+    self.historyViewController.titleHidden = NO;
+}
+
+- (void)pasteViewMoved:(CGFloat)yOffset
+{
+    [self.guideView fadeRelativeToPasteOffset:yOffset];
 }
 
 @end
