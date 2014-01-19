@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matt Nichols. All rights reserved.
 //
 
-#define SCALE_FACTOR 1.05f
+#define SCALE_FACTOR 1.07f
 #define START_SPEED 0.05f
 #define RETURN_SPEED 0.25f
 #define EXIT_DISTANCE 960.0f
@@ -40,6 +40,9 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
 
+        // offset center for status bar
+        self.center = CGPointMake(self.center.x, self.center.y + [[UIApplication sharedApplication] statusBarFrame].size.height/2);
+
         self.originalCenter = self.center;
 
         CALayer *layer = self.layer;
@@ -65,7 +68,11 @@
 {
     [UIView animateWithDuration:START_SPEED delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.transform = CGAffineTransformMakeScale(SCALE_FACTOR, SCALE_FACTOR);
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [self.delegate pasteViewActive];
+        }
+    }];
     [self _shadowGrow];
 }
 
@@ -111,6 +118,7 @@
         self.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
         [self.layer setShadowRadius:SHADOW_RADIUS];
     }
+    [self.delegate pasteViewReset];
 }
 
 - (void)endAnimation
@@ -186,7 +194,7 @@
 
 # pragma mark - CAAnimationDelegate
 
-- (void) animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     // the animation itself won't set the shadow value; set appropriately here
     if (anim == [self.layer animationForKey:SHADOW_GROW_KEY]) {

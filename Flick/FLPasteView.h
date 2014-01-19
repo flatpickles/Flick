@@ -13,6 +13,8 @@
 
 - (BOOL)shouldStorePaste:(id)pasteObject;
 - (void)didDismissPaste:(id)pasteObject;
+- (void)pasteViewActive;
+- (void)pasteViewReset;
 
 @end
 

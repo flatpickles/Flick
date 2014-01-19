@@ -10,29 +10,34 @@
 #import "FLPasteView.h"
 #import "FLHistoryTableViewController.h"
 #import "FLDropboxHelper.h"
+#import "FLGuideView.h"
 
 #define HISTORY_BACKGROUND_OPACITY 0.5f
 #define HISTORY_FADE_DURATION 0.3f
 #define STATUS_BAR_FADE_DURATION 0.3f
 #define PASTE_X_INSET 30.0f
 #define PASTE_Y_INSET 70.0f
-#define GUIDE_HEIGHT 50.0f
-#define GUIDE_SHOW_DURATION 0.2f
-#define GUIDE_HIDE_DURATION 0.5f
 
 @interface FLMainViewController ()
 
 @property FLPasteView *pasteView;
 @property FLHistoryTableViewController *historyViewController;
-@property UIView *dismissView;
-@property UIView *uploadView;
-@property (nonatomic) BOOL displayGuide;
+@property FLGuideView *guideView;
 
 @end
 
 @implementation FLMainViewController
 
--(void)dealloc
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_displayPasteView) name:UIApplicationDidBecomeActiveNotification object:nil];
+    }
+    return self;
+}
+
+- (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -47,34 +52,9 @@
     [self addChildViewController:nav];
     [self.view addSubview:nav.view];
 
-    // setup dismiss view
-    CGRect f = self.view.frame;
-    _dismissView = [[UIView alloc] initWithFrame:CGRectMake(0, f.size.height, f.size.width, GUIDE_HEIGHT)];
-    _dismissView.backgroundColor = [UIColor redColor];
-    UILabel *dismissLabel = [[UILabel alloc] initWithFrame:_dismissView.bounds];
-    dismissLabel.text = @"Dismiss";
-    dismissLabel.textAlignment = NSTextAlignmentCenter;
-    [_dismissView addSubview:dismissLabel];
-    [self.view addSubview:_dismissView];
-
-    // setup upload view
-    _uploadView = [[UIView alloc] initWithFrame:CGRectMake(0, -GUIDE_HEIGHT, f.size.width, GUIDE_HEIGHT)];
-    _uploadView.backgroundColor = [UIColor greenColor];
-    UILabel *uploadLabel = [[UILabel alloc] initWithFrame:_uploadView.bounds];
-    uploadLabel.text = @"Upload";
-    uploadLabel.textAlignment = NSTextAlignmentCenter;
-    [_uploadView addSubview:uploadLabel];
-    [self.view addSubview:_uploadView];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self setDisplayGuide:YES];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+    // setup guide view
+    self.guideView = [[FLGuideView alloc] initWithFrame:self.view.frame];
+    [self.view addSubview:self.guideView];
 
     // go go dropbox
     [[FLDropboxHelper sharedHelper] linkIfUnlinked:self completion:^(BOOL success) {
@@ -86,42 +66,12 @@
             [self _displayPasteView];
         }
     }];
-
-    // todo: not in initializer bc it would call this before linking... but should it be here?
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_displayPasteView) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return _displayGuide;
-}
-
-- (void)setDisplayGuide:(BOOL)displayGuide
-{
-    if (displayGuide == _displayGuide) {
-        return;
-    }
-
-    _displayGuide = displayGuide;
-    if (displayGuide) {
-        [UIView animateWithDuration:GUIDE_SHOW_DURATION animations:^{
-            _uploadView.center = CGPointMake(_uploadView.center.x, _uploadView.center.y + GUIDE_HEIGHT);
-            _dismissView.center = CGPointMake(_dismissView.center.x, _dismissView.center.y - GUIDE_HEIGHT);
-            [self setNeedsStatusBarAppearanceUpdate];
-        }];
-    } else {
-        [UIView animateWithDuration:GUIDE_HIDE_DURATION animations:^{
-            _uploadView.center = CGPointMake(_uploadView.center.x, _uploadView.center.y - GUIDE_HEIGHT);
-            _dismissView.center = CGPointMake(_dismissView.center.x, _dismissView.center.y + GUIDE_HEIGHT);
-            [self setNeedsStatusBarAppearanceUpdate];
-        }];
-    }
 }
 
 - (void)_displayPasteView
@@ -132,7 +82,7 @@
         return;
     }
 
-    [self setDisplayGuide:YES];
+    self.guideView.hidden = YES;
 
     // setup the pasteview if necessary
     if (!self.pasteView) {
@@ -152,21 +102,31 @@
 
 #pragma mark - FLPasteViewDelegate
 
--(BOOL)shouldStorePaste:(id)pasteObject
+- (BOOL)shouldStorePaste:(id)pasteObject
 {
     BOOL success = [[FLDropboxHelper sharedHelper] storeObject:self.pasteView.text];
     if (success) {
         [self.historyViewController fadeToOpacity:1.0f withDuration:HISTORY_FADE_DURATION];
-        [self setDisplayGuide:NO];
+        self.guideView.hidden = YES;
     }
 
     return success;
 }
 
--(void)didDismissPaste:(id)pasteObject
+- (void)didDismissPaste:(id)pasteObject
 {
     [self.historyViewController fadeToOpacity:1.0f withDuration:HISTORY_FADE_DURATION];
-    [self setDisplayGuide:NO];
+    self.guideView.hidden = YES;
+}
+
+- (void)pasteViewActive
+{
+    self.guideView.hidden = NO;
+}
+
+- (void)pasteViewReset
+{
+    self.guideView.hidden = YES;
 }
 
 @end
