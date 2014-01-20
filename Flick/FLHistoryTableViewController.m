@@ -13,8 +13,6 @@
 #define TITLE_FADE_OUT 0.1f
 #define HIDDEN_TITLE_OPACITY 0.15f
 
-#define CELL_IDENTIFIER @"FLCell"
-
 @interface FLHistoryTableViewController ()
 
 @property (nonatomic) UILabel *navigationLabel;
@@ -27,7 +25,9 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+        self.dataSource = [[FLHistoryDataSource alloc] init];
+        self.tableView.delegate = self.dataSource;
+        self.tableView.dataSource = self.dataSource;
     }
     return self;
 }
@@ -73,52 +73,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.backingData ? [self.backingData count] : 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELL_IDENTIFIER];
-    }
-
-    FLEntity *displayedObject = [self.backingData objectAtIndex:indexPath.row];
-    if (displayedObject.type == TextEntity) {
-        // present a string
-        cell.textLabel.text = displayedObject.text;
-    } else {
-        // todo: present something else
-    }
-    
-    return cell;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return YES;
-}
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
 
 @end

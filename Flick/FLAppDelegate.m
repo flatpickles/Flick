@@ -7,17 +7,20 @@
 //
 
 // todo:
+//  fetch for table cell view, not all at the beginning; use NSCache
 //  delete
 //  tap to copy
+//  longpress to copy link
 //  photos vs text
-//  sort by time uploaded
 //  display:
+//      leave upload text before fade... etc
 //      cells for variably sized things (both text + photos)
 //      fade in / swoop in / better card appearance
-//      dismiss/upload display
+//      tilt on swipe to dismiss (a la jelly)
 //  handle all error cases... network, dropbox, unrecognized type
-//  update list upon upload, filesystem change
-
+//  update list upon filesystem change
+//  show progress when uploading, update list upon change
+//  address all other todos in code
 
 #import "FLAppDelegate.h"
 #import "FLMainViewController.h"

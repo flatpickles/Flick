@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Dropbox/Dropbox.h>
+#import "FLEntity.h"
 
 @class DBError;
 
@@ -14,13 +16,15 @@
 
 + (FLDropboxHelper *)sharedHelper;
 
+@property (nonatomic, readonly) NSArray *fileListing;
+
 - (void)linkIfUnlinked:(UIViewController *)controller completion:(void (^)(BOOL))completionBlock;
 - (BOOL)finishLinking:(NSURL *)url;
+- (void)handleError:(DBError *)error;
 
+//- (NSArray *)storedObjects; // deprecated, todo: remove this
 - (BOOL)isStored:(id)object;
-- (NSArray *)storedObjects;
 - (BOOL)storeObject:(id)object;
-
--(void)handleError:(DBError *)error;
+- (FLEntity *)retrieveEntity:(DBFileInfo *)fileInfo;
 
 @end

@@ -6,9 +6,7 @@
 //  Copyright (c) 2013 Matt Nichols. All rights reserved.
 //
 
-#import <Dropbox/Dropbox.h>
 #import "FLDropboxHelper.h"
-#import "FLEntity.h"
 
 #define APP_KEY @"ynm3dgog8z5rr7t"
 #define APP_SECRET @"mt17g6d4cv44vif"
@@ -34,7 +32,34 @@
     return helper;
 }
 
-#pragma mark - Linking
+- (NSArray *)fileListing
+{
+    DBFilesystem *fs = [DBFilesystem sharedFilesystem];
+    if (!_fileListing && fs) {
+        DBError *error = nil;
+        NSArray *fl = [fs listFolder:[DBPath root] error:&error];
+        if (error) {
+            [self handleError:error];
+            _fileListing = nil;
+        } else {
+            // sort by recency of modification
+            _fileListing = [fl sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                NSDate *d1 = ((DBFileInfo *)obj1).modifiedTime;
+                NSDate *d2 = ((DBFileInfo *)obj2).modifiedTime;
+                return [d2 compare:d1];
+            }];
+        }
+    }
+    return _fileListing;
+}
+
+#pragma mark - Link & connection management
+
+- (void)handleError:(DBError *)error
+{
+    // todo: better error handling
+    NSLog(@"Dropbox error: %@", [error description]);
+}
 
 - (void)linkIfUnlinked:(UIViewController *)controller completion:(void (^)(BOOL))completionBlock
 {
@@ -91,17 +116,7 @@
 {
     NSMutableArray *objects = [[NSMutableArray alloc] initWithCapacity:[self.fileListing count]];
     for (DBFileInfo *info in self.fileListing) {
-        DBError *error = nil;
-        DBFile *file = [[DBFilesystem sharedFilesystem] openFile:info.path error:&error];
-        NSData *fileData = [file readData:&error];
-
-        if (error) {
-            [self handleError:error];
-        } else {
-            UIImage *imgCandidate = [UIImage imageWithData:fileData];
-            [objects addObject:[[FLEntity alloc] initWithObject:(imgCandidate) ? imgCandidate : [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding]]];
-        }
-        [file close];
+        [objects addObject:[self retrieveEntity:info]];
     }
 
     return [objects copy];
@@ -127,26 +142,25 @@
     return NO;
 }
 
-#pragma mark - Helpers
-
-- (void)handleError:(DBError *)error
+- (FLEntity *)retrieveEntity:(DBFileInfo *)fileInfo
 {
-    // todo: something better?
-    NSLog(@"Dropbox error: %@", [error description]);
-}
+    // todo: first check against an NSCache to see if we've downloaded this recently
 
-- (NSArray *)fileListing
-{
-    DBFilesystem *fs = [DBFilesystem sharedFilesystem];
-    if (!_fileListing && fs) {
-        DBError *error = nil;
-        _fileListing = [fs listFolder:[DBPath root] error:&error];
-        if (error) {
-            [self handleError:error];
-            _fileListing = nil;
-        }
+    FLEntity *entity = nil;
+    DBError *error = nil;
+    DBFile *file = [[DBFilesystem sharedFilesystem] openFile:fileInfo.path error:&error];
+    NSData *fileData = [file readData:&error];
+
+    if (error) {
+        [self handleError:error];
+    } else {
+        UIImage *imgCandidate = [UIImage imageWithData:fileData];
+        entity = [[FLEntity alloc] initWithObject:(imgCandidate) ? imgCandidate : [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding]];
+        // todo: maybe handle case of neither text nor image?
     }
-    return _fileListing;
+
+    [file close];
+    return entity;
 }
 
 @end

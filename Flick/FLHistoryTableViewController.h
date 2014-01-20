@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FLHistoryDataSource.h"
 
 @interface FLHistoryTableViewController : UITableViewController
 
-@property (nonatomic) NSArray *backingData;
+@property (nonatomic) FLHistoryDataSource *dataSource;
 @property (nonatomic) BOOL titleHidden;
 
 - (void)fadeToOpacity:(CGFloat)opacity withDuration:(NSTimeInterval)duration;

@@ -14,10 +14,10 @@
 #define GUIDE_FONT [UIFont boldSystemFontOfSize:16.0f]
 
 #define DISMISS_TEXT @"Dismiss Paste"
-#define DISMISS_COLOR [UIColor redColor]
+#define DISMISS_COLOR [UIColor colorWithRed:0.906f green:0.541f blue:0.239f alpha:1.0f]
 #define UPLOAD_TEXT @"Upload Paste"
-#define UPLOAD_COLOR [UIColor greenColor]
-#define STATUS_BAR_COLOR [UIColor colorWithRed:0.0f green:0.7f blue:0.0f alpha:1.0f]
+#define UPLOAD_COLOR [UIColor colorWithRed:0.239f green:0.604f blue:0.91f alpha:1.0f]
+#define STATUS_BAR_COLOR [UIColor colorWithRed:0.188f green:0.482f blue:0.725f alpha:1.0f]
 
 @interface FLGuideView ()
 
