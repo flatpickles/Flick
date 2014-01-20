@@ -112,16 +112,6 @@
     return YES;
 }
 
-- (NSArray *)storedObjects
-{
-    NSMutableArray *objects = [[NSMutableArray alloc] initWithCapacity:[self.fileListing count]];
-    for (DBFileInfo *info in self.fileListing) {
-        [objects addObject:[self retrieveEntity:info]];
-    }
-
-    return [objects copy];
-}
-
 - (BOOL)storeObject:(id)object
 {
     FLEntity *entity = [[FLEntity alloc] initWithObject:object];
@@ -142,7 +132,7 @@
     return NO;
 }
 
-- (FLEntity *)retrieveEntity:(DBFileInfo *)fileInfo
+- (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo
 {
     // todo: first check against an NSCache to see if we've downloaded this recently
 
@@ -161,6 +151,26 @@
 
     [file close];
     return entity;
+}
+
+- (BOOL)deleteFile:(DBFileInfo *)fileInfo
+{
+    DBError *error = nil;
+    BOOL success = [[DBFilesystem sharedFilesystem] deletePath:fileInfo.path error:&error];
+    if (error) {
+        [self handleError:error];
+    }
+    return success;
+}
+
+- (NSString *)linkForFile:(DBFileInfo *)fileInfo
+{
+    DBError *error = nil;
+    NSString *link = [[DBFilesystem sharedFilesystem] fetchShareLinkForPath:fileInfo.path shorten:YES error:&error];
+    if (error) {
+        [self handleError:error];
+    }
+    return link;
 }
 
 @end

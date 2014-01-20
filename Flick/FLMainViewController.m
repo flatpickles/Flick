@@ -60,7 +60,7 @@
     [[FLDropboxHelper sharedHelper] linkIfUnlinked:self completion:^(BOOL success) {
         // todo: weakself strongself etc
         if (success) {
-            self.historyViewController.dataSource.fileInfoArray = [[FLDropboxHelper sharedHelper] fileListing];
+            self.historyViewController.dataSource.fileInfoArray = [[[FLDropboxHelper sharedHelper] fileListing] mutableCopy];
             // todo: don't get object list on main thread
             [self.historyViewController.tableView reloadData];
             [self _displayPasteView];

@@ -34,7 +34,7 @@
     }
 
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-    FLEntity *displayedObject = [[FLDropboxHelper sharedHelper] retrieveEntity:info];
+    FLEntity *displayedObject = [[FLDropboxHelper sharedHelper] retrieveFile:info];
     if (displayedObject.type == TextEntity) {
         // present a string
         cell.textLabel.text = displayedObject.text;
@@ -47,13 +47,15 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // enable deletion
     return YES;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
+        [[FLDropboxHelper sharedHelper] deleteFile:[self.fileInfoArray objectAtIndex:indexPath.row]];
+        [self.fileInfoArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }

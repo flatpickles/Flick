@@ -22,9 +22,10 @@
 - (BOOL)finishLinking:(NSURL *)url;
 - (void)handleError:(DBError *)error;
 
-//- (NSArray *)storedObjects; // deprecated, todo: remove this
 - (BOOL)isStored:(id)object;
 - (BOOL)storeObject:(id)object;
-- (FLEntity *)retrieveEntity:(DBFileInfo *)fileInfo;
+- (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo;
+- (BOOL)deleteFile:(DBFileInfo *)fileInfo;
+- (NSString *)linkForFile:(DBFileInfo *)fileInfo;
 
 @end

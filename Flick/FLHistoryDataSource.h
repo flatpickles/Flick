@@ -10,6 +10,6 @@
 
 @interface FLHistoryDataSource : NSObject <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic) NSArray *fileInfoArray;
+@property (nonatomic) NSMutableArray *fileInfoArray;
 
 @end
