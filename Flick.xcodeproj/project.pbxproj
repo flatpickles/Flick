@@ -23,6 +23,7 @@
 		C936841E183B2A730058851A /* FLPasteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C936841D183B2A730058851A /* FLPasteView.m */; };
 		C95E8BCE188C77A500092F90 /* FLGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95E8BCD188C77A500092F90 /* FLGuideView.m */; };
 		C95E8BD1188CECA700092F90 /* FLHistoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C95E8BD0188CECA700092F90 /* FLHistoryDataSource.m */; };
+		C95E8BD4188DB9CF00092F90 /* FLEntityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C95E8BD3188DB9CF00092F90 /* FLEntityCell.m */; };
 		C973775E1842DBCF00145975 /* FLHistoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */; };
 		C97377621849274F00145975 /* FLDropboxHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C97377611849274F00145975 /* FLDropboxHelper.m */; };
 		C973776418492D1F00145975 /* Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776318492D1F00145975 /* Dropbox.framework */; };
@@ -70,6 +71,8 @@
 		C95E8BCD188C77A500092F90 /* FLGuideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLGuideView.m; sourceTree = "<group>"; };
 		C95E8BCF188CECA700092F90 /* FLHistoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLHistoryDataSource.h; sourceTree = "<group>"; };
 		C95E8BD0188CECA700092F90 /* FLHistoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLHistoryDataSource.m; sourceTree = "<group>"; };
+		C95E8BD2188DB9CF00092F90 /* FLEntityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLEntityCell.h; sourceTree = "<group>"; };
+		C95E8BD3188DB9CF00092F90 /* FLEntityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLEntityCell.m; sourceTree = "<group>"; };
 		C973775C1842DBCF00145975 /* FLHistoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLHistoryTableViewController.h; sourceTree = "<group>"; };
 		C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLHistoryTableViewController.m; sourceTree = "<group>"; };
 		C97377601849274F00145975 /* FLDropboxHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDropboxHelper.h; sourceTree = "<group>"; };
@@ -173,6 +176,8 @@
 				C95E8BCD188C77A500092F90 /* FLGuideView.m */,
 				C95E8BCF188CECA700092F90 /* FLHistoryDataSource.h */,
 				C95E8BD0188CECA700092F90 /* FLHistoryDataSource.m */,
+				C95E8BD2188DB9CF00092F90 /* FLEntityCell.h */,
+				C95E8BD3188DB9CF00092F90 /* FLEntityCell.m */,
 			);
 			path = Flick;
 			sourceTree = "<group>";
@@ -303,6 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C95E8BD4188DB9CF00092F90 /* FLEntityCell.m in Sources */,
 				C93683FB183B29D30058851A /* FLAppDelegate.m in Sources */,
 				C973777118493ECE00145975 /* FLEntity.m in Sources */,
 				C93683F7183B29D30058851A /* main.m in Sources */,

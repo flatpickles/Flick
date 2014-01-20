@@ -8,7 +8,6 @@
 
 // todo:
 //  fetch for table cell view, not all at the beginning; use NSCache
-//  delete
 //  tap to copy
 //  longpress to copy link
 //  photos vs text

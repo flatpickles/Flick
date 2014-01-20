@@ -43,11 +43,12 @@
 
 - (NSString *)text
 {
-    if (self.type == TextEntity) {
-        return self.backingObject;
-    } else {
-        return nil;
-    }
+    return (self.type == TextEntity) ? self.backingObject : nil;
+}
+
+- (UIImage *)image
+{
+    return (self.type == PhotoEntity) ? self.backingObject : nil;
 }
 
 - (NSString *)_hashStr

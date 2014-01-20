@@ -9,6 +9,7 @@
 #import <Dropbox/Dropbox.h>
 #import "FLHistoryDataSource.h"
 #import "FLDropboxHelper.h"
+#import "FLEntityCell.h"
 
 #define CELL_IDENTIFIER @"FLCell"
 
@@ -28,20 +29,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER];
+    FLEntityCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELL_IDENTIFIER];
+        cell = [[FLEntityCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELL_IDENTIFIER];
     }
 
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-    FLEntity *displayedObject = [[FLDropboxHelper sharedHelper] retrieveFile:info];
-    if (displayedObject.type == TextEntity) {
-        // present a string
-        cell.textLabel.text = displayedObject.text;
-    } else {
-        // todo: present something else
-    }
-
+    cell.entity = [[FLDropboxHelper sharedHelper] retrieveFile:info];
     return cell;
 }
 
@@ -58,6 +52,21 @@
         [self.fileInfoArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
+}
+
+# pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // copy the entity at this index to clipboard
+    DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
+    FLEntity *entity = [[FLDropboxHelper sharedHelper] retrieveFile:info];
+    if (entity.type == PhotoEntity) {
+        [UIPasteboard generalPasteboard].image = entity.image;
+    } else {
+        [UIPasteboard generalPasteboard].string = entity.text;
+    }
+    [self.delegate didCopyEntity:entity];
 }
 
 @end
