@@ -22,7 +22,7 @@
 - (BOOL)finishLinking:(NSURL *)url;
 - (void)handleError:(DBError *)error;
 
-- (BOOL)isStored:(id)object;
+- (BOOL)canStoreObject:(id)object;
 - (BOOL)storeObject:(id)object;
 - (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo;
 - (BOOL)deleteFile:(DBFileInfo *)fileInfo;

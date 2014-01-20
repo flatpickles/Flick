@@ -57,13 +57,18 @@
     [self.view addSubview:self.guideView];
 
     // go go dropbox
+    __weak typeof(self) weakSelf = self;
     [[FLDropboxHelper sharedHelper] linkIfUnlinked:self completion:^(BOOL success) {
-        // todo: weakself strongself etc
-        if (success) {
-            self.historyViewController.dataSource.fileInfoArray = [[[FLDropboxHelper sharedHelper] fileListing] mutableCopy];
-            // todo: don't get object list on main thread
-            [self.historyViewController.tableView reloadData];
-            [self _displayPasteView];
+        typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf && success) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                strongSelf.historyViewController.dataSource.fileInfoArray = [[[FLDropboxHelper sharedHelper] fileListing] mutableCopy];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // make sure UI stuff happens on main thread
+                    [strongSelf.historyViewController.tableView reloadData];
+                    [strongSelf _displayPasteView];
+                });
+            });
         }
     }];
 }
@@ -78,7 +83,7 @@
 {
     // check if we should (if the thing displayed has already been stored)
     id toStore = [UIPasteboard generalPasteboard].string; // todo: make this smarter
-    if ([[FLDropboxHelper sharedHelper] isStored:toStore]) {
+    if (![[FLDropboxHelper sharedHelper] canStoreObject:toStore]) {
         return;
     }
 

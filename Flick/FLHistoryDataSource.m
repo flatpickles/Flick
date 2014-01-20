@@ -15,6 +15,16 @@
 
 @implementation FLHistoryDataSource
 
+- (void)handleLongPress:(NSIndexPath *)indexPath
+{
+    // copy the shortened DB link to the file at this index path
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
+        NSString *path = [[FLDropboxHelper sharedHelper] linkForFile:info];
+        [UIPasteboard generalPasteboard].URL = [NSURL URLWithString:path];
+    });
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

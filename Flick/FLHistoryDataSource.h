@@ -21,4 +21,6 @@
 @property (nonatomic) NSMutableArray *fileInfoArray;
 @property (nonatomic) id<FLHistoryActionsDelegate> delegate;
 
+- (void)handleLongPress:(NSIndexPath *)indexPath;
+
 @end

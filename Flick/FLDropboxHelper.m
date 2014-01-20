@@ -10,6 +10,7 @@
 
 #define APP_KEY @"ynm3dgog8z5rr7t"
 #define APP_SECRET @"mt17g6d4cv44vif"
+#define LAST_LINK_KEY @"LastLinkCopied"
 
 @interface FLDropboxHelper()
 
@@ -92,11 +93,16 @@
 
 #pragma mark - Storage management
 
-- (BOOL)isStored:(id)object
+- (BOOL)canStoreObject:(id)object
 {
     FLEntity *entity = [[FLEntity alloc] initWithObject:object];
-    DBPath *path = [[DBPath root] childPath:[entity nameForFile]];
-    return [self _isStored:path];
+    if ([entity.text isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:LAST_LINK_KEY]]) {
+        // we've copied this link from the app
+        return NO;
+    } else {
+        DBPath *path = [[DBPath root] childPath:[entity nameForFile]];
+        return ![self _isStored:path];
+    }
 }
 
 - (BOOL)_isStored:(DBPath *)path
@@ -169,6 +175,9 @@
     NSString *link = [[DBFilesystem sharedFilesystem] fetchShareLinkForPath:fileInfo.path shorten:YES error:&error];
     if (error) {
         [self handleError:error];
+    } else {
+        // keep track of this link so we don't try to store the link from the clipboard at next open
+        [[NSUserDefaults standardUserDefaults] setObject:link forKey:LAST_LINK_KEY];
     }
     return link;
 }

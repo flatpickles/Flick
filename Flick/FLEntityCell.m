@@ -8,7 +8,7 @@
 
 #import "FLEntityCell.h"
 
-#define HIGHLIGHT_COLOR [UIColor colorWithRed:0.455 green:0.702 blue:0.91 alpha:1.0]
+#define HIGHLIGHT_COLOR [UIColor colorWithRed:0.627 green:0.78 blue:0.91 alpha:1.0]
 #define HIGHLIGHT_FADE_IN 0.0f
 #define HIGHLIGHT_FADE_OUT 0.4f
 

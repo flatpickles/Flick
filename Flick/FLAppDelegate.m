@@ -7,11 +7,10 @@
 //
 
 // todo:
-//  fetch for table cell view, not all at the beginning; use NSCache
-//  tap to copy
-//  longpress to copy link
+//  use NSCache for entities so they're not refectched on reloadData
 //  photos vs text
 //  display:
+//      copy success
 //      leave upload text before fade... etc
 //      cells for variably sized things (both text + photos)
 //      fade in / swoop in / better card appearance
@@ -20,6 +19,10 @@
 //  update list upon filesystem change
 //  show progress when uploading, update list upon change
 //  address all other todos in code
+//  settings:
+//      long press to copy link
+//      connect dropbox if unconnected
+//  make sure dropbox is connected on launch
 
 #import "FLAppDelegate.h"
 #import "FLMainViewController.h"
