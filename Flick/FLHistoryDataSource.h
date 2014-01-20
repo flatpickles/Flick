@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Dropbox/Dropbox.h>
 #import "FLEntity.h"
 
 @protocol FLHistoryActionsDelegate <NSObject>
 
 - (void)didCopyEntity:(FLEntity *)entity;
-- (void)didCopyLinkForEntity:(FLEntity *)entity;
+- (void)didCopyLinkForFile:(DBFileInfo *)entity;
 
 @end
 

@@ -75,9 +75,12 @@
 
 - (void)_handleLongPress:(UILongPressGestureRecognizer *)gestureRec
 {
-    CGPoint pt = [gestureRec locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:pt];
-    [self.dataSource handleLongPress:indexPath];
+    if (gestureRec.state == UIGestureRecognizerStateBegan) {
+        // only call once per gesture
+        CGPoint pt = [gestureRec locationInView:self.tableView];
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:pt];
+        [self.dataSource handleLongPress:indexPath];
+    }
 }
 
 - (void)didReceiveMemoryWarning

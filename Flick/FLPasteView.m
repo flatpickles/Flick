@@ -111,7 +111,6 @@
             self.center = self.originalCenter;
             self.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
         } completion:nil];
-        // todo: memory leaks??
         [self _shadowShrink];
     } else {
         self.center = self.originalCenter;
@@ -134,9 +133,8 @@
 
         [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
             self.center = CGPointMake(self.center.x + target.x, self.center.y + target.y);
-            [self _handleExit]; // todo: maybe on completion
+            [self _handleExit];
         } completion:nil];
-        // todo: memory leaks??
     }
 }
 

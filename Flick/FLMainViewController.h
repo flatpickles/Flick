@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "FLPasteView.h"
+#import "FLHistoryDataSource.h"
 
-@interface FLMainViewController : UIViewController <FLPasteViewDelegate>
+@interface FLMainViewController : UIViewController <FLPasteViewDelegate, FLHistoryActionsDelegate>
 
 @end

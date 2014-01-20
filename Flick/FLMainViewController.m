@@ -18,6 +18,9 @@
 #define PASTE_X_INSET 30.0f
 #define PASTE_Y_INSET 70.0f
 
+#define COPY_MESSAGE @"Paste copied to clipboard"
+#define COPY_LINK_MESSAGE @"Dropbox link copied to clipboard"
+
 @interface FLMainViewController ()
 
 @property FLPasteView *pasteView;
@@ -48,6 +51,7 @@
 
     // setup history view
     self.historyViewController = [[FLHistoryTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    self.historyViewController.dataSource.delegate = self;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.historyViewController];
     [self addChildViewController:nav];
     [self.view addSubview:nav.view];
@@ -64,7 +68,7 @@
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 strongSelf.historyViewController.dataSource.fileInfoArray = [[[FLDropboxHelper sharedHelper] fileListing] mutableCopy];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    // make sure UI stuff happens on main thread
+                    // make sure UI updates happen on main thread
                     [strongSelf.historyViewController.tableView reloadData];
                     [strongSelf _displayPasteView];
                 });
@@ -87,7 +91,7 @@
         return;
     }
 
-    self.guideView.hidden = YES;
+    [self.guideView hide:FLGuideDisplayTypeBoth];
 
     // setup the pasteview if necessary
     if (!self.pasteView) {
@@ -109,7 +113,6 @@
 {
     self.historyViewController.titleHidden = NO;
     [self.historyViewController fadeToOpacity:1.0f withDuration:HISTORY_FADE_DURATION];
-    self.guideView.hidden = YES;
 }
 
 #pragma mark - FLPasteViewDelegate
@@ -118,6 +121,7 @@
 {
     BOOL success = [[FLDropboxHelper sharedHelper] storeObject:self.pasteView.text];
     if (success) {
+        [self.guideView hide:FLGuideDisplayTypeTop];
         [self _setupForHistoryViewing];
     }
 
@@ -126,24 +130,37 @@
 
 - (void)didDismissPaste:(id)pasteObject
 {
+    [self.guideView hide:FLGuideDisplayTypeBottom];
     [self _setupForHistoryViewing];
 }
 
 - (void)pasteViewActive
 {
     self.historyViewController.titleHidden = YES;
-    self.guideView.hidden = NO;
+    [self.guideView show:FLGuideDisplayTypeBoth];
 }
 
 - (void)pasteViewReset
 {
-    self.guideView.hidden = YES;
+    [self.guideView hide:FLGuideDisplayTypeBoth];
     self.historyViewController.titleHidden = NO;
 }
 
 - (void)pasteViewMoved:(CGFloat)yOffset
 {
     [self.guideView fadeRelativeToPasteOffset:yOffset];
+}
+
+#pragma mark - FLHistoryActionsDelegate
+
+- (void)didCopyEntity:(FLEntity *)entity
+{
+    [self.guideView displayMessage:COPY_MESSAGE];
+}
+
+- (void)didCopyLinkForFile:(DBFileInfo *)entity
+{
+    [self.guideView displayMessage:COPY_LINK_MESSAGE];
 }
 
 @end

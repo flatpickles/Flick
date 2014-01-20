@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    FLGuideDisplayTypeBoth,
+    FLGuideDisplayTypeTop,
+    FLGuideDisplayTypeBottom
+} FLGuideDisplayType;
+
 @interface FLGuideView : UIView
 
-@property (nonatomic) BOOL hidden;
-
 - (void)fadeRelativeToPasteOffset:(CGFloat)yOffset;
+- (void)show:(FLGuideDisplayType)displayType;
+- (void)hide:(FLGuideDisplayType)displayType;
+- (void)displayMessage:(NSString *)message;
 
 @end

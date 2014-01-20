@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Matt Nichols. All rights reserved.
 //
 
-#import <Dropbox/Dropbox.h>
 #import "FLHistoryDataSource.h"
 #import "FLDropboxHelper.h"
 #import "FLEntityCell.h"
@@ -21,7 +20,13 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
         NSString *path = [[FLDropboxHelper sharedHelper] linkForFile:info];
-        [UIPasteboard generalPasteboard].URL = [NSURL URLWithString:path];
+        if (path) {
+            [UIPasteboard generalPasteboard].URL = [NSURL URLWithString:path];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // UI operations -> main thread
+                [self.delegate didCopyLinkForFile:info];
+            });
+        }
     });
 }
 

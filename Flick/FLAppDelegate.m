@@ -7,22 +7,25 @@
 //
 
 // todo:
+//  address all other todos in code
 //  use NSCache for entities so they're not refectched on reloadData
 //  photos vs text
 //  display:
-//      copy success
+//      message for upload success
 //      leave upload text before fade... etc
 //      cells for variably sized things (both text + photos)
 //      fade in / swoop in / better card appearance
 //      tilt on swipe to dismiss (a la jelly)
 //  handle all error cases... network, dropbox, unrecognized type
-//  update list upon filesystem change
-//  show progress when uploading, update list upon change
-//  address all other todos in code
+//  update list upon filesystem change, upload
 //  settings:
 //      long press to copy link
 //      connect dropbox if unconnected
 //  make sure dropbox is connected on launch
+//  cleanup:
+//      order defines
+//      double check imports
+//      remove unnecessary default declarations
 
 #import "FLAppDelegate.h"
 #import "FLMainViewController.h"

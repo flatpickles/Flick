@@ -12,6 +12,7 @@
 #define GUIDE_SHOW_DURATION 0.15f
 #define GUIDE_HIDE_DURATION 0.3f
 #define GUIDE_FONT [UIFont boldSystemFontOfSize:16.0f]
+#define MESSAGE_DISPLAY_DURATION 0.7f
 
 #define DISMISS_TEXT @"Dismiss Paste"
 #define DISMISS_COLOR [UIColor colorWithRed:0.906f green:0.541f blue:0.239f alpha:1.0f]
@@ -21,8 +22,12 @@
 
 @interface FLGuideView ()
 
-@property (nonatomic) UIView *dismissView;
-@property (nonatomic) UIView *uploadView;
+@property (nonatomic) UIView *bottomView;
+@property (nonatomic) CGPoint originalDismissCenter;
+@property (nonatomic) UIView *topView;
+@property (nonatomic) UILabel *topLabel;
+@property (nonatomic) CGPoint originalUploadCenter;
+@property (nonatomic) BOOL hidden;
 
 @end
 
@@ -36,51 +41,37 @@
 
         // setup dismiss view
         CGRect f = self.frame;
-        self.dismissView = [[UIView alloc] initWithFrame:CGRectMake(0, f.size.height, f.size.width, GUIDE_HEIGHT)];
-        self.dismissView.backgroundColor = DISMISS_COLOR;
-        UILabel *dismissLabel = [[UILabel alloc] initWithFrame:self.dismissView.bounds];
+        self.bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, f.size.height, f.size.width, GUIDE_HEIGHT)];
+        self.bottomView.backgroundColor = DISMISS_COLOR;
+        UILabel *dismissLabel = [[UILabel alloc] initWithFrame:self.bottomView.bounds];
         dismissLabel.font = GUIDE_FONT;
         dismissLabel.text = DISMISS_TEXT;
         dismissLabel.textAlignment = NSTextAlignmentCenter;
-        [self.dismissView addSubview:dismissLabel];
-        [self addSubview:self.dismissView];
+        [self.bottomView addSubview:dismissLabel];
+        [self addSubview:self.bottomView];
+        self.originalDismissCenter = self.bottomView.center;
 
         // setup upload view
-        self.uploadView = [[UIView alloc] initWithFrame:CGRectMake(0, -(GUIDE_HEIGHT + [[UIApplication sharedApplication] statusBarFrame].size.height), f.size.width, GUIDE_HEIGHT + [[UIApplication sharedApplication] statusBarFrame].size.height)];
-        self.uploadView.backgroundColor = UPLOAD_COLOR;
-        UIView *statusBarBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.uploadView.frame.size.width, [[UIApplication sharedApplication] statusBarFrame].size.height)];
+        self.topView = [[UIView alloc] initWithFrame:CGRectMake(0, -(GUIDE_HEIGHT + [[UIApplication sharedApplication] statusBarFrame].size.height), f.size.width, GUIDE_HEIGHT + [[UIApplication sharedApplication] statusBarFrame].size.height)];
+        self.topView.backgroundColor = UPLOAD_COLOR;
+        UIView *statusBarBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.topView.frame.size.width, [[UIApplication sharedApplication] statusBarFrame].size.height)];
         statusBarBackground.backgroundColor = STATUS_BAR_COLOR;
-        [self.uploadView addSubview:statusBarBackground];
-        UILabel *uploadLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, [[UIApplication sharedApplication] statusBarFrame].size.height, self.uploadView.frame.size.width, GUIDE_HEIGHT)];
-        uploadLabel.font = GUIDE_FONT;
-        uploadLabel.text = UPLOAD_TEXT;
-        uploadLabel.textAlignment = NSTextAlignmentCenter;
-        [self.uploadView addSubview:uploadLabel];
-        [self addSubview:self.uploadView];
+        [self.topView addSubview:statusBarBackground];
+        self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, [[UIApplication sharedApplication] statusBarFrame].size.height, self.topView.frame.size.width, GUIDE_HEIGHT)];
+        self.topLabel.font = GUIDE_FONT;
+        self.topLabel.text = UPLOAD_TEXT;
+        self.topLabel.textAlignment = NSTextAlignmentCenter;
+        [self.topView addSubview:self.topLabel];
+        [self addSubview:self.topView];
+        self.originalUploadCenter = self.topView.center;
     }
     return self;
 }
 
-- (void)setHidden:(BOOL)hidden
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    if (_hidden == hidden) {
-        return;
-    }
-    _hidden = hidden;
-
-    if (!hidden) {
-        [UIView animateWithDuration:GUIDE_SHOW_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.uploadView.center = CGPointMake(self.uploadView.center.x, self.uploadView.center.y + (GUIDE_HEIGHT + [[UIApplication sharedApplication] statusBarFrame].size.height));
-            self.dismissView.center = CGPointMake(self.dismissView.center.x, self.dismissView.center.y - GUIDE_HEIGHT);
-        } completion:nil];
-    } else {
-        [UIView animateWithDuration:GUIDE_HIDE_DURATION delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-            _uploadView.layer.opacity = 1.0f;
-            _dismissView.layer.opacity = 1.0f;
-            self.uploadView.center = CGPointMake(self.uploadView.center.x, self.uploadView.center.y - (GUIDE_HEIGHT + [[UIApplication sharedApplication] statusBarFrame].size.height));
-            self.dismissView.center = CGPointMake(self.dismissView.center.x, self.dismissView.center.y + GUIDE_HEIGHT);
-        } completion:nil];
-    }
+    // pass on any touch events if hidden
+    return (self.hidden) ? nil : self;
 }
 
 - (void)fadeRelativeToPasteOffset:(CGFloat)yOffset
@@ -88,18 +79,67 @@
     CGFloat maxDistance = [[UIScreen mainScreen] bounds].size.height/2;
     CGFloat newOpacity = 1 - MIN(1, ABS(yOffset) / maxDistance);
     if (yOffset > 0.0f) {
-        self.dismissView.layer.opacity = 1.0f;
-        self.uploadView.layer.opacity = newOpacity;
+        self.bottomView.layer.opacity = 1.0f;
+        self.topView.layer.opacity = newOpacity;
     } else {
-        self.uploadView.layer.opacity = 1.0f;
-        self.dismissView.layer.opacity = newOpacity;
+        self.topView.layer.opacity = 1.0f;
+        self.bottomView.layer.opacity = newOpacity;
     }
 }
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+- (void)show:(FLGuideDisplayType)displayType
 {
-    // pass on any touch events if hidden
-    return (self.hidden) ? nil : self;
+    [self _show:displayType delay:0.0f completion:nil];
+}
+
+- (void)hide:(FLGuideDisplayType)displayType
+{
+    [self _hide:displayType delay:0.0f completion:nil];
+}
+
+- (void)_show:(FLGuideDisplayType)displayType delay:(CGFloat)delay completion:(void (^)(BOOL finished))completion
+{
+    self.hidden = NO;
+    [UIView animateWithDuration:GUIDE_SHOW_DURATION delay:delay options:UIViewAnimationOptionCurveEaseIn animations:^{
+        if (displayType == FLGuideDisplayTypeBoth || displayType == FLGuideDisplayTypeTop) {
+            self.topView.center = CGPointMake(self.topView.center.x, self.originalUploadCenter.y + (GUIDE_HEIGHT + [[UIApplication sharedApplication] statusBarFrame].size.height));
+        }
+        if (displayType == FLGuideDisplayTypeBoth || displayType == FLGuideDisplayTypeBottom) {
+            self.bottomView.center = CGPointMake(self.bottomView.center.x, self.originalDismissCenter.y - GUIDE_HEIGHT);
+        }
+    } completion:completion];
+}
+
+- (void)_hide:(FLGuideDisplayType)displayType delay:(CGFloat)delay completion:(void (^)(BOOL finished))completion
+{
+    self.hidden = YES;
+    [UIView animateWithDuration:GUIDE_HIDE_DURATION delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^{
+        // fade back in if appropriate
+        if (displayType == FLGuideDisplayTypeBoth || displayType == FLGuideDisplayTypeTop) {
+            self.topView.layer.opacity = 1.0f;
+        }
+        if (displayType == FLGuideDisplayTypeBoth || displayType == FLGuideDisplayTypeBottom) {
+            self.bottomView.layer.opacity = 1.0f;
+        }
+        // always do both in case one is displayed but transparent
+        self.topView.center = self.originalUploadCenter;
+        self.bottomView.center = self.originalDismissCenter;
+    } completion:completion];
+}
+
+- (void)displayMessage:(NSString *)message
+{
+    if (!self.hidden) {
+        return;
+    }
+
+    NSString *previousText = self.topLabel.text;
+    self.topLabel.text = message;
+    [self _show:FLGuideDisplayTypeTop delay:0.0f completion:^(BOOL finished) {
+        [self _hide:FLGuideDisplayTypeTop delay:MESSAGE_DISPLAY_DURATION completion:^(BOOL finished) {
+            self.topLabel.text = previousText;
+        }];
+    }];
 }
 
 @end
