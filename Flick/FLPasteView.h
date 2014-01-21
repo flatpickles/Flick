@@ -25,7 +25,6 @@
 @property (nonatomic) CGPoint lastVelocity;
 @property (nonatomic) NSString *text;
 
-- (void)resetWithAnimations:(BOOL)animate;
-- (void)endAnimation;
+- (void)fadeIn:(CGFloat)duration;
 
 @end

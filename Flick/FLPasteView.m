@@ -79,7 +79,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self resetWithAnimations:YES];
+    [self _resetWithAnimations:YES];
 }
 
 - (void)setText:(NSString *)text
@@ -104,7 +104,16 @@
     tv.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
 }
 
-- (void)resetWithAnimations:(BOOL)animate
+- (void)fadeIn:(CGFloat)duration
+{
+    self.layer.opacity = 0.0f;
+    [self _resetWithAnimations:NO];
+    [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.layer.opacity = 1.0f;
+    } completion:nil];
+}
+
+- (void)_resetWithAnimations:(BOOL)animate
 {
     // return to original position
     if (animate) {
@@ -122,11 +131,11 @@
     [self.delegate pasteViewReset];
 }
 
-- (void)endAnimation
+- (void)_endAnimation
 {
     CGFloat velocity = sqrt(pow(self.lastVelocity.x, 2.0) + pow(self.lastVelocity.y, 2.0));
     if (velocity < SWIPE_VELOCITY_THRESHOLD) {
-        [self resetWithAnimations:YES];
+        [self _resetWithAnimations:YES];
     } else {
         // continue animation in the direction of last swipe, at the right speed
         CGFloat theta = atan2f(self.lastVelocity.y, self.lastVelocity.x);
@@ -190,7 +199,7 @@
         pasteView.lastVelocity = [pgr velocityInView:pasteView];
         [self.delegate pasteViewMoved:pasteView.center.y - self.originalCenter.y];
     } else if (pgr.state == UIGestureRecognizerStateEnded) {
-        [pasteView endAnimation];
+        [pasteView _endAnimation];
     }
 }
 

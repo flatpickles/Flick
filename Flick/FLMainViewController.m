@@ -14,6 +14,7 @@
 
 #define HISTORY_BACKGROUND_OPACITY 0.5f
 #define HISTORY_FADE_DURATION 0.3f
+#define PASTE_FADE_DURATION 0.3f
 #define STATUS_BAR_FADE_DURATION 0.3f
 #define PASTE_X_INSET 30.0f
 #define PASTE_Y_INSET 70.0f
@@ -92,8 +93,6 @@
         return;
     }
 
-    [self.guideView hide:FLGuideDisplayTypeBoth];
-
     // setup the pasteview if necessary
     if (!self.pasteView) {
         CGRect frame = self.view.bounds;
@@ -103,8 +102,8 @@
     }
 
     // configure
-    [self.pasteView resetWithAnimations:NO];
-    [self.historyViewController setOpacity:HISTORY_BACKGROUND_OPACITY withDuration:0.0f];
+    [self.pasteView fadeIn:PASTE_FADE_DURATION];
+    [self.historyViewController setOpacity:HISTORY_BACKGROUND_OPACITY withDuration:PASTE_FADE_DURATION];
 
     // set content
     self.pasteView.text = [UIPasteboard generalPasteboard].string;

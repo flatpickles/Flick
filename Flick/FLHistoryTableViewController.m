@@ -75,6 +75,7 @@
 {
     [UIView animateWithDuration:duration animations:^{
         self.view.layer.opacity = opacity;
+        // todo: should this be self.navigationController.view? That would include title
     } completion:nil];
 
     // disable interaction if it's not completely opaque
