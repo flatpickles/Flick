@@ -12,8 +12,8 @@
 @interface FLHistoryTableViewController : UITableViewController
 
 @property (nonatomic) FLHistoryDataSource *dataSource;
-@property (nonatomic) BOOL titleHidden;
 
+- (void)hideTitle:(BOOL)hidden animate:(BOOL)animate;
 - (void)fadeToOpacity:(CGFloat)opacity withDuration:(NSTimeInterval)duration;
 
 @end

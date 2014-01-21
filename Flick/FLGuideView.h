@@ -19,6 +19,8 @@ typedef enum {
 - (void)fadeRelativeToPasteOffset:(CGFloat)yOffset;
 - (void)show:(FLGuideDisplayType)displayType;
 - (void)hide:(FLGuideDisplayType)displayType;
+- (void)show:(FLGuideDisplayType)displayType delay:(CGFloat)delay completion:(void (^)(BOOL finished))completion;
+- (void)hide:(FLGuideDisplayType)displayType delay:(CGFloat)delay completion:(void (^)(BOOL finished))completion;
 - (void)displayMessage:(NSString *)message;
 
 @end

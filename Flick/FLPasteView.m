@@ -29,6 +29,7 @@
 @property (nonatomic) CGPoint originalCenter;
 @property (nonatomic) NSDate *offsetLastSet;
 @property (nonatomic) UILabel *textView;
+@property (nonatomic) BOOL isDismissed;
 
 @end
 
@@ -69,7 +70,7 @@
     [UIView animateWithDuration:START_SPEED delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.transform = CGAffineTransformMakeScale(SCALE_FACTOR, SCALE_FACTOR);
     } completion:^(BOOL finished) {
-        if (finished) {
+        if (finished && !self.isDismissed) {
             [self.delegate pasteViewActive];
         }
     }];
@@ -117,6 +118,7 @@
         self.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
         [self.layer setShadowRadius:SHADOW_RADIUS];
     }
+    self.isDismissed = NO;
     [self.delegate pasteViewReset];
 }
 
@@ -164,6 +166,7 @@
 
 - (void)_handleExit
 {
+    self.isDismissed = YES;
     // center should be at post-exit point
     if (self.center.y > [[UIScreen mainScreen] bounds].size.height/2) {
         // swiped downwards

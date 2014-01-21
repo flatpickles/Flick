@@ -17,6 +17,7 @@
 #define STATUS_BAR_FADE_DURATION 0.3f
 #define PASTE_X_INSET 30.0f
 #define PASTE_Y_INSET 70.0f
+#define TITLE_TEXT_FADE_DELAY 0.3f
 
 #define COPY_MESSAGE @"Paste copied to clipboard"
 #define COPY_LINK_MESSAGE @"Dropbox link copied to clipboard"
@@ -111,7 +112,6 @@
 
 - (void)_setupForHistoryViewing
 {
-    self.historyViewController.titleHidden = NO;
     [self.historyViewController fadeToOpacity:1.0f withDuration:HISTORY_FADE_DURATION];
 }
 
@@ -122,6 +122,7 @@
     BOOL success = [[FLDropboxHelper sharedHelper] storeObject:self.pasteView.text];
     if (success) {
         [self.guideView hide:FLGuideDisplayTypeTop];
+        [self.historyViewController hideTitle:NO animate:NO];
         [self _setupForHistoryViewing];
     }
 
@@ -130,20 +131,24 @@
 
 - (void)didDismissPaste:(id)pasteObject
 {
-    [self.guideView hide:FLGuideDisplayTypeBottom];
+    [self.guideView hide:FLGuideDisplayTypeBottom delay:0.0f completion:^(BOOL finished) {
+        // delay the title fade in so it doesn't overlap with the fading out "upload paste"
+        [self.historyViewController hideTitle:NO animate:YES];
+    }];
     [self _setupForHistoryViewing];
 }
 
 - (void)pasteViewActive
 {
-    self.historyViewController.titleHidden = YES;
+    // hide the title after showing so it's not visible during fade to paste offset
+    [self.historyViewController hideTitle:YES animate:YES];
     [self.guideView show:FLGuideDisplayTypeBoth];
 }
 
 - (void)pasteViewReset
 {
+    [self.historyViewController hideTitle:NO animate:YES];
     [self.guideView hide:FLGuideDisplayTypeBoth];
-    self.historyViewController.titleHidden = NO;
 }
 
 - (void)pasteViewMoved:(CGFloat)yOffset

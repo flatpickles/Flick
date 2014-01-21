@@ -11,7 +11,9 @@
 
 #define TITLE_FADE_IN 0.3f
 #define TITLE_FADE_OUT 0.1f
-#define HIDDEN_TITLE_OPACITY 0.15f
+#define HIDDEN_TITLE_OPACITY 0.0f
+#define TITLE_FONT [UIFont boldSystemFontOfSize:18.0f]
+#define TITLE_TEXT @"Your Pastes"
 
 @interface FLHistoryTableViewController ()
 
@@ -39,10 +41,10 @@
     // setup a replacement navigation label so we can control opacity directly
     self.navigationLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.navigationLabel.backgroundColor = [UIColor clearColor];
-    self.navigationLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    self.navigationLabel.font = TITLE_FONT;
     self.navigationLabel.textAlignment = NSTextAlignmentCenter;
     self.navigationLabel.textColor = [UIColor blackColor];
-    self.navigationLabel.text = @"Your Previous Pastes";
+    self.navigationLabel.text = TITLE_TEXT;
     self.navigationItem.titleView = self.navigationLabel;
     [self.navigationLabel sizeToFit];
 
@@ -52,17 +54,20 @@
     [self.tableView addGestureRecognizer:gestureRec];
 }
 
-- (void)setTitleHidden:(BOOL)titleHidden
+- (void)hideTitle:(BOOL)hidden animate:(BOOL)animate
 {
-    _titleHidden = titleHidden;
-    if (titleHidden) {
-        [UIView animateWithDuration:TITLE_FADE_OUT animations:^{
-            self.navigationLabel.layer.opacity = HIDDEN_TITLE_OPACITY;
-        }];
+    if (animate) {
+        if (hidden) {
+            [UIView animateWithDuration:TITLE_FADE_OUT delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                self.navigationLabel.layer.opacity = HIDDEN_TITLE_OPACITY;
+            } completion:nil];
+        } else {
+            [UIView animateWithDuration:TITLE_FADE_IN delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                self.navigationLabel.layer.opacity = 1.0f;
+            } completion:nil];
+        }
     } else {
-        [UIView animateWithDuration:TITLE_FADE_IN animations:^{
-            self.navigationLabel.layer.opacity = 1.0f;
-        }];
+        self.navigationLabel.layer.opacity = (hidden) ? HIDDEN_TITLE_OPACITY : 1.0f;
     }
 }
 
