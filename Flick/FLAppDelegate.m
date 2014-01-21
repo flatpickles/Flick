@@ -13,14 +13,13 @@
 //  display:
 //      make it not look dumb for fast actions (maybe just a delay for guide?)
 //      message for upload success
-//      leave upload text before fade... etc
 //      cells for variably sized things (both text + photos)
 //      fade in / swoop in / better card appearance
 //      tilt on swipe to dismiss (a la jelly)
 //  app icon
 //  handle all error cases... network, dropbox, unrecognized type
 //  update list upon filesystem change, upload
-//  make sure dropbox is connected on launch,
+//  make sure dropbox is connected on launch
 //  settings:
 //      long press to copy link
 //      connect dropbox if unconnected

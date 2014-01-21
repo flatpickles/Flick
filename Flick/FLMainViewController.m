@@ -104,7 +104,7 @@
 
     // configure
     [self.pasteView resetWithAnimations:NO];
-    self.historyViewController.view.layer.opacity = HISTORY_BACKGROUND_OPACITY;
+    [self.historyViewController setOpacity:HISTORY_BACKGROUND_OPACITY withDuration:0.0f];
 
     // set content
     self.pasteView.text = [UIPasteboard generalPasteboard].string;
@@ -112,7 +112,7 @@
 
 - (void)_setupForHistoryViewing
 {
-    [self.historyViewController fadeToOpacity:1.0f withDuration:HISTORY_FADE_DURATION];
+    [self.historyViewController setOpacity:1.0f withDuration:HISTORY_FADE_DURATION];
 }
 
 #pragma mark - FLPasteViewDelegate

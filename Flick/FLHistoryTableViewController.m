@@ -71,11 +71,14 @@
     }
 }
 
-- (void)fadeToOpacity:(CGFloat)opacity withDuration:(NSTimeInterval)duration
+- (void)setOpacity:(CGFloat)opacity withDuration:(NSTimeInterval)duration
 {
     [UIView animateWithDuration:duration animations:^{
         self.view.layer.opacity = opacity;
     } completion:nil];
+
+    // disable interaction if it's not completely opaque
+    self.view.userInteractionEnabled = (opacity == 1.0f) ? YES : NO;
 }
 
 - (void)_handleLongPress:(UILongPressGestureRecognizer *)gestureRec
