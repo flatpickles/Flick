@@ -82,6 +82,17 @@
     self.view.userInteractionEnabled = (opacity == 1.0f) ? YES : NO;
 }
 
+- (void)addNewEntity:(DBFileInfo *)entityInfo
+{
+    [self.dataSource.fileInfoArray insertObject:entityInfo atIndex:0];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+}
+
+- (void)setEntites:(NSArray *)entityInfoArray
+{
+
+}
+
 - (void)_handleLongPress:(UILongPressGestureRecognizer *)gestureRec
 {
     if (gestureRec.state == UIGestureRecognizerStateBegan) {

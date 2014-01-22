@@ -23,7 +23,7 @@
 - (void)handleError:(DBError *)error;
 
 - (BOOL)canStoreObject:(id)object;
-- (BOOL)storeObject:(id)object;
+- (void)storeObject:(id)object completion:(void (^)(DBFileInfo *info))completionBlock;
 - (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo;
 - (BOOL)deleteFile:(DBFileInfo *)fileInfo;
 - (NSString *)linkForFile:(DBFileInfo *)fileInfo;

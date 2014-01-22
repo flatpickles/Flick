@@ -11,7 +11,7 @@
 
 @protocol FLPasteViewDelegate <NSObject>
 
-- (BOOL)shouldStorePaste:(id)pasteObject;
+- (void)shouldStorePaste:(id)pasteObject;
 - (void)didDismissPaste:(id)pasteObject;
 - (void)pasteViewActive;
 - (void)pasteViewReset;

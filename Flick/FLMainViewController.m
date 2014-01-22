@@ -116,16 +116,24 @@
 
 #pragma mark - FLPasteViewDelegate
 
-- (BOOL)shouldStorePaste:(id)pasteObject
+- (void)shouldStorePaste:(id)pasteObject
 {
-    BOOL success = [[FLDropboxHelper sharedHelper] storeObject:self.pasteView.text];
-    if (success) {
-        [self.guideView hide:FLGuideDisplayTypeTop];
-        [self.historyViewController hideTitle:NO animate:NO];
-        [self _setupForHistoryViewing];
-    }
+    __weak typeof(self) weakSelf = self;
+    [[FLDropboxHelper sharedHelper] storeObject:self.pasteView.text completion:^(DBFileInfo *info) {
+        typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf) {
+            [strongSelf.guideView hide:FLGuideDisplayTypeTop];
+            [strongSelf.historyViewController hideTitle:NO animate:NO];
+            [strongSelf _setupForHistoryViewing];
 
-    return success;
+            if (info) {
+                // todo: display success
+                [strongSelf.historyViewController addNewEntity:info];
+            } else {
+                // todo: display error
+            }
+        }
+    }];
 }
 
 - (void)didDismissPaste:(id)pasteObject
@@ -135,6 +143,8 @@
         [self.historyViewController hideTitle:NO animate:YES];
     }];
     [self _setupForHistoryViewing];
+
+    [self.historyViewController addNewEntity:[[[FLDropboxHelper sharedHelper] fileListing] firstObject]];
 }
 
 - (void)pasteViewActive

@@ -16,4 +16,7 @@
 - (void)hideTitle:(BOOL)hidden animate:(BOOL)animate;
 - (void)setOpacity:(CGFloat)opacity withDuration:(NSTimeInterval)duration;
 
+- (void)addNewEntity:(DBFileInfo *)entityInfo;
+- (void)setEntites:(NSArray *)entityInfoArray;
+
 @end

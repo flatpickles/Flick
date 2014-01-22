@@ -118,24 +118,27 @@
     return YES;
 }
 
-- (BOOL)storeObject:(id)object
+- (void)storeObject:(id)object completion:(void (^)(DBFileInfo *info))completionBlock
 {
     FLEntity *entity = [[FLEntity alloc] initWithObject:object];
     DBPath *path = [[DBPath root] childPath:[entity nameForFile]];
-    if (![self _isStored:path]) {
-        DBError *error = nil;
-        DBFile *file = [[DBFilesystem sharedFilesystem] createFile:path error:&error];
-        NSData *dataToWrite;
-        if (entity.type == TextEntity) {
-            dataToWrite = [object dataUsingEncoding:NSUTF8StringEncoding];
-        } else {
-            dataToWrite = UIImagePNGRepresentation(object);
-        }
-        [file writeData:dataToWrite error:&error];
-        [file close];
-        return !error;
+    DBError *error = nil;
+    DBFile *file = [[DBFilesystem sharedFilesystem] createFile:path error:&error];
+    DBFileInfo *info = file.info;
+    NSData *dataToWrite;
+    if (entity.type == TextEntity) {
+        dataToWrite = [object dataUsingEncoding:NSUTF8StringEncoding];
+    } else {
+        dataToWrite = UIImagePNGRepresentation(object);
     }
-    return NO;
+    [file writeData:dataToWrite error:&error];
+    [file close];
+    if (error) {
+        [self handleError:error];
+    } else {
+        // todo: cache the entity so we don't have to download it again for imminent use
+    }
+    completionBlock((error == nil) ? info : nil);
 }
 
 - (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo
