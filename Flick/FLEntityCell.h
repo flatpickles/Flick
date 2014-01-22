@@ -13,4 +13,6 @@
 
 @property (nonatomic) FLEntity *entity;
 
++ (CGFloat)heightForEntity:(FLEntity *)entity width:(CGFloat)width;
+
 @end

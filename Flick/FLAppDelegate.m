@@ -7,14 +7,16 @@
 //
 
 // todo:
-//  use NSCache for entities so they're not refectched on reloadData
+//  use NSCache for entities so they're not refectched on reloadData - does DB do this for us?
 //  update list upon filesystem change?
 //  photos vs text
 //  display:
+//      quick upload doesn't fully hide dismiss?? <-- bugz
 //      make it not look dumb for fast actions (maybe just a delay for guide?)
 //      message for upload success - what happens if you copy during? need a message queue?
-//      cells for variably sized things (both text + photos)
+//      cells for photos
 //      tilt on swipe to dismiss (a la jelly)
+//      maximum text cell height
 //  settings:
 //      long press to copy link
 //      copy link on upload (only for photos?)

@@ -21,6 +21,7 @@
 
 @property (nonatomic) NSMutableArray *fileInfoArray;
 @property (nonatomic) id<FLHistoryActionsDelegate> delegate;
+@property (nonatomic) CGFloat tableViewWidth;
 
 - (void)handleLongPress:(NSIndexPath *)indexPath;
 

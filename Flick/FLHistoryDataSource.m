@@ -63,9 +63,14 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [UIView animateWithDuration:0.2f animations:^{
+            // fade out to hide Delete button
+            // todo: is this the best solution?
+            [tableView cellForRowAtIndexPath:indexPath].alpha = 0.0;
+        }];
         [[FLDropboxHelper sharedHelper] deleteFile:[self.fileInfoArray objectAtIndex:indexPath.row]];
         [self.fileInfoArray removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     }
 }
 
@@ -82,6 +87,12 @@
         [UIPasteboard generalPasteboard].string = entity.text;
     }
     [self.delegate didCopyEntity:entity];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    FLEntity *entity = [[FLDropboxHelper sharedHelper] retrieveFile:[self.fileInfoArray objectAtIndex:indexPath.row]];
+    return [FLEntityCell heightForEntity:entity width:self.tableViewWidth];
 }
 
 @end

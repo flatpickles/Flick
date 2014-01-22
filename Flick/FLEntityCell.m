@@ -11,15 +11,31 @@
 #define HIGHLIGHT_COLOR [UIColor colorWithRed:0.627 green:0.78 blue:0.91 alpha:1.0]
 #define HIGHLIGHT_FADE_IN 0.0f
 #define HIGHLIGHT_FADE_OUT 0.4f
-
+#define CELL_FONT [UIFont systemFontOfSize:18.0f]
+#define CELL_PADDING_TOP 11.0f
+#define CELL_PADDING_LEFT 15.0f
 
 @implementation FLEntityCell
+
++ (CGFloat)heightForEntity:(FLEntity *)entity width:(CGFloat)width
+{
+    if (entity.type == PhotoEntity) {
+        // todo: this
+        return 0.0f;
+    } else {
+        CGRect textSize = [entity.text boundingRectWithSize:CGSizeMake(width - CELL_PADDING_LEFT * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:CELL_FONT} context:nil];
+        return textSize.size.height + CELL_PADDING_TOP * 2;
+    }
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.textLabel.font = CELL_FONT;
+        self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.textLabel.numberOfLines = 0;
     }
     return self;
 }

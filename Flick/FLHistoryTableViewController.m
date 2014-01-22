@@ -37,6 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.dataSource.tableViewWidth = self.tableView.frame.size.width;
 
     // setup a replacement navigation label so we can control opacity directly
     self.navigationLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -86,11 +87,6 @@
 {
     [self.dataSource.fileInfoArray insertObject:entityInfo atIndex:0];
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
-}
-
-- (void)setEntites:(NSArray *)entityInfoArray
-{
-
 }
 
 - (void)_handleLongPress:(UILongPressGestureRecognizer *)gestureRec
