@@ -27,6 +27,7 @@
         if ([object isKindOfClass:[UIImage class]]) {
             self.type = PhotoEntity;
         } else if ([object isKindOfClass:[NSString class]]) {
+            self.backingObject = [self.backingObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             self.type = TextEntity;
         } else {
             NSAssert(NO, @"Entity initialized with unrecognized object type.");

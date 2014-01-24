@@ -11,7 +11,6 @@
 //  update list upon filesystem change?
 //  photos vs text
 //  display:
-//      quick upload doesn't fully hide dismiss?? <-- bugz
 //      make it not look dumb for fast actions (maybe just a delay for guide?)
 //      message for upload success - what happens if you copy during? need a message queue?
 //      cells for photos

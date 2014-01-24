@@ -131,6 +131,7 @@
         if (displayType == FLGuideDisplayTypeBoth || displayType == FLGuideDisplayTypeTop) {
             self.topBackgroundView.layer.opacity = 1.0f;
             self.topView.center = self.originalUploadCenter;
+            self.bottomView.center = self.originalDismissCenter;
         }
         if (displayType == FLGuideDisplayTypeBoth || displayType == FLGuideDisplayTypeBottom) {
             self.bottomView.layer.opacity = 1.0f;

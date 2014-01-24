@@ -143,8 +143,6 @@
         [self.historyViewController hideTitle:NO animate:YES];
     }];
     [self _setupForHistoryViewing];
-
-    [self.historyViewController addNewEntity:[[[FLDropboxHelper sharedHelper] fileListing] firstObject]];
 }
 
 - (void)pasteViewActive

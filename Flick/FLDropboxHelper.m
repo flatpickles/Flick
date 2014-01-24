@@ -127,9 +127,9 @@
     DBFileInfo *info = file.info;
     NSData *dataToWrite;
     if (entity.type == TextEntity) {
-        dataToWrite = [object dataUsingEncoding:NSUTF8StringEncoding];
+        dataToWrite = [entity.text dataUsingEncoding:NSUTF8StringEncoding];
     } else {
-        dataToWrite = UIImagePNGRepresentation(object);
+        dataToWrite = UIImagePNGRepresentation(entity.image);
     }
     [file writeData:dataToWrite error:&error];
     [file close];
