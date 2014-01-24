@@ -78,9 +78,6 @@
         self.view.layer.opacity = opacity;
         // todo: should this be self.navigationController.view? That would include title
     } completion:nil];
-
-    // disable interaction if it's not completely opaque
-    self.view.userInteractionEnabled = (opacity == 1.0f) ? YES : NO;
 }
 
 - (void)addNewEntity:(DBFileInfo *)entityInfo

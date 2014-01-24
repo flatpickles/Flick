@@ -11,6 +11,7 @@
 #import "FLHistoryTableViewController.h"
 #import "FLDropboxHelper.h"
 #import "FLGuideView.h"
+#import "FLSettingsViewController.h"
 
 #define HISTORY_BACKGROUND_OPACITY 0.5f
 #define HISTORY_FADE_DURATION 0.3f
@@ -25,8 +26,10 @@
 
 @interface FLMainViewController ()
 
+@property UINavigationController *navigation;
 @property FLPasteView *pasteView;
 @property FLHistoryTableViewController *historyViewController;
+@property FLSettingsViewController *settingsViewController;
 @property FLGuideView *guideView;
 
 @end
@@ -54,9 +57,13 @@
     // setup history view
     self.historyViewController = [[FLHistoryTableViewController alloc] initWithStyle:UITableViewStylePlain];
     self.historyViewController.dataSource.delegate = self;
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.historyViewController];
-    [self addChildViewController:nav];
-    [self.view addSubview:nav.view];
+    self.navigation = [[UINavigationController alloc] initWithRootViewController:self.historyViewController];
+    [self addChildViewController:self.navigation];
+    [self.view addSubview:self.navigation.view];
+
+    // set up settings
+    self.settingsViewController = [[FLSettingsViewController alloc] init];
+    self.historyViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStylePlain target:self action:@selector(_displaySettings)];
 
     // setup guide view
     self.guideView = [[FLGuideView alloc] initWithFrame:self.view.frame];
@@ -85,6 +92,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)_displaySettings
+{
+    [self.navigation pushViewController:self.settingsViewController animated:YES];
+}
+
 - (void)_displayPasteView
 {
     // check if we should (if the thing displayed has already been stored)
@@ -104,6 +116,7 @@
     // configure
     [self.pasteView fadeIn:PASTE_FADE_DURATION];
     [self.historyViewController setOpacity:HISTORY_BACKGROUND_OPACITY withDuration:PASTE_FADE_DURATION];
+    self.navigation.view.userInteractionEnabled = NO;
 
     // set content
     self.pasteView.text = [UIPasteboard generalPasteboard].string;
@@ -112,6 +125,7 @@
 - (void)_setupForHistoryViewing
 {
     [self.historyViewController setOpacity:1.0f withDuration:HISTORY_FADE_DURATION];
+    self.navigation.view.userInteractionEnabled = YES;
 }
 
 #pragma mark - FLPasteViewDelegate
