@@ -21,7 +21,7 @@
 {
     if (entity.type == PhotoEntity) {
         // todo: this
-        return 0.0f;
+        return 50.0f;
     } else {
         CGRect textSize = [entity.text boundingRectWithSize:CGSizeMake(width - CELL_PADDING_LEFT * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:CELL_FONT} context:nil];
         return textSize.size.height + CELL_PADDING_TOP * 2;
@@ -45,6 +45,7 @@
     _entity = entity;
     if (entity.type == PhotoEntity) {
         // todo: this
+        self.textLabel.text = @"image support coming soon";
     } else {
         self.textLabel.text = entity.text;
     }

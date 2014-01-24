@@ -118,9 +118,8 @@
     return YES;
 }
 
-- (void)storeObject:(id)object completion:(void (^)(DBFileInfo *info))completionBlock
+- (void)storeEntity:(FLEntity *)entity completion:(void (^)(DBFileInfo *info))completionBlock
 {
-    FLEntity *entity = [[FLEntity alloc] initWithObject:object];
     DBPath *path = [[DBPath root] childPath:[entity nameForFile]];
     DBError *error = nil;
     DBFile *file = [[DBFilesystem sharedFilesystem] createFile:path error:&error];

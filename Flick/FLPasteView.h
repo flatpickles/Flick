@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "FLEntity.h"
 
 @protocol FLPasteViewDelegate <NSObject>
 
-- (void)shouldStorePaste:(id)pasteObject;
-- (void)didDismissPaste:(id)pasteObject;
+- (void)shouldStorePaste:(FLEntity *)pasteEntity;
+- (void)didDismissPaste:(FLEntity *)pasteEntity;
 - (void)pasteViewActive;
 - (void)pasteViewReset;
 - (void)pasteViewMoved:(CGFloat)yOffset;
@@ -22,8 +22,7 @@
 @interface FLPasteView : UIView
 
 @property (nonatomic) id<FLPasteViewDelegate> delegate;
-@property (nonatomic) CGPoint lastVelocity;
-@property (nonatomic) NSString *text;
+@property (nonatomic) FLEntity *entity;
 
 - (void)fadeIn:(CGFloat)duration;
 

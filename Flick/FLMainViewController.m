@@ -100,8 +100,8 @@
 - (void)_displayPasteView
 {
     // check if we should (if the thing displayed has already been stored)
-    id toStore = [UIPasteboard generalPasteboard].string; // todo: make this smarter
-    if (![[FLDropboxHelper sharedHelper] canStoreObject:toStore]) {
+    id pasteObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
+    if (![[FLDropboxHelper sharedHelper] canStoreObject:pasteObject]) {
         return;
     }
 
@@ -119,7 +119,7 @@
     self.navigation.view.userInteractionEnabled = NO;
 
     // set content
-    self.pasteView.text = [UIPasteboard generalPasteboard].string;
+    self.pasteView.entity = [[FLEntity alloc] initWithObject:pasteObject];
 }
 
 - (void)_setupForHistoryViewing
@@ -130,10 +130,10 @@
 
 #pragma mark - FLPasteViewDelegate
 
-- (void)shouldStorePaste:(id)pasteObject
+- (void)shouldStorePaste:(FLEntity *)pasteEntity
 {
     __weak typeof(self) weakSelf = self;
-    [[FLDropboxHelper sharedHelper] storeObject:self.pasteView.text completion:^(DBFileInfo *info) {
+    [[FLDropboxHelper sharedHelper] storeEntity:pasteEntity completion:^(DBFileInfo *info) {
         typeof(weakSelf) strongSelf = weakSelf;
         if (strongSelf) {
             [strongSelf.guideView hide:FLGuideDisplayTypeTop];
@@ -150,7 +150,7 @@
     }];
 }
 
-- (void)didDismissPaste:(id)pasteObject
+- (void)didDismissPaste:(FLEntity *)pasteEntity
 {
     [self.guideView hide:FLGuideDisplayTypeBottom delay:0.0f completion:^(BOOL finished) {
         // delay the title fade in so it doesn't overlap with the fading out "upload paste"

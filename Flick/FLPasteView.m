@@ -15,7 +15,7 @@
 #define SHADOW_RADIUS 3.0f
 #define SHADOW_SCALE_FACTOR 2.0f
 #define CORNER_RADIUS 5.0f
-#define TEXT_INSET 30.0f
+#define CONTENT_INSET 30.0f
 #define MORE_TEXT_GRADIENT_START 0.7f
 
 #define SHADOW_GROW_KEY @"ShadowGrow"
@@ -29,7 +29,9 @@
 @property (nonatomic) CGPoint originalCenter;
 @property (nonatomic) NSDate *offsetLastSet;
 @property (nonatomic) UILabel *textView;
+@property (nonatomic) UIImageView *imageView;
 @property (nonatomic) BOOL isDismissed;
+@property (nonatomic) CGPoint lastVelocity;
 
 @end
 
@@ -56,9 +58,12 @@
         self.textView = [[UILabel alloc] init];
         self.textView.numberOfLines = 0;
         self.textView.lineBreakMode = NSLineBreakByWordWrapping;
-        self.textView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
         [self addSubview:self.textView];
-        
+
+        self.imageView = [[UIImageView alloc] init];
+        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [self addSubview:self.imageView];
+
         UIPanGestureRecognizer *panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_gotDatPan:)];
         [self addGestureRecognizer:panner];
     }
@@ -82,15 +87,36 @@
     [self _resetWithAnimations:YES];
 }
 
-- (void)setText:(NSString *)text
+- (void)setEntity:(FLEntity *)entity
 {
-    _text = text;
+    _entity = entity;
+    if (entity.type == TextEntity) {
+        [self _layoutText:entity.text];
+    } else {
+        [self _layoutImage:entity.image];
+    }
+}
+
+- (void)_layoutImage:(UIImage *)image
+{
+    self.textView.layer.opacity = 0.0f;
+    self.imageView.layer.opacity = 1.0f;
+
+    self.imageView.frame = CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET);
+    self.imageView.image = image;
+}
+
+- (void)_layoutText:(NSString *)text
+{
+    self.textView.layer.opacity = 1.0f;
+    self.imageView.layer.opacity = 0.0f;
+
     UILabel *tv = self.textView;
     tv.layer.mask = nil;
-    tv.frame = CGRectInset(self.bounds, TEXT_INSET, TEXT_INSET);
+    tv.frame = CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET);
     tv.text = text;
     [tv sizeToFit];
-    CGFloat maxHeight = self.bounds.size.height - 2 * TEXT_INSET;
+    CGFloat maxHeight = self.bounds.size.height - 2 * CONTENT_INSET;
     if (tv.frame.size.height > maxHeight) {
         tv.frame = CGRectMake(0, 0, tv.frame.size.width, maxHeight);
         // set a gradient mask to indicate more text below...
@@ -179,10 +205,10 @@
     // center should be at post-exit point
     if (self.center.y > [[UIScreen mainScreen] bounds].size.height/2) {
         // swiped downwards
-        [self.delegate didDismissPaste:self.textView.text];
+        [self.delegate didDismissPaste:self.entity];
     } else {
         // swiped upwards
-        [self.delegate shouldStorePaste:self.textView.text];
+        [self.delegate shouldStorePaste:self.entity];
         // todo: handle non-text clipboard entries, handle result of shouldStorePaste
     }
 }
