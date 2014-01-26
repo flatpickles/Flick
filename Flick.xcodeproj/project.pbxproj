@@ -21,12 +21,12 @@
 		C9368410183B29D30058851A /* FlickTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C936840F183B29D30058851A /* FlickTests.m */; };
 		C936841B183B2A050058851A /* FLMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C936841A183B2A050058851A /* FLMainViewController.m */; };
 		C936841E183B2A730058851A /* FLPasteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C936841D183B2A730058851A /* FLPasteView.m */; };
+		C93DDFEE18947B5E00BDD4B5 /* Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93DDFED18947B5E00BDD4B5 /* Dropbox.framework */; };
 		C95E8BCE188C77A500092F90 /* FLGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95E8BCD188C77A500092F90 /* FLGuideView.m */; };
 		C95E8BD1188CECA700092F90 /* FLHistoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C95E8BD0188CECA700092F90 /* FLHistoryDataSource.m */; };
 		C95E8BD4188DB9CF00092F90 /* FLEntityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C95E8BD3188DB9CF00092F90 /* FLEntityCell.m */; };
 		C973775E1842DBCF00145975 /* FLHistoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */; };
 		C97377621849274F00145975 /* FLDropboxHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C97377611849274F00145975 /* FLDropboxHelper.m */; };
-		C973776418492D1F00145975 /* Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776318492D1F00145975 /* Dropbox.framework */; };
 		C973776618492D9500145975 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776518492D9500145975 /* CFNetwork.framework */; };
 		C973776818492DA000145975 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776718492DA000145975 /* Security.framework */; };
 		C973776A18492DAB00145975 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776918492DAB00145975 /* SystemConfiguration.framework */; };
@@ -67,6 +67,7 @@
 		C936841A183B2A050058851A /* FLMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLMainViewController.m; sourceTree = "<group>"; };
 		C936841C183B2A730058851A /* FLPasteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLPasteView.h; sourceTree = "<group>"; };
 		C936841D183B2A730058851A /* FLPasteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLPasteView.m; sourceTree = "<group>"; };
+		C93DDFED18947B5E00BDD4B5 /* Dropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Dropbox.framework; sourceTree = "<group>"; };
 		C95E8BCC188C77A500092F90 /* FLGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLGuideView.h; sourceTree = "<group>"; };
 		C95E8BCD188C77A500092F90 /* FLGuideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLGuideView.m; sourceTree = "<group>"; };
 		C95E8BCF188CECA700092F90 /* FLHistoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLHistoryDataSource.h; sourceTree = "<group>"; };
@@ -77,7 +78,6 @@
 		C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLHistoryTableViewController.m; sourceTree = "<group>"; };
 		C97377601849274F00145975 /* FLDropboxHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDropboxHelper.h; sourceTree = "<group>"; };
 		C97377611849274F00145975 /* FLDropboxHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDropboxHelper.m; sourceTree = "<group>"; };
-		C973776318492D1F00145975 /* Dropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Dropbox.framework; path = "../../../Downloads/dropbox-ios-sync-sdk-2.0.3/Dropbox.framework"; sourceTree = "<group>"; };
 		C973776518492D9500145975 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C973776718492DA000145975 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		C973776918492DAB00145975 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -101,8 +101,8 @@
 				C973776618492D9500145975 /* CFNetwork.framework in Frameworks */,
 				C93683ED183B29D30058851A /* CoreGraphics.framework in Frameworks */,
 				C93683EF183B29D30058851A /* UIKit.framework in Frameworks */,
+				C93DDFEE18947B5E00BDD4B5 /* Dropbox.framework in Frameworks */,
 				C93683EB183B29D30058851A /* Foundation.framework in Frameworks */,
-				C973776418492D1F00145975 /* Dropbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,11 +142,11 @@
 			isa = PBXGroup;
 			children = (
 				C973776D18492DC800145975 /* libc++.dylib */,
+				C93DDFED18947B5E00BDD4B5 /* Dropbox.framework */,
 				C973776B18492DB400145975 /* QuartzCore.framework */,
 				C973776918492DAB00145975 /* SystemConfiguration.framework */,
 				C973776718492DA000145975 /* Security.framework */,
 				C973776518492D9500145975 /* CFNetwork.framework */,
-				C973776318492D1F00145975 /* Dropbox.framework */,
 				C93683EA183B29D30058851A /* Foundation.framework */,
 				C93683EC183B29D30058851A /* CoreGraphics.framework */,
 				C93683EE183B29D30058851A /* UIKit.framework */,
@@ -442,7 +442,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/matt/Downloads/dropbox-ios-sync-sdk-2.0.3",
+					/Users/matt/dev/iOS/Flick,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Flick/Flick-Prefix.pch";
@@ -459,7 +459,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/matt/Downloads/dropbox-ios-sync-sdk-2.0.3",
+					/Users/matt/dev/iOS/Flick,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Flick/Flick-Prefix.pch";

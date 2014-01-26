@@ -14,6 +14,7 @@
 #define HIDDEN_TITLE_OPACITY 0.0f
 #define TITLE_FONT [UIFont boldSystemFontOfSize:18.0f]
 #define TITLE_TEXT @"Your Pastes"
+#define SEPARATOR_INSET 15.0f
 
 @interface FLHistoryTableViewController ()
 
@@ -30,6 +31,7 @@
         self.dataSource = [[FLHistoryDataSource alloc] init];
         self.tableView.delegate = self.dataSource;
         self.tableView.dataSource = self.dataSource;
+        self.tableView.separatorInset = UIEdgeInsetsMake(0.0f, SEPARATOR_INSET, 0.0f, SEPARATOR_INSET);
     }
     return self;
 }

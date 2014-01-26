@@ -11,15 +11,17 @@
 //  update list upon filesystem change?
 //  photos vs text
 //  display:
+//      clip pasteview to better size, size images appropriately
 //      make it not look dumb for fast actions (maybe just a delay for guide?)
 //      message for upload success - what happens if you copy during? need a message queue?
-//      cells for photos
+//      make text trimming in cells look better (truncate by words?)
 //      tilt on swipe to dismiss (a la jelly)
-//      maximum text cell height
 //  settings:
 //      long press to copy link
 //      copy link on upload (only for photos?)
 //      connect dropbox if unconnected
+//      use last photo in camera roll if (what?)
+//      report a bug
 //  cleanup:
 //      order defines
 //      double check imports

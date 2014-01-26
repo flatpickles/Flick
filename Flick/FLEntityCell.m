@@ -14,18 +14,27 @@
 #define CELL_FONT [UIFont systemFontOfSize:18.0f]
 #define CELL_PADDING_TOP 11.0f
 #define CELL_PADDING_LEFT 15.0f
+#define MAX_CONTENT_HEIGHT 120.0f
+#define IMAGE_CORNER_RADIUS 5.0f
+
+@interface FLEntityCell ()
+
+//@property (nonatomic) UIImageView *imageView;
+
+@end
 
 @implementation FLEntityCell
 
 + (CGFloat)heightForEntity:(FLEntity *)entity width:(CGFloat)width
 {
+    CGFloat baseHeight;
     if (entity.type == PhotoEntity) {
-        // todo: this
-        return 50.0f;
+        baseHeight = MIN(entity.image.size.height, MAX_CONTENT_HEIGHT);
     } else {
         CGRect textSize = [entity.text boundingRectWithSize:CGSizeMake(width - CELL_PADDING_LEFT * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:CELL_FONT} context:nil];
-        return textSize.size.height + CELL_PADDING_TOP * 2;
+        baseHeight = MIN(textSize.size.height, MAX_CONTENT_HEIGHT);
     }
+    return baseHeight + CELL_PADDING_TOP * 2;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -34,18 +43,29 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.textLabel.font = CELL_FONT;
-        self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         self.textLabel.numberOfLines = 0;
+
+        self.imageView.clipsToBounds = YES;
+        self.imageView.layer.cornerRadius = IMAGE_CORNER_RADIUS;
+        self.imageView.contentMode = UIViewContentModeCenter;
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self.imageView sizeToFit];
+    self.imageView.frame = CGRectIntersection(CGRectInset(self.bounds, CELL_PADDING_LEFT, CELL_PADDING_TOP), self.imageView.frame);
+    self.imageView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
 }
 
 - (void)setEntity:(FLEntity *)entity
 {
     _entity = entity;
     if (entity.type == PhotoEntity) {
-        // todo: this
-        self.textLabel.text = @"image support coming soon";
+        self.imageView.image = entity.image;
     } else {
         self.textLabel.text = entity.text;
     }
@@ -54,7 +74,9 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    // todo: configure here
+    self.imageView.image = nil;
+    self.textLabel.text = nil;
+    // todo: may crash with lots of cells
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated

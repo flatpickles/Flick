@@ -21,7 +21,7 @@
 #define PASTE_Y_INSET 70.0f
 #define TITLE_TEXT_FADE_DELAY 0.3f
 
-#define COPY_MESSAGE @"Paste copied to clipboard"
+#define COPY_MESSAGE @"%@ copied to clipboard"
 #define COPY_LINK_MESSAGE @"Dropbox link copied to clipboard"
 
 @interface FLMainViewController ()
@@ -181,7 +181,7 @@
 
 - (void)didCopyEntity:(FLEntity *)entity
 {
-    [self.guideView displayMessage:COPY_MESSAGE];
+    [self.guideView displayMessage:[NSString stringWithFormat:COPY_MESSAGE, (entity.type == TextEntity) ? @"Text" : @"Image"]];
 }
 
 - (void)didCopyLinkForFile:(DBFileInfo *)entity
