@@ -40,7 +40,7 @@
 {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_displayPasteView) name:UIApplicationDidBecomeActiveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_displayPasteView) name:UIApplicationWillEnterForegroundNotification object:nil];
     }
     return self;
 }
@@ -99,9 +99,9 @@
 
 - (void)_displayPasteView
 {
-    // check if we should (if the thing displayed has already been stored)
+    // check if we should (if the thing displayed has already been stored, dropbox is good to go)
     id pasteObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
-    if (![[FLDropboxHelper sharedHelper] canStoreObject:pasteObject]) {
+    if (![DBFilesystem sharedFilesystem] || ![[FLDropboxHelper sharedHelper] canStoreObject:pasteObject]) {
         return;
     }
 
@@ -114,12 +114,12 @@
     }
 
     // configure
-    [self.pasteView fadeIn:PASTE_FADE_DURATION];
     [self.historyViewController setOpacity:HISTORY_BACKGROUND_OPACITY withDuration:PASTE_FADE_DURATION];
     self.navigation.view.userInteractionEnabled = NO;
 
     // set content
     self.pasteView.entity = [[FLEntity alloc] initWithObject:pasteObject];
+    [self.pasteView fadeIn:PASTE_FADE_DURATION];
 }
 
 - (void)_setupForHistoryViewing

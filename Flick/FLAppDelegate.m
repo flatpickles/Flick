@@ -9,9 +9,8 @@
 // todo:
 //  use NSCache for entities so they're not refectched on reloadData - does DB do this for us?
 //  update list upon filesystem change?
-//  photos vs text
 //  display:
-//      clip pasteview to better size, size images appropriately
+//      pasteview images are scaled to the space, cellview images are always cropped
 //      make it not look dumb for fast actions (maybe just a delay for guide?)
 //      message for upload success - what happens if you copy during? need a message queue?
 //      make text trimming in cells look better (truncate by words?)

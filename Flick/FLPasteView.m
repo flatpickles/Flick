@@ -17,16 +17,19 @@
 #define CORNER_RADIUS 5.0f
 #define CONTENT_INSET 30.0f
 #define MORE_TEXT_GRADIENT_START 0.7f
+#define MIN_SIZE CGSizeMake(200.0f, 200.0f)
 
 #define SHADOW_GROW_KEY @"ShadowGrow"
 #define SHADOW_SHRINK_KEY @"ShadowShrink"
 
 #import <QuartzCore/QuartzCore.h>
+#import <AVFoundation/AVFoundation.h>
 #import "FLPasteView.h"
 
 @interface FLPasteView()
 
 @property (nonatomic) CGPoint originalCenter;
+@property (nonatomic) CGRect originalFrame;
 @property (nonatomic) NSDate *offsetLastSet;
 @property (nonatomic) UILabel *textView;
 @property (nonatomic) UIImageView *imageView;
@@ -47,6 +50,7 @@
         self.center = CGPointMake(self.center.x, self.center.y + [[UIApplication sharedApplication] statusBarFrame].size.height/2);
 
         self.originalCenter = self.center;
+        self.originalFrame = self.frame;
 
         CALayer *layer = self.layer;
         [layer setShadowColor:[UIColor blackColor].CGColor];
@@ -55,17 +59,21 @@
         [layer setShadowOffset:CGSizeMake(0.0f, 0.0f)];
         self.layer.cornerRadius = CORNER_RADIUS;
 
+        UIPanGestureRecognizer *panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_gotDatPan:)];
+        [self addGestureRecognizer:panner];
+
+        UIViewAutoresizing subviewResizing = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
+
         self.textView = [[UILabel alloc] init];
         self.textView.numberOfLines = 0;
         self.textView.lineBreakMode = NSLineBreakByWordWrapping;
+        self.textView.autoresizingMask = subviewResizing;
         [self addSubview:self.textView];
 
         self.imageView = [[UIImageView alloc] init];
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.imageView.autoresizingMask = subviewResizing;
         [self addSubview:self.imageView];
-
-        UIPanGestureRecognizer *panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_gotDatPan:)];
-        [self addGestureRecognizer:panner];
     }
     return self;
 }
@@ -90,11 +98,19 @@
 - (void)setEntity:(FLEntity *)entity
 {
     _entity = entity;
+
+    self.frame = self.originalFrame; // so subviews will be positioned with offsets independent of previous state
+    UIView *displayView;
     if (entity.type == TextEntity) {
         [self _layoutText:entity.text];
+        displayView = self.textView;
     } else {
         [self _layoutImage:entity.image];
+        displayView = self.imageView;
     }
+
+    CGRect minRect = CGRectMake(self.bounds.size.width/2 - MIN_SIZE.width/2, self.bounds.size.height/2 - MIN_SIZE.height/2, MIN_SIZE.width, MIN_SIZE.height);
+    self.frame = CGRectUnion(minRect, CGRectInset([displayView convertRect:displayView.bounds toView:self], -CONTENT_INSET, -CONTENT_INSET));
 }
 
 - (void)_layoutImage:(UIImage *)image
@@ -102,8 +118,8 @@
     self.textView.layer.opacity = 0.0f;
     self.imageView.layer.opacity = 1.0f;
 
-    self.imageView.frame = CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET);
     self.imageView.image = image;
+    self.imageView.frame = AVMakeRectWithAspectRatioInsideRect(image.size, CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET));
 }
 
 - (void)_layoutText:(NSString *)text
@@ -219,8 +235,13 @@
     if (pgr.state == UIGestureRecognizerStateChanged) {
         CGPoint center = pasteView.center;
         CGPoint trans = [pgr translationInView:pasteView];
-        center = CGPointMake(center.x + trans.x, center.y + trans.y);
+        center = CGPointMake(center.x, center.y + trans.y);
         pasteView.center = center;
+
+        // todo: rotate heeere
+//        CGAffineTransform tran = CGAffineTransformMakeRotation(0.2);
+//        self.transform = tran;
+
         [pgr setTranslation:CGPointZero inView:pasteView];
         pasteView.lastVelocity = [pgr velocityInView:pasteView];
         [self.delegate pasteViewMoved:pasteView.center.y - self.originalCenter.y];
