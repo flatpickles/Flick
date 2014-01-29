@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FLSettingsViewController : UIViewController
+@interface FLSettingsViewController : UITableViewController
 
 @end

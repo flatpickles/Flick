@@ -9,6 +9,7 @@
 // todo:
 //  use NSCache for entities so they're not refectched on reloadData - does DB do this for us?
 //  update list upon filesystem change?
+//  double tap for cell action -> visit URL, view image in fullscreen
 //  display:
 //      pasteview images are scaled to the space, cellview images are always cropped
 //      make it not look dumb for fast actions (maybe just a delay for guide?)
@@ -16,7 +17,6 @@
 //      make text trimming in cells look better (truncate by words?)
 //      tilt on swipe to dismiss (a la jelly)
 //  settings:
-//      long press to copy link
 //      copy link on upload (only for photos?)
 //      connect dropbox if unconnected
 //      use last photo in camera roll if (what?)
