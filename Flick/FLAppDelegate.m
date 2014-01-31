@@ -19,7 +19,7 @@
 //  settings:
 //      copy link on upload (only for photos?)
 //      connect dropbox if unconnected
-//      use last photo in camera roll if (what?)
+//      use last photo in camera roll if shaken
 //      report a bug
 //  cleanup:
 //      order defines
@@ -40,6 +40,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    application.applicationSupportsShakeToEdit = YES;
 
     FLMainViewController *main = [[FLMainViewController alloc] init];
     self.window.rootViewController = main;

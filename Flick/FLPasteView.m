@@ -10,6 +10,7 @@
 #define START_SPEED 0.05f
 #define RETURN_SPEED 0.25f
 #define EXIT_DISTANCE 960.0f
+#define EXIT_ANIMATION_DURATION 0.3f
 #define SWIPE_VELOCITY_THRESHOLD 2000.0f
 #define SHADOW_OPACITY 0.7f
 #define SHADOW_RADIUS 3.0f
@@ -26,14 +27,13 @@
 #import <AVFoundation/AVFoundation.h>
 #import "FLPasteView.h"
 
-@interface FLPasteView()
+@interface FLPasteView ()
 
 @property (nonatomic) CGPoint originalCenter;
 @property (nonatomic) CGRect originalFrame;
 @property (nonatomic) NSDate *offsetLastSet;
 @property (nonatomic) UILabel *textView;
 @property (nonatomic) UIImageView *imageView;
-@property (nonatomic) BOOL isDismissed;
 @property (nonatomic) CGPoint lastVelocity;
 
 @end
@@ -83,7 +83,7 @@
     [UIView animateWithDuration:START_SPEED delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.transform = CGAffineTransformMakeScale(SCALE_FACTOR, SCALE_FACTOR);
     } completion:^(BOOL finished) {
-        if (finished && !self.isDismissed) {
+        if (finished && self.displayed) {
             [self.delegate pasteViewActive];
         }
     }];
@@ -148,11 +148,25 @@
 
 - (void)fadeIn:(CGFloat)duration
 {
+    if (self.displayed) {
+        return;
+    }
+
     self.layer.opacity = 0.0f;
     [self _resetWithAnimations:NO];
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
         self.layer.opacity = 1.0f;
     } completion:nil];
+}
+
+- (void)animateExitWithCompletion:(void (^)())completion
+{
+    [UIView animateWithDuration:EXIT_ANIMATION_DURATION animations:^{
+        self.center = CGPointMake(self.center.x, self.center.y + [[UIScreen mainScreen] bounds].size.height);
+    } completion:^(BOOL finished) {
+        self.displayed = NO;
+        completion();
+    }];
 }
 
 - (void)_resetWithAnimations:(BOOL)animate
@@ -169,7 +183,7 @@
         self.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
         [self.layer setShadowRadius:SHADOW_RADIUS];
     }
-    self.isDismissed = NO;
+    self.displayed = YES;
     [self.delegate pasteViewReset];
 }
 
@@ -217,7 +231,7 @@
 
 - (void)_handleExit
 {
-    self.isDismissed = YES;
+    self.displayed = NO;
     // center should be at post-exit point
     if (self.center.y > [[UIScreen mainScreen] bounds].size.height/2) {
         // swiped downwards
@@ -238,9 +252,7 @@
         center = CGPointMake(center.x, center.y + trans.y);
         pasteView.center = center;
 
-        // todo: rotate heeere
-//        CGAffineTransform tran = CGAffineTransformMakeRotation(0.2);
-//        self.transform = tran;
+        // todo: rotate here?
 
         [pgr setTranslation:CGPointZero inView:pasteView];
         pasteView.lastVelocity = [pgr velocityInView:pasteView];

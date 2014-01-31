@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Matt Nichols. All rights reserved.
 //
 
+#import <AssetsLibrary/AssetsLibrary.h>
 #import "FLMainViewController.h"
 #import "FLPasteView.h"
 #import "FLHistoryTableViewController.h"
@@ -40,7 +41,7 @@
 {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_displayPasteView) name:UIApplicationWillEnterForegroundNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_displayPasteboardObject) name:UIApplicationWillEnterForegroundNotification object:nil];
     }
     return self;
 }
@@ -48,6 +49,20 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self resignFirstResponder];
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidLoad
@@ -79,11 +94,18 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     // make sure UI updates happen on main thread
                     [strongSelf.historyViewController.tableView reloadData];
-                    [strongSelf _displayPasteView];
+                    [strongSelf _displayPasteboardObject];
                 });
             });
         }
     }];
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if (motion == UIEventSubtypeMotionShake) {
+        [self _displayLastPhoto];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,18 +114,53 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)_displaySettings
+- (void)_displayPasteboardObject
 {
-    [self.navigation pushViewController:self.settingsViewController animated:YES];
+    id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
+    [self _displayPasteViewWithObject:pasteboardObject];
 }
 
-- (void)_displayPasteView
+- (void)_displayLastPhoto
+{
+    // todo: check settings value
+
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    __weak typeof(self) weakSelf = self;
+    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        if (group && group.numberOfAssets > 0) {
+            [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+            [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                typeof(weakSelf) strongSelf = weakSelf;
+                if (result && strongSelf) {
+                    ALAssetRepresentation *rep = [result defaultRepresentation];
+                    UIImage *image = [UIImage imageWithCGImage:[rep fullResolutionImage]];
+                    [strongSelf _displayPasteViewWithObject:image];
+                    *stop = YES;
+                }
+            }];
+        }
+    } failureBlock:^(NSError *error) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Access Denied" message:@"Looks like you've denied access to your photos. Visit the photos section of your privacy settings to re-enable." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }];
+}
+
+- (void)_displayPasteViewWithObject:(id)object
 {
     // check if we should (if the thing displayed has already been stored, dropbox is good to go)
-    id pasteObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
-    if (![DBFilesystem sharedFilesystem] || ![[FLDropboxHelper sharedHelper] canStoreObject:pasteObject]) {
+    if (![DBFilesystem sharedFilesystem] || ![[FLDropboxHelper sharedHelper] canStoreObject:object]) {
         return;
     }
+
+    void (^displayBlock)(void) = ^(void) {
+        // configure
+        [self.historyViewController setOpacity:HISTORY_BACKGROUND_OPACITY withDuration:PASTE_FADE_DURATION];
+        self.navigation.view.userInteractionEnabled = NO;
+
+        // set content
+        self.pasteView.entity = [[FLEntity alloc] initWithObject:object];
+        [self.pasteView fadeIn:PASTE_FADE_DURATION];
+    };
 
     // setup the pasteview if necessary
     if (!self.pasteView) {
@@ -111,15 +168,17 @@
         self.pasteView = [[FLPasteView alloc] initWithFrame:CGRectInset(frame, PASTE_X_INSET, PASTE_Y_INSET)];
         self.pasteView.delegate = self;
         [self.view addSubview:self.pasteView];
+    } else if (self.pasteView.isDisplayed) {
+        [self.pasteView animateExitWithCompletion:displayBlock];
+        return;
     }
 
-    // configure
-    [self.historyViewController setOpacity:HISTORY_BACKGROUND_OPACITY withDuration:PASTE_FADE_DURATION];
-    self.navigation.view.userInteractionEnabled = NO;
+    displayBlock();
+}
 
-    // set content
-    self.pasteView.entity = [[FLEntity alloc] initWithObject:pasteObject];
-    [self.pasteView fadeIn:PASTE_FADE_DURATION];
+- (void)_displaySettings
+{
+    [self.navigation pushViewController:self.settingsViewController animated:YES];
 }
 
 - (void)_setupForHistoryViewing

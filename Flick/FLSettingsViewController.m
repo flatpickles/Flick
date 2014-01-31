@@ -52,7 +52,7 @@
         // copy link on upload
         [sections addObject:[self _infoHeaderCellContents]];
         [sections addObject:[self _cellContentsForTitle:@"Copy link on file upload"]];
-        [sections addObject:[self _cellContentsForTitle:@"Use last photo saved"]];
+        [sections addObject:[self _cellContentsForTitle:@"Shake to use last photo"]];
         
         _sections = [sections mutableCopy];
     }

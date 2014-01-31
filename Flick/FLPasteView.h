@@ -23,7 +23,9 @@
 
 @property (nonatomic) id<FLPasteViewDelegate> delegate;
 @property (nonatomic) FLEntity *entity;
+@property (nonatomic, getter = isDisplayed) BOOL displayed;
 
 - (void)fadeIn:(CGFloat)duration;
+- (void)animateExitWithCompletion:(void (^)())completion;
 
 @end
