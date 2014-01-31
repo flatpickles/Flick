@@ -20,6 +20,7 @@ typedef enum {
 
 - (FLEntity *)initWithObject:(id)object;
 - (NSString *)nameForFile;
+- (BOOL)isEqualToEntity:(FLEntity *)entity;
 
 - (NSString *)text;
 - (UIImage *)image;

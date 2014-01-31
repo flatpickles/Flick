@@ -42,6 +42,11 @@
     return [NSString stringWithFormat:@"%@%@", base, (self.type == PhotoEntity) ? @".png" : @".txt"];
 }
 
+- (BOOL)isEqualToEntity:(FLEntity *)entity
+{
+    return [[self _hashStr] isEqualToString:[entity _hashStr]];
+}
+
 - (NSString *)text
 {
     return (self.type == TextEntity) ? self.backingObject : nil;

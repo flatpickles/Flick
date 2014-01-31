@@ -152,13 +152,14 @@
         return;
     }
 
+    FLEntity *entityToDisplay = [[FLEntity alloc] initWithObject:object];
     void (^displayBlock)(void) = ^(void) {
         // configure
         [self.historyViewController setOpacity:HISTORY_BACKGROUND_OPACITY withDuration:PASTE_FADE_DURATION];
         self.navigation.view.userInteractionEnabled = NO;
 
         // set content
-        self.pasteView.entity = [[FLEntity alloc] initWithObject:object];
+        self.pasteView.entity = entityToDisplay;
         [self.pasteView fadeIn:PASTE_FADE_DURATION];
     };
 
@@ -169,10 +170,12 @@
         self.pasteView.delegate = self;
         [self.view addSubview:self.pasteView];
     } else if (self.pasteView.isDisplayed) {
-        [self.pasteView animateExitWithCompletion:displayBlock];
+        if (![self.pasteView.entity isEqualToEntity:self.pasteView.entity]) {
+            [self.pasteView animateExitWithCompletion:displayBlock];
+        }
         return;
     }
-
+    
     displayBlock();
 }
 
