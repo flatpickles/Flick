@@ -55,16 +55,6 @@
     return YES;
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self becomeFirstResponder];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [self resignFirstResponder];
-    [super viewWillDisappear:animated];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -83,6 +73,12 @@
     // setup guide view
     self.guideView = [[FLGuideView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:self.guideView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self becomeFirstResponder];
 
     // go go dropbox
     __weak typeof(self) weakSelf = self;
@@ -99,6 +95,11 @@
             });
         }
     }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self resignFirstResponder];
+    [super viewWillDisappear:animated];
 }
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
