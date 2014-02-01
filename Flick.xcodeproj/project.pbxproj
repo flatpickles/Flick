@@ -13,7 +13,6 @@
 		C93683F5183B29D30058851A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C93683F3183B29D30058851A /* InfoPlist.strings */; };
 		C93683F7183B29D30058851A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C93683F6183B29D30058851A /* main.m */; };
 		C93683FB183B29D30058851A /* FLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C93683FA183B29D30058851A /* FLAppDelegate.m */; };
-		C93683FD183B29D30058851A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C93683FC183B29D30058851A /* Images.xcassets */; };
 		C9368404183B29D30058851A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9368403183B29D30058851A /* XCTest.framework */; };
 		C9368405183B29D30058851A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93683EA183B29D30058851A /* Foundation.framework */; };
 		C9368406183B29D30058851A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93683EE183B29D30058851A /* UIKit.framework */; };
@@ -26,6 +25,7 @@
 		C95E8BD1188CECA700092F90 /* FLHistoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C95E8BD0188CECA700092F90 /* FLHistoryDataSource.m */; };
 		C95E8BD4188DB9CF00092F90 /* FLEntityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C95E8BD3188DB9CF00092F90 /* FLEntityCell.m */; };
 		C9722A56189DB05800C9B971 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9722A55189DB05800C9B971 /* Crashlytics.framework */; };
+		C9722A58189DB1D100C9B971 /* ImageAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9722A57189DB1D100C9B971 /* ImageAssets.xcassets */; };
 		C973775E1842DBCF00145975 /* FLHistoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */; };
 		C97377621849274F00145975 /* FLDropboxHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C97377611849274F00145975 /* FLDropboxHelper.m */; };
 		C973776618492D9500145975 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776518492D9500145975 /* CFNetwork.framework */; };
@@ -58,7 +58,6 @@
 		C93683F8183B29D30058851A /* Flick-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Flick-Prefix.pch"; sourceTree = "<group>"; };
 		C93683F9183B29D30058851A /* FLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLAppDelegate.h; sourceTree = "<group>"; };
 		C93683FA183B29D30058851A /* FLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLAppDelegate.m; sourceTree = "<group>"; };
-		C93683FC183B29D30058851A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C9368402183B29D30058851A /* FlickTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9368403183B29D30058851A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C936840B183B29D30058851A /* FlickTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FlickTests-Info.plist"; sourceTree = "<group>"; };
@@ -77,6 +76,7 @@
 		C95E8BD2188DB9CF00092F90 /* FLEntityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLEntityCell.h; sourceTree = "<group>"; };
 		C95E8BD3188DB9CF00092F90 /* FLEntityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLEntityCell.m; sourceTree = "<group>"; };
 		C9722A55189DB05800C9B971 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		C9722A57189DB1D100C9B971 /* ImageAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ImageAssets.xcassets; sourceTree = "<group>"; };
 		C973775C1842DBCF00145975 /* FLHistoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLHistoryTableViewController.h; sourceTree = "<group>"; };
 		C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLHistoryTableViewController.m; sourceTree = "<group>"; };
 		C97377601849274F00145975 /* FLDropboxHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDropboxHelper.h; sourceTree = "<group>"; };
@@ -126,6 +126,7 @@
 		C93683DE183B29D30058851A = {
 			isa = PBXGroup;
 			children = (
+				C9722A57189DB1D100C9B971 /* ImageAssets.xcassets */,
 				C93683F0183B29D30058851A /* Flick */,
 				C9368409183B29D30058851A /* FlickTests */,
 				C93683E9183B29D30058851A /* Frameworks */,
@@ -166,7 +167,6 @@
 			children = (
 				C93683F9183B29D30058851A /* FLAppDelegate.h */,
 				C93683FA183B29D30058851A /* FLAppDelegate.m */,
-				C93683FC183B29D30058851A /* Images.xcassets */,
 				C93683F1183B29D30058851A /* Supporting Files */,
 				C9368419183B2A050058851A /* FLMainViewController.h */,
 				C936841A183B2A050058851A /* FLMainViewController.m */,
@@ -297,7 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C93683F5183B29D30058851A /* InfoPlist.strings in Resources */,
-				C93683FD183B29D30058851A /* Images.xcassets in Resources */,
+				C9722A58189DB1D100C9B971 /* ImageAssets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +477,7 @@
 					Reveal,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -495,6 +496,7 @@
 				GCC_PREFIX_HEADER = "Flick/Flick-Prefix.pch";
 				INFOPLIST_FILE = "Flick/Flick-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
