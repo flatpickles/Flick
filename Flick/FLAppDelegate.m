@@ -30,6 +30,8 @@
 //  handle all error cases... network, dropbox, unrecognized type
 //  make sure dropbox is connected on launch
 
+#import <Crashlytics/Crashlytics.h>
+
 #import "FLAppDelegate.h"
 #import "FLMainViewController.h"
 #import "FLDropboxHelper.h"
@@ -41,6 +43,7 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     application.applicationSupportsShakeToEdit = YES;
+    [Crashlytics startWithAPIKey:@"a8db15f1dabcebca77d2386285856a4a0c5c482b"];
 
     FLMainViewController *main = [[FLMainViewController alloc] init];
     self.window.rootViewController = main;
