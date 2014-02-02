@@ -132,11 +132,23 @@
                 typeof(weakSelf) strongSelf = weakSelf;
                 if (result && strongSelf) {
                     ALAssetRepresentation *rep = [result defaultRepresentation];
-                    UIImage *image = [UIImage imageWithCGImage:[rep fullResolutionImage]];
-                    [strongSelf _displayPasteViewWithObject:image];
+
+                    // Retrieve the image orientation from the ALAsset
+                    UIImageOrientation orientation = UIImageOrientationUp;
+                    NSNumber* orientationValue = [result valueForProperty:@"ALAssetPropertyOrientation"];
+                    if (orientationValue != nil) {
+                        orientation = [orientationValue intValue];
+                    }
+
+                    UIImage* image = [UIImage imageWithCGImage:[rep fullResolutionImage] scale:1.0f orientation:orientation];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // UI stuff on main thread
+                        [strongSelf _displayPasteViewWithObject:image];
+                    });
                     *stop = YES;
                 }
             }];
+            *stop = YES;
         }
     } failureBlock:^(NSError *error) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Access Denied" message:@"Looks like you've denied access to your photos. Visit the photos section of your privacy settings to re-enable." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

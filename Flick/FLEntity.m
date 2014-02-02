@@ -64,7 +64,7 @@
         case PhotoEntity:
         {
             UIImage *img = self.backingObject;
-            NSData *photoData = UIImagePNGRepresentation(img);
+            NSData *photoData = UIImageJPEGRepresentation(img, 0.0f);
             someStr = [NSString stringWithFormat:@"img:\"data:image/png;base64,%@\"", [photoData base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength]];
             break;
         }

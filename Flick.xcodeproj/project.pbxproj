@@ -268,6 +268,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Matt Nichols";
 				TargetAttributes = {
+					C93683E6183B29D30058851A = {
+						DevelopmentTeam = 3LE48TWRTB;
+					};
 					C9368401183B29D30058851A = {
 						TestTargetID = C93683E6183B29D30058851A;
 					};
@@ -463,6 +466,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/matt/dev/iOS/Flick,
@@ -477,6 +482,7 @@
 					Reveal,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8A6272C6-CC66-4E46-B9F4-A5DF968676B4";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -487,6 +493,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/matt/dev/iOS/Flick,
@@ -496,6 +504,7 @@
 				GCC_PREFIX_HEADER = "Flick/Flick-Prefix.pch";
 				INFOPLIST_FILE = "Flick/Flick-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8A6272C6-CC66-4E46-B9F4-A5DF968676B4";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

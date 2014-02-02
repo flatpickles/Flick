@@ -16,6 +16,7 @@
 
 @property (nonatomic) NSArray *fileListing;
 @property (nonatomic, strong) void (^linkCompletion)(BOOL);
+@property (atomic) NSCache *entityCache;
 
 @end
 
@@ -31,6 +32,15 @@
         [DBAccountManager setSharedManager:mgr];
     }
     return helper;
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.entityCache = [[NSCache alloc] init];
+    }
+    return self;
 }
 
 - (NSArray *)fileListing
@@ -128,36 +138,36 @@
     if (entity.type == TextEntity) {
         dataToWrite = [entity.text dataUsingEncoding:NSUTF8StringEncoding];
     } else {
-        dataToWrite = UIImagePNGRepresentation(entity.image);
+        dataToWrite = UIImageJPEGRepresentation(entity.image, 0.5f); // todo: make this configurable?
     }
     [file writeData:dataToWrite error:&error];
     [file close];
     if (error) {
         [self handleError:error];
     } else {
-        // todo: cache the entity so we don't have to download it again for imminent use
+        [self.entityCache setObject:entity forKey:info];
     }
     completionBlock((error == nil) ? info : nil);
 }
 
 - (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo
 {
-    // todo: first check against an NSCache to see if we've downloaded this recently
+    FLEntity *entity = [self.entityCache objectForKey:fileInfo];
+    if (!entity) {
+        DBError *error = nil;
+        DBFile *file = [[DBFilesystem sharedFilesystem] openFile:fileInfo.path error:&error];
+        NSData *fileData = [file readData:&error];
 
-    FLEntity *entity = nil;
-    DBError *error = nil;
-    DBFile *file = [[DBFilesystem sharedFilesystem] openFile:fileInfo.path error:&error];
-    NSData *fileData = [file readData:&error];
-
-    if (error) {
-        [self handleError:error];
-    } else {
-        UIImage *imgCandidate = [UIImage imageWithData:fileData];
-        entity = [[FLEntity alloc] initWithObject:(imgCandidate) ? imgCandidate : [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding]];
-        // todo: maybe handle case of neither text nor image?
+        if (error) {
+            [self handleError:error];
+        } else {
+            UIImage *imgCandidate = [UIImage imageWithData:fileData];
+            entity = [[FLEntity alloc] initWithObject:(imgCandidate) ? imgCandidate : [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding]];
+            // todo: maybe handle case of neither text nor image?
+        }
+        [file close];
+        [self.entityCache setObject:entity forKey:fileInfo];
     }
-
-    [file close];
     return entity;
 }
 
@@ -178,12 +188,9 @@
         NSString *path = [self _linkForFile:fileInfo];
         if (path) {
             [UIPasteboard generalPasteboard].URL = [NSURL URLWithString:path];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // UI operations -> main thread
-                [delegate didCopyLinkForFile:fileInfo];
-            });
         }
     });
+    [delegate didCopyLinkForFile:fileInfo]; // todo: okay that it's not a callback??
 }
 
 - (NSString *)_linkForFile:(DBFileInfo *)fileInfo

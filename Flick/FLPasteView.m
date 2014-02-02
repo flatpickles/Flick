@@ -194,14 +194,24 @@
         [self _resetWithAnimations:YES];
     } else {
         // continue animation in the direction of last swipe, at the right speed
-        CGFloat theta = atan2f(self.lastVelocity.y, self.lastVelocity.x);
+        CGFloat theta = atan2f(self.lastVelocity.y, 0.0f);
         CGPoint target = CGPointMake(EXIT_DISTANCE * cosf(theta), EXIT_DISTANCE * sinf(theta));
         NSTimeInterval duration = EXIT_DISTANCE / velocity;
 
+        BOOL dismissed = target.y > [[UIScreen mainScreen] bounds].size.height/2;
         [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
             self.center = CGPointMake(self.center.x + target.x, self.center.y + target.y);
-            [self _handleExit];
-        } completion:nil];
+            if (dismissed) {
+                // handle it right away
+                [self _handleExit];
+            }
+        } completion:^(BOOL finished) {
+            if (!dismissed) {
+                // more performance heavy to upload, wait until it's off the screen
+                // todo: is this the best way to do this?
+                [self _handleExit];
+            }
+        }];
     }
 }
 

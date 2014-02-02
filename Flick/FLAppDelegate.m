@@ -7,9 +7,7 @@
 //
 
 // todo:
-//  use NSCache for entities so they're not refectched on reloadData - does DB do this for us?
 //  update list upon filesystem change?
-//  fix load/download performance issues -> load a cell with spinner (for up/download)? show pasteview first?
 //  double tap for cell action -> visit URL, view image in fullscreen
 //  display:
 //      pasteview images are scaled to the space, cellview images are always cropped
@@ -18,12 +16,20 @@
 //      make text trimming in cells look better (truncate by words?)
 //      tilt on swipe to dismiss (a la jelly)
 //      settings button image
-//      make open/load of history look better (not choppy)
 //  settings:
 //      copy link on upload (only for photos?)
 //      connect dropbox if unconnected
 //      use last photo in camera roll if shaken
 //      report a bug
+//  performance:
+//      bug: comparing different images! make sure they're the same resolution, etc before hashing
+//      max size: fullscreen
+//      make open/load of history look better (not choppy)
+//      same photo uploaded as checked against?
+//      background threads for everything
+//      get recent photo, background thread?
+//      avoid generating data multiple times- store instead of UIImage, maybe?
+//      fix load/download performance issues -> load a cell with spinner, not on main thread (for up/download)? show pasteview first?
 //  cleanup:
 //      order defines
 //      double check imports
