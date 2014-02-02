@@ -104,7 +104,7 @@
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
-    if (motion == UIEventSubtypeMotionShake) {
+    if (motion == UIEventSubtypeMotionShake && [[NSUserDefaults standardUserDefaults] boolForKey:SHAKE_TO_USE_PHOTO_KEY]) {
         [self _displayLastPhoto];
     }
 }
@@ -123,8 +123,6 @@
 
 - (void)_displayLastPhoto
 {
-    // todo: check settings value
-
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     __weak typeof(self) weakSelf = self;
     [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {

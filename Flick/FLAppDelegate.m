@@ -9,6 +9,7 @@
 // todo:
 //  use NSCache for entities so they're not refectched on reloadData - does DB do this for us?
 //  update list upon filesystem change?
+//  fix load/download performance issues -> load a cell with spinner (for up/download)? show pasteview first?
 //  double tap for cell action -> visit URL, view image in fullscreen
 //  display:
 //      pasteview images are scaled to the space, cellview images are always cropped
@@ -16,6 +17,8 @@
 //      message for upload success - what happens if you copy during? need a message queue?
 //      make text trimming in cells look better (truncate by words?)
 //      tilt on swipe to dismiss (a la jelly)
+//      guide view "upload paste" race condition? appeared once weirdly...
+//      settings button image
 //  settings:
 //      copy link on upload (only for photos?)
 //      connect dropbox if unconnected

@@ -16,6 +16,7 @@
 @interface FLSettingsViewController ()
 
 @property (nonatomic) NSArray *sections;
+@property (nonatomic) NSArray *controlKeys;
 
 @end
 
@@ -28,6 +29,7 @@
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.controlKeys = @[COPY_LINK_ON_UPLOAD_KEY, SHAKE_TO_USE_PHOTO_KEY];
     }
     return self;
 }
@@ -51,8 +53,8 @@
 
         // copy link on upload
         [sections addObject:[self _infoHeaderCellContents]];
-        [sections addObject:[self _cellContentsForTitle:@"Copy link on file upload"]];
-        [sections addObject:[self _cellContentsForTitle:@"Shake to use last photo"]];
+        [sections addObject:[self _switchCellContentsForTitle:@"Copy link on file upload" key:COPY_LINK_ON_UPLOAD_KEY]];
+        [sections addObject:[self _switchCellContentsForTitle:@"Shake to use last photo" key:SHAKE_TO_USE_PHOTO_KEY]];
         
         _sections = [sections mutableCopy];
     }
@@ -77,7 +79,7 @@
     return infoView;
 }
 
-- (UIView *)_cellContentsForTitle:(NSString *)title
+- (UIView *)_switchCellContentsForTitle:(NSString *)title key:(NSString *)key
 {
     UIView *cellView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, SWITCH_CELL_HEIGHT)];
     UILabel *cellLabel =  [[UILabel alloc] initWithFrame:CGRectZero];
@@ -92,9 +94,20 @@
 
     switchView.frame = CGRectInset(switchRect, CELL_PADDING_LEFT, CELL_PADDING_TOP);
     switchView.contentMode = UIViewContentModeRight;
+    switchView.tag = [self.controlKeys indexOfObject:key];
+    switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:key];
+    [switchView addTarget:self action:@selector(_switchValueSet:) forControlEvents:UIControlEventValueChanged];
     [cellView addSubview:switchView];
 
     return cellView;
+}
+
+- (void)_switchValueSet:(id)sender
+{
+    UISwitch *switchView = sender;
+    NSString *key = [self.controlKeys objectAtIndex:switchView.tag];
+    [[NSUserDefaults standardUserDefaults] setBool:switchView.on forKey:key];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Table view data source

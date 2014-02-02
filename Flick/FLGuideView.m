@@ -152,11 +152,10 @@
         return;
     }
 
-    NSString *previousText = self.topLabel.text;
     self.topLabel.text = message;
     [self show:FLGuideDisplayTypeTop delay:0.0f completion:^(BOOL finished) {
         [self hide:FLGuideDisplayTypeTop delay:MESSAGE_DISPLAY_DURATION completion:^(BOOL finished) {
-            self.topLabel.text = previousText;
+            self.topLabel.text = UPLOAD_TEXT;
         }];
     }];
 }
