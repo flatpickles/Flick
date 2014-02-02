@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <Dropbox/Dropbox.h>
 #import "FLEntity.h"
+#import "FLHistoryDataSource.h"
 
 @class DBError;
 
@@ -26,6 +27,6 @@
 - (void)storeEntity:(FLEntity *)entity completion:(void (^)(DBFileInfo *info))completionBlock;
 - (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo;
 - (BOOL)deleteFile:(DBFileInfo *)fileInfo;
-- (NSString *)linkForFile:(DBFileInfo *)fileInfo;
+- (void)copyLinkForFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate;
 
 @end

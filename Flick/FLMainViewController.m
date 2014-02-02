@@ -204,6 +204,9 @@
             if (info) {
                 // todo: display success
                 [strongSelf.historyViewController addNewEntity:info];
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:COPY_LINK_ON_UPLOAD_KEY]) {
+                    [[FLDropboxHelper sharedHelper] copyLinkForFile:info delegate:self];
+                }
             } else {
                 // todo: display error
             }

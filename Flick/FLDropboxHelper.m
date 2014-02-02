@@ -171,7 +171,22 @@
     return success;
 }
 
-- (NSString *)linkForFile:(DBFileInfo *)fileInfo
+- (void)copyLinkForFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate
+{
+    // copy the shortened DB link to the file at this index path
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *path = [self _linkForFile:fileInfo];
+        if (path) {
+            [UIPasteboard generalPasteboard].URL = [NSURL URLWithString:path];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // UI operations -> main thread
+                [delegate didCopyLinkForFile:fileInfo];
+            });
+        }
+    });
+}
+
+- (NSString *)_linkForFile:(DBFileInfo *)fileInfo
 {
     DBError *error = nil;
     NSString *link = [[DBFilesystem sharedFilesystem] fetchShareLinkForPath:fileInfo.path shorten:YES error:&error];

@@ -17,17 +17,8 @@
 - (void)handleLongPress:(NSIndexPath *)indexPath
 {
     // copy the shortened DB link to the file at this index path
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-        NSString *path = [[FLDropboxHelper sharedHelper] linkForFile:info];
-        if (path) {
-            [UIPasteboard generalPasteboard].URL = [NSURL URLWithString:path];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // UI operations -> main thread
-                [self.delegate didCopyLinkForFile:info];
-            });
-        }
-    });
+    DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
+    [[FLDropboxHelper sharedHelper] copyLinkForFile:info delegate:self.delegate];
 }
 
 #pragma mark - Table view data source
