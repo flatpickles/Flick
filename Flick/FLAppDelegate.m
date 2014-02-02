@@ -17,8 +17,8 @@
 //      message for upload success - what happens if you copy during? need a message queue?
 //      make text trimming in cells look better (truncate by words?)
 //      tilt on swipe to dismiss (a la jelly)
-//      guide view "upload paste" race condition? appeared once weirdly...
 //      settings button image
+//      make open/load of history look better (not choppy)
 //  settings:
 //      copy link on upload (only for photos?)
 //      connect dropbox if unconnected
