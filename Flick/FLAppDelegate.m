@@ -16,11 +16,10 @@
 //      make text trimming in cells look better (truncate by words?)
 //      tilt on swipe to dismiss (a la jelly)
 //      settings button image
-//      bug: shadow flash after resize
 //  settings:
-//      image upload quality
-//      connect dropbox if unconnected
+//      connect dropbox if unconnected (?)
 //      report a bug
+//      rework header (footer?)
 //  performance:
 //      ghosting guideview on upload
 //      max size: fullscreen
@@ -31,10 +30,12 @@
 //      avoid generating data multiple times- store instead of UIImage, maybe?
 //      fix load/download performance issues -> load a cell with spinner, not on main thread (for up/download)? show pasteview first?
 //  bugs:
+//      shadow flash after resize
 //  cleanup:
 //      order defines
 //      double check imports
 //      remove unnecessary default declarations
+//      when to synchronize defaults?
 //  app icon
 //  address all other todos in code
 //  handle all error cases... network, dropbox, unrecognized type

@@ -53,8 +53,9 @@
 
         // copy link on upload
         [sections addObject:[self _infoHeaderCellContents]];
-        [sections addObject:[self _switchCellContentsForTitle:@"Copy link on file upload" key:COPY_LINK_ON_UPLOAD_KEY]];
-        [sections addObject:[self _switchCellContentsForTitle:@"Shake to use last photo" key:SHAKE_TO_USE_PHOTO_KEY]];
+        [sections addObject:[self _switchCellContentsForTitle:@"Copy link on file upload:" key:COPY_LINK_ON_UPLOAD_KEY]];
+        [sections addObject:[self _switchCellContentsForTitle:@"Shake to use last photo:" key:SHAKE_TO_USE_PHOTO_KEY]];
+        [sections addObject:[self _qualitySliderCellContents]];
         
         _sections = [sections mutableCopy];
     }
@@ -102,11 +103,40 @@
     return cellView;
 }
 
+- (UIView *)_qualitySliderCellContents
+{
+    // image quality
+    CGFloat height = 30.0f;
+    CGFloat width = self.tableView.frame.size.width - 2 * CELL_PADDING_LEFT;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(CELL_PADDING_LEFT, CELL_PADDING_TOP, width, height)];
+    label.text = @"Image upload quality:";
+
+    UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(CELL_PADDING_LEFT, CGRectGetMaxY(label.frame) + CELL_PADDING_TOP, width, height)];
+    slider.continuous = NO;
+    slider.minimumValue = 0.0f;
+    slider.maximumValue = 1.0f;
+    NSNumber *currentQuality = [[NSUserDefaults standardUserDefaults] objectForKey:IMAGE_UPLOAD_QUALITY_KEY];
+    slider.value = (currentQuality == nil) ? IMAGE_UPLOAD_QUALITY_DEFAULT : currentQuality.floatValue;
+    [slider addTarget:self action:@selector(_sliderValueSet:) forControlEvents:UIControlEventValueChanged];
+
+    UIView *qualityView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, CGRectGetMaxY(slider.frame) + CELL_PADDING_TOP)];
+    [qualityView addSubview:label];
+    [qualityView addSubview:slider];
+    return qualityView;
+}
+
 - (void)_switchValueSet:(id)sender
 {
     UISwitch *switchView = sender;
     NSString *key = [self.controlKeys objectAtIndex:switchView.tag];
     [[NSUserDefaults standardUserDefaults] setBool:switchView.on forKey:key];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)_sliderValueSet:(id)sender
+{
+    UISlider *slider = sender;
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:slider.value] forKey:IMAGE_UPLOAD_QUALITY_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

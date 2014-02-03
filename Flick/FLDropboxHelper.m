@@ -7,6 +7,7 @@
 //
 
 #import "FLDropboxHelper.h"
+#import "FLSettingsViewController.h"
 
 #define APP_KEY @"ynm3dgog8z5rr7t"
 #define APP_SECRET @"mt17g6d4cv44vif"
@@ -142,7 +143,8 @@
     if (entity.type == TextEntity) {
         dataToWrite = [entity.text dataUsingEncoding:NSUTF8StringEncoding];
     } else {
-        dataToWrite = UIImageJPEGRepresentation(entity.image, 0.5f); // todo: make this configurable?
+        NSNumber *quality = [[NSUserDefaults standardUserDefaults] objectForKey:IMAGE_UPLOAD_QUALITY_KEY];
+        dataToWrite = UIImageJPEGRepresentation(entity.image, (quality == nil) ? IMAGE_UPLOAD_QUALITY_DEFAULT : quality.floatValue);
     }
     [file writeData:dataToWrite error:&error];
     [file close];

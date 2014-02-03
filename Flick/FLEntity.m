@@ -40,7 +40,7 @@
 {
     if (!_nameForFile) {
         NSString *base = [self _hashStr];
-        _nameForFile = [NSString stringWithFormat:@"%@%@", base, (self.type == PhotoEntity) ? @".png" : @".txt"];
+        _nameForFile = [NSString stringWithFormat:@"%@%@", base, (self.type == PhotoEntity) ? @".jpg" : @".txt"];
     }
     return _nameForFile;
 }
