@@ -17,9 +17,9 @@ typedef enum {
 @interface FLEntity : NSObject
 
 @property (nonatomic) FLEntityType type;
+@property (nonatomic) NSString *nameForFile;
 
 - (FLEntity *)initWithObject:(id)object;
-- (NSString *)nameForFile;
 - (BOOL)isEqualToEntity:(FLEntity *)entity;
 
 - (NSString *)text;

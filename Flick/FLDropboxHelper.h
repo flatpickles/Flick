@@ -27,6 +27,7 @@
 - (void)storeEntity:(FLEntity *)entity completion:(void (^)(DBFileInfo *info))completionBlock;
 - (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo;
 - (BOOL)deleteFile:(DBFileInfo *)fileInfo;
+- (void)copyFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate;
 - (void)copyLinkForFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate;
 
 @end

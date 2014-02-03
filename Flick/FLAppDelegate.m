@@ -16,13 +16,13 @@
 //      make text trimming in cells look better (truncate by words?)
 //      tilt on swipe to dismiss (a la jelly)
 //      settings button image
+//      bug: shadow flash after resize
 //  settings:
-//      copy link on upload (only for photos?)
+//      image upload quality
 //      connect dropbox if unconnected
-//      use last photo in camera roll if shaken
 //      report a bug
 //  performance:
-//      bug: comparing different images! make sure they're the same resolution, etc before hashing
+//      ghosting guideview on upload
 //      max size: fullscreen
 //      make open/load of history look better (not choppy)
 //      same photo uploaded as checked against?
@@ -30,6 +30,7 @@
 //      get recent photo, background thread?
 //      avoid generating data multiple times- store instead of UIImage, maybe?
 //      fix load/download performance issues -> load a cell with spinner, not on main thread (for up/download)? show pasteview first?
+//  bugs:
 //  cleanup:
 //      order defines
 //      double check imports

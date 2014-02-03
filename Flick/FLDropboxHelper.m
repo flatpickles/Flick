@@ -11,6 +11,7 @@
 #define APP_KEY @"ynm3dgog8z5rr7t"
 #define APP_SECRET @"mt17g6d4cv44vif"
 #define LAST_LINK_KEY @"LastLinkCopied"
+#define PAST_COPIES_KEY @"FilenamesOnceCopied"
 
 @interface FLDropboxHelper()
 
@@ -109,6 +110,9 @@
     if ([entity.text isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:LAST_LINK_KEY]]) {
         // we've copied this link from the app
         return NO;
+    } else if ([self _isFilenameCopied:entity.nameForFile]) {
+        // we've copied this entity from the app
+        return NO;
     } else {
         DBPath *path = [[DBPath root] childPath:[entity nameForFile]];
         return ![self _isStored:path];
@@ -174,11 +178,31 @@
 - (BOOL)deleteFile:(DBFileInfo *)fileInfo
 {
     DBError *error = nil;
+    FLEntity *entity = [self retrieveFile:fileInfo];
     BOOL success = [[DBFilesystem sharedFilesystem] deletePath:fileInfo.path error:&error];
     if (error) {
         [self handleError:error];
     }
+    if (success) {
+        [self _setPastCopiedFile:entity copied:NO];
+    }
     return success;
+}
+
+- (void)copyFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate
+{
+    // copy the entity to clipboard
+    FLEntity *entity = [[FLDropboxHelper sharedHelper] retrieveFile:fileInfo];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // slow as balls for big images, do it in the background to not clog up UI
+        if (entity.type == PhotoEntity) {
+            [UIPasteboard generalPasteboard].image = entity.image;
+        } else {
+            [UIPasteboard generalPasteboard].string = entity.text;
+        }
+    });
+    [self _setPastCopiedFile:entity copied:YES];
+    [delegate didCopyEntity:entity];
 }
 
 - (void)copyLinkForFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate
@@ -191,6 +215,33 @@
         }
     });
     [delegate didCopyLinkForFile:fileInfo]; // todo: okay that it's not a callback??
+}
+
+- (void)_setPastCopiedFile:(FLEntity *)file copied:(BOOL)copied
+{
+    NSString *fileName = [file nameForFile]; // recalculate for possible scaling
+    if ([self _isFilenameCopied:fileName] == copied) {
+        return;
+    }
+
+    NSMutableArray *pastCopies = [[NSUserDefaults standardUserDefaults] mutableArrayValueForKey:PAST_COPIES_KEY];
+    if (pastCopies) {
+        if (copied) {
+            [pastCopies addObject:fileName];
+        } else {
+            [pastCopies removeObject:fileName];
+        }
+    } else if (copied) {
+        // don't bother initializing if nothing to store
+        pastCopies = [[NSMutableArray alloc] initWithObjects:fileName, nil];
+        [[NSUserDefaults standardUserDefaults] setObject:pastCopies forKey:PAST_COPIES_KEY];
+    }
+}
+
+- (BOOL)_isFilenameCopied:(NSString *)filename
+{
+    NSMutableArray *pastCopies = [[NSUserDefaults standardUserDefaults] objectForKey:PAST_COPIES_KEY];
+    return [pastCopies containsObject:filename];
 }
 
 - (NSString *)_linkForFile:(DBFileInfo *)fileInfo

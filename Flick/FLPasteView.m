@@ -225,6 +225,7 @@
 
     shadowGrowAnim.removedOnCompletion = NO;
     [self.layer addAnimation:shadowGrowAnim forKey:SHADOW_GROW_KEY];
+    [self.layer setShadowRadius:SHADOW_RADIUS * SHADOW_SCALE_FACTOR];
 }
 
 - (void)_shadowShrink
@@ -237,6 +238,7 @@
 
     shadowShrinkAnim.removedOnCompletion = NO;
     [self.layer addAnimation:shadowShrinkAnim forKey:SHADOW_SHRINK_KEY];
+    [self.layer setShadowRadius:SHADOW_RADIUS];
 }
 
 - (void)_handleExit
@@ -278,10 +280,8 @@
 {
     // the animation itself won't set the shadow value; set appropriately here
     if (anim == [self.layer animationForKey:SHADOW_GROW_KEY]) {
-        [self.layer setShadowRadius:SHADOW_RADIUS * SHADOW_SCALE_FACTOR];
         [self.layer removeAnimationForKey:SHADOW_GROW_KEY];
     } else if (anim == [self.layer animationForKey:SHADOW_SHRINK_KEY]) {
-        [self.layer setShadowRadius:SHADOW_RADIUS];
         [self.layer removeAnimationForKey:SHADOW_SHRINK_KEY];
     }
 }

@@ -71,16 +71,7 @@
 {
     // copy the entity at this index to clipboard
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-    FLEntity *entity = [[FLDropboxHelper sharedHelper] retrieveFile:info];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // slow as balls for big images, do it in the background to not clog up UI
-        if (entity.type == PhotoEntity) {
-            [UIPasteboard generalPasteboard].image = entity.image;
-        } else {
-            [UIPasteboard generalPasteboard].string = entity.text;
-        }
-    });
-    [self.delegate didCopyEntity:entity];
+    [[FLDropboxHelper sharedHelper] copyFile:info delegate:self.delegate];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

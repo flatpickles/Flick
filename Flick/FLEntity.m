@@ -38,8 +38,11 @@
 
 - (NSString *)nameForFile
 {
-    NSString *base = [self _hashStr];
-    return [NSString stringWithFormat:@"%@%@", base, (self.type == PhotoEntity) ? @".png" : @".txt"];
+    if (!_nameForFile) {
+        NSString *base = [self _hashStr];
+        _nameForFile = [NSString stringWithFormat:@"%@%@", base, (self.type == PhotoEntity) ? @".png" : @".txt"];
+    }
+    return _nameForFile;
 }
 
 - (BOOL)isEqualToEntity:(FLEntity *)entity
