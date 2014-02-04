@@ -24,5 +24,6 @@
 @property (nonatomic) CGFloat tableViewWidth;
 
 - (void)handleLongPress:(NSIndexPath *)indexPath;
+- (void)handleRightSwipe:(NSIndexPath *)indexPath navController:(UINavigationController *)nav;
 
 @end

@@ -42,6 +42,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         self.textLabel.font = CELL_FONT;
         self.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         self.textLabel.numberOfLines = 0;
@@ -49,6 +50,7 @@
         self.imageView.clipsToBounds = YES;
         self.imageView.layer.cornerRadius = IMAGE_CORNER_RADIUS;
         self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+
     }
     return self;
 }

@@ -52,9 +52,14 @@
     [self.navigationLabel sizeToFit];
 
     // set up the long press recognizer
-    UILongPressGestureRecognizer *gestureRec = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(_handleLongPress:)];
-    gestureRec.minimumPressDuration = 1.0f;
-    [self.tableView addGestureRecognizer:gestureRec];
+    UILongPressGestureRecognizer *pressRec = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(_handleLongPress:)];
+    pressRec.minimumPressDuration = 1.0f;
+    [self.tableView addGestureRecognizer:pressRec];
+
+    // swipe recognizer
+    UISwipeGestureRecognizer *swipeRec = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(_handleSwipe:)];
+    swipeRec.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.tableView addGestureRecognizer:swipeRec];
 }
 
 - (void)hideTitle:(BOOL)hidden animate:(BOOL)animate
@@ -95,6 +100,16 @@
         CGPoint pt = [gestureRec locationInView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:pt];
         [self.dataSource handleLongPress:indexPath];
+    }
+}
+
+- (void)_handleSwipe:(UISwipeGestureRecognizer *)gestureRec
+{
+    if (gestureRec.state == UIGestureRecognizerStateRecognized) {
+        // only call once per gesture
+        CGPoint pt = [gestureRec locationInView:self.tableView];
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:pt];
+        [self.dataSource handleRightSwipe:indexPath navController:self.navigationController];
     }
 }
 

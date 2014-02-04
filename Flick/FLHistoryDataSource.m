@@ -9,6 +9,7 @@
 #import "FLHistoryDataSource.h"
 #import "FLDropboxHelper.h"
 #import "FLEntityCell.h"
+#import "FLDetailViewController.h"
 
 #define CELL_IDENTIFIER @"FLCell"
 
@@ -19,6 +20,18 @@
     // copy the shortened DB link to the file at this index path
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
     [[FLDropboxHelper sharedHelper] copyLinkForFile:info delegate:self.delegate];
+}
+
+- (void)handleRightSwipe:(NSIndexPath *)indexPath navController:(UINavigationController *)nav
+{
+    FLDetailViewController *detailVC = [[FLDetailViewController alloc] init];
+    [UIView animateWithDuration:FLIP_DURATION animations:^{
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [nav pushViewController:detailVC animated:NO];
+        [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:nav.view cache:NO];
+    }];
+
+    // todo: transitionWithView:duration:options:animations:completion: ????????
 }
 
 #pragma mark - Table view data source
