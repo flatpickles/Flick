@@ -24,14 +24,12 @@
 
 - (void)handleRightSwipe:(NSIndexPath *)indexPath navController:(UINavigationController *)nav
 {
-    FLDetailViewController *detailVC = [[FLDetailViewController alloc] init];
+    FLDetailViewController *detailVC = [[FLDetailViewController alloc] initWithEntity:[[FLDropboxHelper sharedHelper] retrieveFile:[self.fileInfoArray objectAtIndex:indexPath.row]]];
     [UIView animateWithDuration:FLIP_DURATION animations:^{
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [nav pushViewController:detailVC animated:NO];
         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:nav.view cache:NO];
     }];
-
-    // todo: transitionWithView:duration:options:animations:completion: ????????
 }
 
 #pragma mark - Table view data source

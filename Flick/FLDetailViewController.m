@@ -7,18 +7,21 @@
 //
 
 #import "FLDetailViewController.h"
+#import "FLDetailView.h"
 
 @interface FLDetailViewController ()
+
+@property (nonatomic) FLEntity *entity;
 
 @end
 
 @implementation FLDetailViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithEntity:(FLEntity *)entity
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [self init];
     if (self) {
-        // Custom initialization
+        self.entity = entity;
     }
     return self;
 }
@@ -36,6 +39,13 @@
 
     // maybe put view stuff in own class?
     self.view.backgroundColor = [UIColor whiteColor];
+}
+
+- (void)loadView
+{
+    FLDetailView *detailView = [[FLDetailView alloc] init];
+    detailView.entity = self.entity;
+    self.view = detailView;
 }
 
 - (void)didReceiveMemoryWarning

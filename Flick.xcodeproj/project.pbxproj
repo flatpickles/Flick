@@ -27,6 +27,7 @@
 		C9722A56189DB05800C9B971 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9722A55189DB05800C9B971 /* Crashlytics.framework */; };
 		C9722A58189DB1D100C9B971 /* ImageAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9722A57189DB1D100C9B971 /* ImageAssets.xcassets */; };
 		C9722A5B18A0B4EB00C9B971 /* FLDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9722A5A18A0B4EB00C9B971 /* FLDetailViewController.m */; };
+		C9722A5E18A2150E00C9B971 /* FLDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9722A5D18A2150E00C9B971 /* FLDetailView.m */; };
 		C973775E1842DBCF00145975 /* FLHistoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */; };
 		C97377621849274F00145975 /* FLDropboxHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C97377611849274F00145975 /* FLDropboxHelper.m */; };
 		C973776618492D9500145975 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776518492D9500145975 /* CFNetwork.framework */; };
@@ -80,6 +81,8 @@
 		C9722A57189DB1D100C9B971 /* ImageAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ImageAssets.xcassets; sourceTree = "<group>"; };
 		C9722A5918A0B4EA00C9B971 /* FLDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDetailViewController.h; sourceTree = "<group>"; };
 		C9722A5A18A0B4EB00C9B971 /* FLDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDetailViewController.m; sourceTree = "<group>"; };
+		C9722A5C18A2150E00C9B971 /* FLDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDetailView.h; sourceTree = "<group>"; };
+		C9722A5D18A2150E00C9B971 /* FLDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDetailView.m; sourceTree = "<group>"; };
 		C973775C1842DBCF00145975 /* FLHistoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLHistoryTableViewController.h; sourceTree = "<group>"; };
 		C973775D1842DBCF00145975 /* FLHistoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLHistoryTableViewController.m; sourceTree = "<group>"; };
 		C97377601849274F00145975 /* FLDropboxHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDropboxHelper.h; sourceTree = "<group>"; };
@@ -191,6 +194,8 @@
 				C9B2E2D6189234AF009B73DA /* FLSettingsViewController.m */,
 				C9722A5918A0B4EA00C9B971 /* FLDetailViewController.h */,
 				C9722A5A18A0B4EB00C9B971 /* FLDetailViewController.m */,
+				C9722A5C18A2150E00C9B971 /* FLDetailView.h */,
+				C9722A5D18A2150E00C9B971 /* FLDetailView.m */,
 			);
 			path = Flick;
 			sourceTree = "<group>";
@@ -343,6 +348,7 @@
 				C95E8BD4188DB9CF00092F90 /* FLEntityCell.m in Sources */,
 				C93683FB183B29D30058851A /* FLAppDelegate.m in Sources */,
 				C973777118493ECE00145975 /* FLEntity.m in Sources */,
+				C9722A5E18A2150E00C9B971 /* FLDetailView.m in Sources */,
 				C93683F7183B29D30058851A /* main.m in Sources */,
 				C95E8BCE188C77A500092F90 /* FLGuideView.m in Sources */,
 				C9B2E2D7189234AF009B73DA /* FLSettingsViewController.m in Sources */,

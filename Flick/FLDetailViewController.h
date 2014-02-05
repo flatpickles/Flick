@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FLEntity.h"
 
 #define FLIP_DURATION 0.4f
 
 @interface FLDetailViewController : UIViewController
+
+- (id)initWithEntity:(FLEntity *)entity;
 
 @end
