@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "FLEntity.h"
 
-@interface FLDetailView : UIView
+@interface FLDetailView : UIView <UIScrollViewDelegate>
 
 @property (nonatomic) FLEntity *entity;
 

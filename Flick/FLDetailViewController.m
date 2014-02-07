@@ -33,12 +33,14 @@
     [self.navigationController setNavigationBarHidden:YES];
 
     // swipe recognizer
-    UISwipeGestureRecognizer *swipeRec = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(_handleLeftSwipe:)];
+    UISwipeGestureRecognizer *swipeRec = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(_dismiss:)];
     swipeRec.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.view addGestureRecognizer:swipeRec];
 
-    // maybe put view stuff in own class?
-    self.view.backgroundColor = [UIColor whiteColor];
+    // tap recognizer
+    UITapGestureRecognizer *tapRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dismiss:)];
+    tapRec.numberOfTapsRequired = 1;
+    [self.view addGestureRecognizer:tapRec];
 }
 
 - (void)loadView
@@ -54,7 +56,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)_handleLeftSwipe:(UISwipeGestureRecognizer *)gestureRec
+- (void)_dismiss:(UISwipeGestureRecognizer *)gestureRec
 {
     if (gestureRec.state == UIGestureRecognizerStateRecognized) {
         [UIView animateWithDuration:FLIP_DURATION animations:^{
