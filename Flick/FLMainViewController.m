@@ -21,6 +21,8 @@
 #define PASTE_X_INSET 30.0f
 #define PASTE_Y_INSET 70.0f
 #define TITLE_TEXT_FADE_DELAY 0.3f
+#define SETTINGS_FONT_SIZE 24.0f
+#define SETTINGS_FONT_COLOR [UIColor grayColor]
 
 #define COPY_MESSAGE @"%@ copied to clipboard"
 #define COPY_LINK_MESSAGE @"Dropbox link copied to clipboard"
@@ -68,7 +70,9 @@
 
     // set up settings
     self.settingsViewController = [[FLSettingsViewController alloc] init];
-    self.historyViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStylePlain target:self action:@selector(_displaySettings)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(_displaySettings)];
+    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:SETTINGS_FONT_SIZE], NSForegroundColorAttributeName: SETTINGS_FONT_COLOR} forState:UIControlStateNormal];
+    self.historyViewController.navigationItem.rightBarButtonItem = button;
 
     // setup guide view
     self.guideView = [[FLGuideView alloc] initWithFrame:self.view.frame];
