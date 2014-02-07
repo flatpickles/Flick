@@ -52,29 +52,38 @@
         NSMutableArray *sections = [[NSMutableArray alloc] init];
 
         // copy link on upload
-        [sections addObject:[self _infoHeaderCellContents]];
         [sections addObject:[self _switchCellContentsForTitle:@"Copy link on file upload:" key:COPY_LINK_ON_UPLOAD_KEY]];
         [sections addObject:[self _switchCellContentsForTitle:@"Shake to use last photo:" key:SHAKE_TO_USE_PHOTO_KEY]];
         [sections addObject:[self _qualitySliderCellContents]];
+        [sections addObject:[self _infoCellContents]];
         
         _sections = [sections mutableCopy];
     }
     return _sections;
 }
 
-- (UIView *)_infoHeaderCellContents
+- (UIView *)_infoCellContents
 {
-    NSString *copy = @"You can single tap to copy, long press to copy a shortened Dropbox link, and double tap to view a photo or open a link. Further optional functionality:";
+    NSString *title = @"Tips and tricks:";
+    NSString *copy = @"From the list of your pasted items, you can tap to copy, long press to copy a shortened Dropbox link, right swipe to view in fullscreen, and left swipe to delete.";
+
     CGFloat width = self.tableView.frame.size.width;
     UIFont *infoFont = [UIFont systemFontOfSize:15.0f];
     CGRect textSize = [copy boundingRectWithSize:CGSizeMake(width - CELL_PADDING_LEFT * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:infoFont} context:nil];
 
-    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, textSize.size.height + 2 * CELL_PADDING_TOP)];
-    UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectOffset(textSize, CELL_PADDING_LEFT, CELL_PADDING_TOP)];
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = title;
+    [titleLabel sizeToFit];
+    titleLabel.frame = CGRectOffset(titleLabel.frame, CELL_PADDING_LEFT, CELL_PADDING_TOP);
+
+    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, textSize.size.height + 2.5f * CELL_PADDING_TOP + titleLabel.frame.size.height)];
+    UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectOffset(textSize, CELL_PADDING_LEFT, CELL_PADDING_TOP * 0.5f + CGRectGetMaxY(titleLabel.frame))];
     infoLabel.text = copy;
     infoLabel.font = infoFont;
     infoLabel.lineBreakMode = NSLineBreakByWordWrapping;
     infoLabel.numberOfLines = 0;
+
+    [infoView addSubview:titleLabel];
     [infoView addSubview:infoLabel];
 
     return infoView;

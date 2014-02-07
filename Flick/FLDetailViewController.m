@@ -29,8 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     [self.navigationController setNavigationBarHidden:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
 
     // swipe recognizer
     UISwipeGestureRecognizer *swipeRec = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(_dismiss:)];
@@ -65,6 +65,7 @@
         }];
         [self.navigationController setNavigationBarHidden:NO];
         [self.navigationController popViewControllerAnimated:NO];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     }
 }
 
