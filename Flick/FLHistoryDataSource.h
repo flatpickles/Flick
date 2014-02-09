@@ -21,7 +21,7 @@
 
 @property (nonatomic) NSMutableArray *fileInfoArray;
 @property (nonatomic) id<FLHistoryActionsDelegate> delegate;
-@property (nonatomic) CGFloat tableViewWidth;
+@property (atomic) UITableView *tableView;
 
 - (void)handleLongPress:(NSIndexPath *)indexPath;
 - (void)handleRightSwipe:(NSIndexPath *)indexPath navController:(UINavigationController *)nav;

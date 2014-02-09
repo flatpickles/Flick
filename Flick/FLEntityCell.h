@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Dropbox/Dropbox.h>
 #import "FLEntity.h"
+
+#define CELL_LOADING_HEIGHT 60.0f
 
 @interface FLEntityCell : UITableViewCell
 
-@property (nonatomic) FLEntity *entity;
+@property (atomic, readonly) BOOL loading;
 
-+ (CGFloat)heightForEntity:(FLEntity *)entity width:(CGFloat)width;
+- (void)loadEntity:(DBFileInfo *)info width:(CGFloat)width completion:(void (^)(CGFloat height))completionBlock;
 
 @end

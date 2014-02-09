@@ -13,7 +13,23 @@
 
 #define CELL_IDENTIFIER @"FLCell"
 
+@interface FLHistoryDataSource ()
+
+@property (atomic) NSMutableDictionary *infoToHeight;
+
+@end
+
 @implementation FLHistoryDataSource
+
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.infoToHeight = [[NSMutableDictionary alloc] init];
+    }
+    return self;
+}
 
 - (void)handleLongPress:(NSIndexPath *)indexPath
 {
@@ -46,16 +62,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // todo: this slows everything down!! make loading cells.
-
-    
     FLEntityCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER];
     if (!cell) {
         cell = [[FLEntityCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELL_IDENTIFIER];
     }
 
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-    cell.entity = [[FLDropboxHelper sharedHelper] retrieveFile:info];
+    [cell loadEntity:info width:self.tableView.frame.size.width completion:^(CGFloat height) {
+        [self.infoToHeight setObject:[NSNumber numberWithFloat:height] forKey:info];
+        // update the heights in the table
+        [self.tableView beginUpdates];
+        [self.tableView endUpdates];
+    }];
     return cell;
 }
 
@@ -73,7 +91,9 @@
             // todo: is this the best solution?
             [tableView cellForRowAtIndexPath:indexPath].alpha = 0.0;
         }];
-        [[FLDropboxHelper sharedHelper] deleteFile:[self.fileInfoArray objectAtIndex:indexPath.row]];
+        DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
+        [self.infoToHeight removeObjectForKey:info];
+        [[FLDropboxHelper sharedHelper] deleteFile:info];
         [self.fileInfoArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     }
@@ -90,8 +110,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FLEntity *entity = [[FLDropboxHelper sharedHelper] retrieveFile:[self.fileInfoArray objectAtIndex:indexPath.row]];
-    return [FLEntityCell heightForEntity:entity width:self.tableViewWidth];
+    DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
+    NSNumber *height = [self.infoToHeight objectForKey:info];
+    if (height) {
+        return height.floatValue;
+    } else {
+        return CELL_LOADING_HEIGHT;
+    }
 }
 
 @end

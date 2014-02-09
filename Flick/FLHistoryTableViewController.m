@@ -39,7 +39,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.dataSource.tableViewWidth = self.tableView.frame.size.width;
+    self.dataSource.tableView = self.tableView;
 
     // setup a replacement navigation label so we can control opacity directly
     self.navigationLabel = [[UILabel alloc] initWithFrame:CGRectZero];
