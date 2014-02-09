@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Matt Nichols. All rights reserved.
 //
 
+#import <Crashlytics/Crashlytics.h>
 #import "FLDropboxHelper.h"
 #import "FLSettingsViewController.h"
 
@@ -13,6 +14,7 @@
 #define APP_SECRET @"mt17g6d4cv44vif"
 #define LAST_LINK_KEY @"LastLinkCopied"
 #define PAST_COPIES_KEY @"FilenamesOnceCopied"
+#define DROPBOX_ERROR_TEXT @"Dropbox error encountered!"
 
 @interface FLDropboxHelper()
 
@@ -70,8 +72,9 @@
 
 - (void)handleError:(DBError *)error
 {
-    // todo: better error handling
-    NSLog(@"Dropbox error: %@", [error description]);
+    [self.guideView displayError:DROPBOX_ERROR_TEXT];
+    DBErrorCode code = error.code;
+    CLS_LOG(@"Dropbox error: %d", code);
 }
 
 - (void)linkIfUnlinked:(UIViewController *)controller completion:(void (^)(BOOL))completionBlock
@@ -135,25 +138,29 @@
 
 - (void)storeEntity:(FLEntity *)entity completion:(void (^)(DBFileInfo *info))completionBlock
 {
-    DBPath *path = [[DBPath root] childPath:[entity nameForFile]];
-    DBError *error = nil;
-    DBFile *file = [[DBFilesystem sharedFilesystem] createFile:path error:&error];
-    DBFileInfo *info = file.info;
-    NSData *dataToWrite;
-    if (entity.type == TextEntity) {
-        dataToWrite = [entity.text dataUsingEncoding:NSUTF8StringEncoding];
-    } else {
-        NSNumber *quality = [[NSUserDefaults standardUserDefaults] objectForKey:IMAGE_UPLOAD_QUALITY_KEY];
-        dataToWrite = UIImageJPEGRepresentation(entity.image, (quality == nil) ? IMAGE_UPLOAD_QUALITY_DEFAULT : quality.floatValue);
-    }
-    [file writeData:dataToWrite error:&error];
-    [file close];
-    if (error) {
-        [self handleError:error];
-    } else {
-        [self.entityCache setObject:entity forKey:info];
-    }
-    completionBlock((error == nil) ? info : nil);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        DBPath *path = [[DBPath root] childPath:[entity nameForFile]];
+        DBError *error = nil;
+        DBFile *file = [[DBFilesystem sharedFilesystem] createFile:path error:&error];
+        DBFileInfo *info = file.info;
+        NSData *dataToWrite;
+        if (entity.type == TextEntity) {
+            dataToWrite = [entity.text dataUsingEncoding:NSUTF8StringEncoding];
+        } else {
+            NSNumber *quality = [[NSUserDefaults standardUserDefaults] objectForKey:IMAGE_UPLOAD_QUALITY_KEY];
+            dataToWrite = UIImageJPEGRepresentation(entity.image, (quality == nil) ? IMAGE_UPLOAD_QUALITY_DEFAULT : quality.floatValue);
+        }
+        [file writeData:dataToWrite error:&error];
+        [file close];
+        if (error) {
+            [self handleError:error];
+        } else {
+            [self.entityCache setObject:entity forKey:info];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock((error == nil) ? info : nil);
+        });
+    });
 }
 
 - (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo

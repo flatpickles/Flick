@@ -198,6 +198,7 @@
         CGPoint target = CGPointMake(EXIT_DISTANCE * cosf(theta), EXIT_DISTANCE * sinf(theta));
         NSTimeInterval duration = EXIT_DISTANCE / velocity;
 
+        [self.delegate pasteViewMoved:target.y - self.originalCenter.y];
         BOOL dismissed = target.y > [[UIScreen mainScreen] bounds].size.height/2;
         [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
             self.center = CGPointMake(self.center.x + target.x, self.center.y + target.y);

@@ -10,6 +10,7 @@
 #import <Dropbox/Dropbox.h>
 #import "FLEntity.h"
 #import "FLHistoryDataSource.h"
+#import "FLGuideView.h"
 
 @class DBError;
 
@@ -17,6 +18,7 @@
 
 + (FLDropboxHelper *)sharedHelper;
 
+@property (nonatomic) FLGuideView *guideView;
 @property (nonatomic, readonly) NSArray *fileListing;
 
 - (void)linkIfUnlinked:(UIViewController *)controller completion:(void (^)(BOOL))completionBlock;

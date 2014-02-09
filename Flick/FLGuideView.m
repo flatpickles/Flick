@@ -20,6 +20,8 @@
 #define UPLOAD_TEXT @"Upload Paste"
 #define UPLOAD_COLOR [UIColor colorWithRed:0.239f green:0.604f blue:0.91f alpha:1.0f]
 #define STATUS_BAR_COLOR [UIColor colorWithRed:0.188f green:0.482f blue:0.725f alpha:1.0f]
+#define ERROR_COLOR [UIColor colorWithRed:1.0f green:0.263f blue:0.357f alpha:1.0f]
+#define ERROR_STATUS_BAR_COLOR [UIColor colorWithRed:0.773f green:0.204f blue:0.275f alpha:1.0f]
 
 @interface FLGuideView ()
 
@@ -27,6 +29,7 @@
 @property (nonatomic) CGPoint originalDismissCenter;
 @property (nonatomic) UIView *topView;
 @property (nonatomic) UIView *topBackgroundView;
+@property (nonatomic) UIView *statusBarBackground;
 @property (nonatomic) UILabel *topLabel;
 @property (nonatomic) CGPoint originalUploadCenter;
 @property (nonatomic) BOOL hidden;
@@ -58,9 +61,9 @@
         self.topView.backgroundColor = [UIColor clearColor];
         self.topBackgroundView = [[UIView alloc] initWithFrame:self.topView.bounds];
         self.topBackgroundView.backgroundColor = UPLOAD_COLOR;
-        UIView *statusBarBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.topView.frame.size.width, [[UIApplication sharedApplication] statusBarFrame].size.height)];
-        statusBarBackground.backgroundColor = STATUS_BAR_COLOR;
-        [self.topBackgroundView addSubview:statusBarBackground];
+        self.statusBarBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.topView.frame.size.width, [[UIApplication sharedApplication] statusBarFrame].size.height)];
+        self.statusBarBackground.backgroundColor = STATUS_BAR_COLOR;
+        [self.topBackgroundView addSubview:self.statusBarBackground];
         [self.topView addSubview:self.topBackgroundView];
         self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, [[UIApplication sharedApplication] statusBarFrame].size.height, self.topView.frame.size.width, GUIDE_HEIGHT)];
         self.topLabel.font = GUIDE_FONT;
@@ -81,7 +84,7 @@
 
 - (void)fadeRelativeToPasteOffset:(CGFloat)yOffset
 {
-    CGFloat maxDistance = [[UIScreen mainScreen] bounds].size.height/2;
+    CGFloat maxDistance = [[UIScreen mainScreen] bounds].size.height/4;
     CGFloat newOpacity = 1 - MIN(1, ABS(yOffset) / maxDistance);
     if (yOffset > 0.0f) {
         self.bottomView.layer.opacity = 1.0f;
@@ -112,6 +115,11 @@
     self.topView.layer.opacity = 1.0f;
     self.topBackgroundView.layer.opacity = 1.0f;
     self.bottomView.layer.opacity = 1.0f;
+
+    if (displayType == FLGuideDisplayTypeBoth) {
+        self.topBackgroundView.backgroundColor = UPLOAD_COLOR;
+        self.statusBarBackground.backgroundColor = STATUS_BAR_COLOR;
+    }
 
     [UIView animateWithDuration:GUIDE_SHOW_DURATION delay:delay options:UIViewAnimationOptionCurveEaseIn animations:^{
         if (displayType == FLGuideDisplayTypeBoth || displayType == FLGuideDisplayTypeTop) {
@@ -148,15 +156,39 @@
 
 - (void)displayMessage:(NSString *)message
 {
+    [self _displayMessage:message error:NO];
+}
+
+- (void)displayError:(NSString *)message
+{
+    [self _displayMessage:message error:YES];
+}
+
+- (void)_displayMessage:(NSString *)message error:(BOOL)isError
+{
     if (!self.hidden) {
         return;
     }
 
     self.topLabel.text = message;
+    if (isError) {
+        self.topBackgroundView.backgroundColor = ERROR_COLOR;
+        self.statusBarBackground.backgroundColor = ERROR_STATUS_BAR_COLOR;
+    } else {
+        self.topBackgroundView.backgroundColor = UPLOAD_COLOR;
+        self.statusBarBackground.backgroundColor = STATUS_BAR_COLOR;
+    }
+
     [self show:FLGuideDisplayTypeTop delay:0.0f completion:^(BOOL finished) {
-        [self hide:FLGuideDisplayTypeTop delay:MESSAGE_DISPLAY_DURATION completion:^(BOOL finished) {
-            self.topLabel.text = UPLOAD_TEXT;
-        }];
+        if (finished) {
+            [self hide:FLGuideDisplayTypeTop delay:MESSAGE_DISPLAY_DURATION completion:^(BOOL finished) {
+                if (finished) {
+                    self.topLabel.text = UPLOAD_TEXT;
+                    self.topBackgroundView.backgroundColor = UPLOAD_COLOR;
+                    self.statusBarBackground.backgroundColor = STATUS_BAR_COLOR;
+                }
+            }];
+        }
     }];
 }
 

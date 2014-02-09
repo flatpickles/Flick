@@ -22,5 +22,6 @@ typedef enum {
 - (void)show:(FLGuideDisplayType)displayType delay:(CGFloat)delay completion:(void (^)(BOOL finished))completion;
 - (void)hide:(FLGuideDisplayType)displayType delay:(CGFloat)delay completion:(void (^)(BOOL finished))completion;
 - (void)displayMessage:(NSString *)message;
+- (void)displayError:(NSString *)message;
 
 @end

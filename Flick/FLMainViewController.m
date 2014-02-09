@@ -85,6 +85,7 @@
     [self becomeFirstResponder];
 
     // go go dropbox
+    [FLDropboxHelper sharedHelper].guideView = self.guideView;
     __weak typeof(self) weakSelf = self;
     [[FLDropboxHelper sharedHelper] linkIfUnlinked:self completion:^(BOOL success) {
         typeof(weakSelf) strongSelf = weakSelf;
@@ -155,7 +156,7 @@
             *stop = YES;
         }
     } failureBlock:^(NSError *error) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Access Denied" message:@"Looks like you've denied access to your photos. Visit the photos section of your privacy settings to re-enable." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Access Denied" message:@"Looks like you've denied access to your photos. Visit the photos section of your privacy settings to enable this feature." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
     }];
 }
@@ -209,14 +210,16 @@
 
 - (void)shouldStorePaste:(FLEntity *)pasteEntity
 {
+    // dismiss pasteview
+    [self.guideView hide:FLGuideDisplayTypeTop];
+    [self.historyViewController hideTitle:NO animate:NO];
+    [self _setupForHistoryViewing];
+
+    // upload and display file
     __weak typeof(self) weakSelf = self;
     [[FLDropboxHelper sharedHelper] storeEntity:pasteEntity completion:^(DBFileInfo *info) {
         typeof(weakSelf) strongSelf = weakSelf;
         if (strongSelf) {
-            [strongSelf.guideView hide:FLGuideDisplayTypeTop];
-            [strongSelf.historyViewController hideTitle:NO animate:NO];
-            [strongSelf _setupForHistoryViewing];
-
             if (info) {
                 // todo: display success
                 [strongSelf.historyViewController addNewEntity:info];

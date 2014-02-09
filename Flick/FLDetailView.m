@@ -49,7 +49,7 @@
 
         self.imageView = [[UIImageView alloc] initWithFrame:self.imageScrollView.bounds];
         self.imageView.image = self.entity.image;
-        BOOL photoTooSmall = self.entity.image.size.width < self.imageView.frame.size.width || self.entity.image.size.height < self.imageView.frame.size.height;
+        BOOL photoTooSmall = self.entity.image.size.width < self.imageView.frame.size.width && self.entity.image.size.height < self.imageView.frame.size.height;
         self.imageView.contentMode = (photoTooSmall) ? UIViewContentModeCenter : UIViewContentModeScaleAspectFit;
 
         [self addSubview:self.imageScrollView];
