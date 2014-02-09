@@ -11,29 +11,23 @@
 //  display:
 //      pasteview images are scaled to the space, cellview images are always cropped
 //      make it not look dumb for fast actions (maybe just a delay for guide?)
-//      message for upload success - what happens if you copy during? need a message queue?
+//      message for upload success
 //      make text trimming in cells look better (truncate by words?)
 //      tilt on swipe to dismiss (a la jelly)
-//      flash cell before displaying detail view
 //  settings:
 //      connect dropbox if unconnected (?)
 //      report a bug
 //      rewrite footer a little
 //  performance:
 //      dropbox_file_wait_for_ready should not be called on the main thread
-//      directly after upload->display, which entity is which? image uploaded in lower quality -> different entity
-//      ghosting guideview on upload
 //      max size: fullscreen
 //      make open/load of history look better (not choppy)
-//      same photo uploaded as checked against?
 //      background threads for everything
-//      get recent photo, background thread?
-//      avoid generating data multiple times- store instead of UIImage, maybe?
 //      fix load/download performance issues -> load a cell with spinner, not on main thread (for up/download)? show pasteview first?
 //  bugs:
 //      shadow flash after resize
 //      unexpected flentity type
-//      multiple messages in a row
+//      delete disappearance weirdness
 //  cleanup:
 //      order defines
 //      double check imports

@@ -67,7 +67,7 @@
         case PhotoEntity:
         {
             UIImage *img = self.backingObject;
-            NSData *photoData = UIImageJPEGRepresentation(img, 0.0f);
+            NSData *photoData = UIImageJPEGRepresentation(img, 0.0f); // use minimum quality for max speed
             someStr = [NSString stringWithFormat:@"img:\"data:image/png;base64,%@\"", [photoData base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength]];
             break;
         }

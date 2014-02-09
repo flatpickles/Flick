@@ -26,7 +26,7 @@
     // reset everything
     [self.textView removeFromSuperview];
     [self.imageScrollView removeFromSuperview];
-    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(TEXT_EDGE_INSETS, 20.0f, self.frame.size.width - 2 * TEXT_EDGE_INSETS, self.frame.size.height - 20.0f - 2 * TEXT_EDGE_INSETS)];
+    self.textView = [[UITextView alloc] initWithFrame:CGRectInset(self.bounds, TEXT_EDGE_INSETS, TEXT_EDGE_INSETS * 2)];
     self.imageScrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
 
     if (self.entity.type == TextEntity) {

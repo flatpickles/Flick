@@ -105,7 +105,7 @@
 
 - (void)_handleSwipe:(UISwipeGestureRecognizer *)gestureRec
 {
-    if (gestureRec.state == UIGestureRecognizerStateRecognized) {
+    if (gestureRec.state == UIGestureRecognizerStateEnded) {
         // only call once per gesture
         CGPoint pt = [gestureRec locationInView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:pt];

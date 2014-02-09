@@ -29,11 +29,11 @@
 
 @interface FLMainViewController ()
 
-@property UINavigationController *navigation;
-@property FLPasteView *pasteView;
-@property FLHistoryTableViewController *historyViewController;
-@property FLSettingsViewController *settingsViewController;
-@property FLGuideView *guideView;
+@property (nonatomic) UINavigationController *navigation;
+@property (nonatomic) FLHistoryTableViewController *historyViewController;
+@property (nonatomic) FLSettingsViewController *settingsViewController;
+@property (atomic) FLPasteView *pasteView;
+@property (atomic) FLGuideView *guideView;
 
 @end
 
@@ -122,47 +122,53 @@
 
 - (void)_displayPasteboardObject
 {
-    id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
-    [self _displayPasteViewWithObject:pasteboardObject];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
+        [self _displayPasteViewWithObject:pasteboardObject];
+    });
 }
 
 - (void)_displayLastPhoto
 {
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    __weak typeof(self) weakSelf = self;
-    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-        if (group && group.numberOfAssets > 0) {
-            [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-            [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                typeof(weakSelf) strongSelf = weakSelf;
-                if (result && strongSelf) {
-                    ALAssetRepresentation *rep = [result defaultRepresentation];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+        __weak typeof(self) weakSelf = self;
+        [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+            if (group && group.numberOfAssets > 0) {
+                [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                    typeof(weakSelf) strongSelf = weakSelf;
+                    if (result && strongSelf) {
+                        ALAssetRepresentation *rep = [result defaultRepresentation];
 
-                    // Retrieve the image orientation from the ALAsset
-                    UIImageOrientation orientation = UIImageOrientationUp;
-                    NSNumber* orientationValue = [result valueForProperty:@"ALAssetPropertyOrientation"];
-                    if (orientationValue != nil) {
-                        orientation = [orientationValue intValue];
-                    }
+                        // Retrieve the image orientation from the ALAsset
+                        UIImageOrientation orientation = UIImageOrientationUp;
+                        NSNumber* orientationValue = [result valueForProperty:@"ALAssetPropertyOrientation"];
+                        if (orientationValue != nil) {
+                            orientation = [orientationValue intValue];
+                        }
 
-                    UIImage* image = [UIImage imageWithCGImage:[rep fullResolutionImage] scale:1.0f orientation:orientation];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        // UI stuff on main thread
+                        UIImage* image = [UIImage imageWithCGImage:[rep fullResolutionImage] scale:1.0f orientation:orientation];
+
+                        // UI stuff will happen on main thread within _displayPasteViewWithObject
                         [strongSelf _displayPasteViewWithObject:image];
-                    });
-                    *stop = YES;
-                }
-            }];
-            *stop = YES;
-        }
-    } failureBlock:^(NSError *error) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Access Denied" message:@"Looks like you've denied access to your photos. Visit the photos section of your privacy settings to enable this feature." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-    }];
+                        *stop = YES;
+                    }
+                }];
+                *stop = YES;
+            }
+        } failureBlock:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Access Denied" message:@"Looks like you've denied access to your photos. Visit the photos section of your privacy settings to enable." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            });
+        }];
+    });
 }
 
 - (void)_displayPasteViewWithObject:(id)object
 {
+    // should be called on background thread, canStoreObject is slow
     // check if we should (if the thing displayed has already been stored, dropbox is good to go)
     if (![DBFilesystem sharedFilesystem] || ![[FLDropboxHelper sharedHelper] canStoreObject:object]) {
         return;
@@ -178,21 +184,22 @@
         self.pasteView.entity = entityToDisplay;
         [self.pasteView fadeIn:PASTE_FADE_DURATION];
     };
-
-    // setup the pasteview if necessary
-    if (!self.pasteView) {
-        CGRect frame = self.view.bounds;
-        self.pasteView = [[FLPasteView alloc] initWithFrame:CGRectInset(frame, PASTE_X_INSET, PASTE_Y_INSET)];
-        self.pasteView.delegate = self;
-        [self.view addSubview:self.pasteView];
-    } else if (self.pasteView.isDisplayed) {
-        if (![self.pasteView.entity isEqualToEntity:self.pasteView.entity]) {
-            [self.pasteView animateExitWithCompletion:displayBlock];
-        }
-        return;
-    }
     
-    displayBlock();
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // setup the pasteview if necessary, on the main thread
+        if (!self.pasteView) {
+            CGRect frame = self.view.bounds;
+            self.pasteView = [[FLPasteView alloc] initWithFrame:CGRectInset(frame, PASTE_X_INSET, PASTE_Y_INSET)];
+            self.pasteView.delegate = self;
+            [self.view addSubview:self.pasteView];
+        } else if (self.pasteView.isDisplayed) {
+            if (![self.pasteView.entity isEqualToEntity:self.pasteView.entity]) {
+                [self.pasteView animateExitWithCompletion:displayBlock];
+            }
+            return;
+        }
+        displayBlock();
+    });
 }
 
 - (void)_displaySettings
