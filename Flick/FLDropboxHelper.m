@@ -177,9 +177,9 @@
             UIImage *imgCandidate = [UIImage imageWithData:fileData];
             entity = [[FLEntity alloc] initWithObject:(imgCandidate) ? imgCandidate : [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding]];
             // todo: maybe handle case of neither text nor image?
+            [self.entityCache setObject:entity forKey:fileInfo];
         }
         [file close];
-        [self.entityCache setObject:entity forKey:fileInfo];
     }
     return entity;
 }

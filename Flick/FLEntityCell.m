@@ -17,11 +17,13 @@
 #define CELL_PADDING_LEFT 15.0f
 #define MAX_CONTENT_HEIGHT 120.0f
 #define IMAGE_CORNER_RADIUS 5.0f
+#define SPINNER_SIZE 30.0f
 
 @interface FLEntityCell ()
 
 @property (atomic) FLEntity *entity;
 @property (atomic) BOOL loading;
+@property (nonatomic) UIActivityIndicatorView *loadingView;
 
 @end
 
@@ -41,6 +43,9 @@
         self.imageView.layer.cornerRadius = IMAGE_CORNER_RADIUS;
         self.imageView.contentMode = UIViewContentModeScaleAspectFill;
 
+        self.loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.loadingView.hidesWhenStopped = YES;
+        [self addSubview:self.loadingView];
         [self _setLoading];
     }
     return self;
@@ -49,9 +54,15 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self.imageView sizeToFit];
-    self.imageView.frame = CGRectIntersection(CGRectInset(self.bounds, CELL_PADDING_LEFT, CELL_PADDING_TOP), self.imageView.frame);
-    self.imageView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+    if (self.loading) {
+        self.loadingView.frame = CGRectMake(self.bounds.size.width/2 - SPINNER_SIZE/2, CELL_LOADING_HEIGHT/2 - SPINNER_SIZE/2, SPINNER_SIZE, SPINNER_SIZE);
+        [self.loadingView startAnimating];
+    } else {
+        [self.imageView sizeToFit];
+        self.imageView.frame = CGRectIntersection(CGRectInset(self.bounds, CELL_PADDING_LEFT, CELL_PADDING_TOP), self.imageView.frame);
+        self.imageView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+        [self.loadingView stopAnimating];
+    }
 }
 
 - (void)prepareForReuse
@@ -91,6 +102,7 @@
     self.imageView.image = nil;
     self.textLabel.text = nil;
     self.loading = YES;
+    [self setNeedsLayout];
 }
 
 - (CGFloat)_heightForEntity:(FLEntity *)entity width:(CGFloat)width

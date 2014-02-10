@@ -15,18 +15,18 @@
 
 @interface FLHistoryDataSource ()
 
-@property (atomic) NSMutableDictionary *infoToHeight;
+// maps DBFileInfo -> Cell height, also used as a record of which cells have loaded
+@property (atomic) NSMutableDictionary *loadedHeights;
 
 @end
 
 @implementation FLHistoryDataSource
 
-
 - (id)init
 {
     self = [super init];
     if (self) {
-        self.infoToHeight = [[NSMutableDictionary alloc] init];
+        self.loadedHeights = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -35,17 +35,22 @@
 {
     // copy the shortened DB link to the file at this index path
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-    [[FLDropboxHelper sharedHelper] copyLinkForFile:info delegate:self.delegate];
+    if ([self.loadedHeights objectForKey:info]) {
+        [[FLDropboxHelper sharedHelper] copyLinkForFile:info delegate:self.delegate];
+    }
 }
 
 - (void)handleRightSwipe:(NSIndexPath *)indexPath navController:(UINavigationController *)nav
 {
-    FLDetailViewController *detailVC = [[FLDetailViewController alloc] initWithEntity:[[FLDropboxHelper sharedHelper] retrieveFile:[self.fileInfoArray objectAtIndex:indexPath.row]]];
-    [UIView animateWithDuration:FLIP_DURATION animations:^{
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-        [nav pushViewController:detailVC animated:NO];
-        [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:nav.view cache:NO];
-    }];
+    DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
+    if ([self.loadedHeights objectForKey:info]) {
+        FLDetailViewController *detailVC = [[FLDetailViewController alloc] initWithEntity:[[FLDropboxHelper sharedHelper] retrieveFile:info]];
+        [UIView animateWithDuration:FLIP_DURATION animations:^{
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            [nav pushViewController:detailVC animated:NO];
+            [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:nav.view cache:NO];
+        }];
+    }
 }
 
 #pragma mark - Table view data source
@@ -69,7 +74,7 @@
 
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
     [cell loadEntity:info width:self.tableView.frame.size.width completion:^(CGFloat height) {
-        [self.infoToHeight setObject:[NSNumber numberWithFloat:height] forKey:info];
+        [self.loadedHeights setObject:[NSNumber numberWithFloat:height] forKey:info];
         // update the heights in the table
         [self.tableView beginUpdates];
         [self.tableView endUpdates];
@@ -85,14 +90,14 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
+    DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
+    if (editingStyle == UITableViewCellEditingStyleDelete && [self.loadedHeights objectForKey:info]) {
         [UIView animateWithDuration:0.2f animations:^{
             // fade out to hide Delete button
             // todo: is this the best solution?
             [tableView cellForRowAtIndexPath:indexPath].alpha = 0.0;
         }];
-        DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-        [self.infoToHeight removeObjectForKey:info];
+        [self.loadedHeights removeObjectForKey:info];
         [[FLDropboxHelper sharedHelper] deleteFile:info];
         [self.fileInfoArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
@@ -105,13 +110,15 @@
 {
     // copy the entity at this index to clipboard
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-    [[FLDropboxHelper sharedHelper] copyFile:info delegate:self.delegate];
+    if ([self.loadedHeights objectForKey:info]) {
+        [[FLDropboxHelper sharedHelper] copyFile:info delegate:self.delegate];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-    NSNumber *height = [self.infoToHeight objectForKey:info];
+    NSNumber *height = [self.loadedHeights objectForKey:info];
     if (height) {
         return height.floatValue;
     } else {
