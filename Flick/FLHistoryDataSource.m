@@ -12,6 +12,7 @@
 #import "FLDetailViewController.h"
 
 #define CELL_IDENTIFIER @"FLCell"
+#define LOADING_FADE_IN_DURATION 0.25f
 
 @interface FLHistoryDataSource ()
 
@@ -74,10 +75,31 @@
 
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
     [cell loadEntity:info width:self.tableView.frame.size.width completion:^(CGFloat height) {
+        NSNumber *currentHeight = [self.loadedHeights objectForKey:info];
         [self.loadedHeights setObject:[NSNumber numberWithFloat:height] forKey:info];
-        // update the heights in the table
-        [self.tableView beginUpdates];
-        [self.tableView endUpdates];
+        if (!currentHeight) {
+            // update the heights in the table and fade in
+            cell.textLabel.layer.opacity = 0.0f;
+            cell.imageView.layer.opacity = 0.0f;
+            [CATransaction begin];
+            [CATransaction setCompletionBlock:^{
+                [UIView animateWithDuration:LOADING_FADE_IN_DURATION animations:^{
+                    cell.textLabel.layer.opacity = 1.0f;
+                    cell.imageView.layer.opacity = 1.0f;
+                    cell.loadingView.layer.opacity = 0.0f;
+                } completion:^(BOOL finished) {
+                    [cell.loadingView stopAnimating];
+                }];
+            }];
+            [self.tableView beginUpdates];
+            [self.tableView endUpdates];
+            [CATransaction commit];
+        } else {
+            // update height without animation
+            [cell.loadingView stopAnimating];
+            [self.tableView beginUpdates];
+            [self.tableView endUpdates];
+        }
     }];
     return cell;
 }

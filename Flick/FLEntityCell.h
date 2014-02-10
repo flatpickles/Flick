@@ -15,6 +15,7 @@
 @interface FLEntityCell : UITableViewCell
 
 @property (atomic, readonly) BOOL loading;
+@property (nonatomic) UIActivityIndicatorView *loadingView;
 
 - (void)loadEntity:(DBFileInfo *)info width:(CGFloat)width completion:(void (^)(CGFloat height))completionBlock;
 

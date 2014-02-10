@@ -23,7 +23,6 @@
 
 @property (atomic) FLEntity *entity;
 @property (atomic) BOOL loading;
-@property (nonatomic) UIActivityIndicatorView *loadingView;
 
 @end
 
@@ -56,12 +55,11 @@
     [super layoutSubviews];
     if (self.loading) {
         self.loadingView.frame = CGRectMake(self.bounds.size.width/2 - SPINNER_SIZE/2, CELL_LOADING_HEIGHT/2 - SPINNER_SIZE/2, SPINNER_SIZE, SPINNER_SIZE);
-        [self.loadingView startAnimating];
+        self.loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     } else {
         [self.imageView sizeToFit];
         self.imageView.frame = CGRectIntersection(CGRectInset(self.bounds, CELL_PADDING_LEFT, CELL_PADDING_TOP), self.imageView.frame);
         self.imageView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
-        [self.loadingView stopAnimating];
     }
 }
 
@@ -102,6 +100,8 @@
     self.imageView.image = nil;
     self.textLabel.text = nil;
     self.loading = YES;
+    self.loadingView.layer.opacity = 1.0f;
+    [self.loadingView startAnimating];
     [self setNeedsLayout];
 }
 
