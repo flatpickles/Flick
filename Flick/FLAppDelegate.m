@@ -19,12 +19,11 @@
 //      report a bug
 //      rewrite footer a little
 //  performance:
-//      dropbox_file_wait_for_ready should not be called on the main thread
+//      startup after first install is still buggy, laggy, and generally fucked up
 //      max size: fullscreen
-//      make open/load of history look better (not choppy)
-//      background threads for everything
-//      fix load/download performance issues -> load a cell with spinner, not on main thread (for up/download)? show pasteview first?
+//      weird bounce lag when pulling up from bottom of list
 //  bugs:
+//      copy from previous pastes -> uninstall -> reinstall -> pasteview nonetheless. Worth fixing?
 //      shadow flash after resize
 //      unexpected flentity type
 //      delete disappearance weirdness

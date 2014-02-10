@@ -21,6 +21,7 @@
 @property (nonatomic) NSArray *fileListing;
 @property (nonatomic, strong) void (^linkCompletion)(BOOL);
 @property (atomic) NSCache *entityCache;
+@property (atomic) NSLock *retrieveFileLock;
 
 @end
 
@@ -43,6 +44,7 @@
     self = [super init];
     if (self) {
         self.entityCache = [[NSCache alloc] init];
+        self.retrieveFileLock = [[NSLock alloc] init];
     }
     return self;
 }
@@ -72,9 +74,11 @@
 
 - (void)handleError:(DBError *)error
 {
-    [self.guideView displayError:DROPBOX_ERROR_TEXT];
     DBErrorCode code = error.code;
     CLS_LOG(@"Dropbox error: %d", code);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.guideView displayError:DROPBOX_ERROR_TEXT];
+    });
 }
 
 - (void)linkIfUnlinked:(UIViewController *)controller completion:(void (^)(BOOL))completionBlock
@@ -165,11 +169,13 @@
 
 - (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo
 {
+    [self.retrieveFileLock lock]; // protect from opening a file several times, at the same time
     FLEntity *entity = [self.entityCache objectForKey:fileInfo];
     if (!entity) {
         DBError *error = nil;
         DBFile *file = [[DBFilesystem sharedFilesystem] openFile:fileInfo.path error:&error];
         NSData *fileData = [file readData:&error];
+        [file close];
 
         if (error) {
             [self handleError:error];
@@ -179,8 +185,8 @@
             // todo: maybe handle case of neither text nor image?
             [self.entityCache setObject:entity forKey:fileInfo];
         }
-        [file close];
     }
+    [self.retrieveFileLock unlock];
     return entity;
 }
 
