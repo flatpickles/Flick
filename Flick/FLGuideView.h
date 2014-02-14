@@ -16,6 +16,8 @@ typedef enum {
 
 @interface FLGuideView : UIView
 
+@property (nonatomic, getter = isDisplayed) BOOL displayed;
+
 - (void)fadeRelativeToPasteOffset:(CGFloat)yOffset;
 - (void)show:(FLGuideDisplayType)displayType;
 - (void)hide:(FLGuideDisplayType)displayType;

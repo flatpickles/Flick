@@ -32,7 +32,6 @@
 @property (nonatomic) UIView *statusBarBackground;
 @property (nonatomic) UILabel *topLabel;
 @property (nonatomic) CGPoint originalUploadCenter;
-@property (nonatomic) BOOL hidden;
 
 @end
 
@@ -42,7 +41,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.hidden = YES;
+        self.displayed = NO;
 
         // setup dismiss view
         CGRect f = self.frame;
@@ -79,7 +78,7 @@
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     // pass on any touch events if hidden
-    return (self.hidden) ? nil : self;
+    return (!self.displayed) ? nil : self;
 }
 
 - (void)fadeRelativeToPasteOffset:(CGFloat)yOffset
@@ -107,7 +106,7 @@
 
 - (void)show:(FLGuideDisplayType)displayType delay:(CGFloat)delay completion:(void (^)(BOOL finished))completion
 {
-    self.hidden = NO;
+    self.displayed = YES;
 
     // reset everything just in case
     self.topView.center = self.originalUploadCenter;
@@ -133,7 +132,7 @@
 
 - (void)hide:(FLGuideDisplayType)displayType delay:(CGFloat)delay completion:(void (^)(BOOL finished))completion
 {
-    self.hidden = YES;
+    self.displayed= NO;
 
     [UIView animateWithDuration:GUIDE_HIDE_DURATION delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^{
         if (displayType == FLGuideDisplayTypeBoth || displayType == FLGuideDisplayTypeTop) {
@@ -166,7 +165,7 @@
 
 - (void)_displayMessage:(NSString *)message error:(BOOL)isError
 {
-    if (!self.hidden) {
+    if (self.displayed) {
         return;
     }
 

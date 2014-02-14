@@ -23,6 +23,7 @@
 #define TITLE_TEXT_FADE_DELAY 0.3f
 #define SETTINGS_FONT_SIZE 24.0f
 #define SETTINGS_FONT_COLOR [UIColor grayColor]
+#define GUIDEVIEW_DISPLAY_DELAY 0.1f
 
 #define COPY_MESSAGE @"%@ copied to clipboard"
 #define COPY_LINK_MESSAGE @"Dropbox link copied to clipboard"
@@ -34,6 +35,7 @@
 @property (nonatomic) FLSettingsViewController *settingsViewController;
 @property (atomic) FLPasteView *pasteView;
 @property (atomic) FLGuideView *guideView;
+@property (nonatomic) BOOL shouldDisplayGuide;
 
 @end
 
@@ -244,6 +246,7 @@
 
 - (void)didDismissPaste:(FLEntity *)pasteEntity
 {
+    self.shouldDisplayGuide = NO;
     [self.guideView hide:FLGuideDisplayTypeBottom delay:0.0f completion:^(BOOL finished) {
         // delay the title fade in so it doesn't overlap with the fading out "upload paste"
         [self.historyViewController hideTitle:NO animate:YES];
@@ -253,13 +256,20 @@
 
 - (void)pasteViewActive
 {
+    self.shouldDisplayGuide = YES;
     // hide the title after showing so it's not visible during fade to paste offset
-    [self.historyViewController hideTitle:YES animate:YES];
-    [self.guideView show:FLGuideDisplayTypeBoth];
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(GUIDEVIEW_DISPLAY_DELAY * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        if (self.shouldDisplayGuide) {
+            [self.historyViewController hideTitle:YES animate:YES];
+            [self.guideView show:FLGuideDisplayTypeBoth];
+        }
+    });
 }
 
 - (void)pasteViewReset
 {
+    self.shouldDisplayGuide = NO;
     [self.historyViewController hideTitle:NO animate:YES];
     [self.guideView hide:FLGuideDisplayTypeBoth];
 }
