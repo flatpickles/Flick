@@ -13,6 +13,7 @@
 #import "FLDropboxHelper.h"
 #import "FLGuideView.h"
 #import "FLSettingsViewController.h"
+#import "FLConnectDropboxViewController.h"
 
 #define HISTORY_BACKGROUND_OPACITY 0.5f
 #define HISTORY_FADE_DURATION 0.3f
@@ -84,14 +85,14 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self becomeFirstResponder];
 
-    // go go dropbox
-    [FLDropboxHelper sharedHelper].guideView = self.guideView;
-    __weak typeof(self) weakSelf = self;
-    [[FLDropboxHelper sharedHelper] linkIfUnlinked:self completion:^(BOOL success) {
-        typeof(weakSelf) strongSelf = weakSelf;
-        if (strongSelf && success) {
+    // show dropbox connect if need be
+    if (![DBFilesystem sharedFilesystem]) {
+        // show connect to dropbox VC
+        FLConnectDropboxViewController *connect = [[FLConnectDropboxViewController alloc] init];
+        __weak typeof(self) weakSelf = self;
+        connect.linkSuccess = ^{
+            typeof(weakSelf) strongSelf = weakSelf;
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 strongSelf.historyViewController.dataSource.fileInfoArray = [[[FLDropboxHelper sharedHelper] fileListing] mutableCopy];
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -100,8 +101,14 @@
                     [strongSelf _displayPasteboardObject];
                 });
             });
-        }
-    }];
+        };
+        [self.navigation setNavigationBarHidden:YES animated:YES];
+        [self.navigation presentViewController:connect animated:YES completion:nil];
+    } else {
+        [self becomeFirstResponder];
+        [FLDropboxHelper sharedHelper].guideView = self.guideView;
+        [self.navigation setNavigationBarHidden:NO animated:YES];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

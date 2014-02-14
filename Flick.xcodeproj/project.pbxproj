@@ -37,6 +37,7 @@
 		C973776E18492DC800145975 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C973776D18492DC800145975 /* libc++.dylib */; };
 		C973777118493ECE00145975 /* FLEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = C973777018493ECE00145975 /* FLEntity.m */; };
 		C9B2E2D7189234AF009B73DA /* FLSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B2E2D6189234AF009B73DA /* FLSettingsViewController.m */; };
+		C9DC553D18AEB68800CCC752 /* FLConnectDropboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9DC553C18AEB68800CCC752 /* FLConnectDropboxViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,8 @@
 		C973777018493ECE00145975 /* FLEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLEntity.m; sourceTree = "<group>"; };
 		C9B2E2D5189234AF009B73DA /* FLSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLSettingsViewController.h; sourceTree = "<group>"; };
 		C9B2E2D6189234AF009B73DA /* FLSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLSettingsViewController.m; sourceTree = "<group>"; };
+		C9DC553B18AEB68800CCC752 /* FLConnectDropboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLConnectDropboxViewController.h; sourceTree = "<group>"; };
+		C9DC553C18AEB68800CCC752 /* FLConnectDropboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLConnectDropboxViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +199,8 @@
 				C9722A5A18A0B4EB00C9B971 /* FLDetailViewController.m */,
 				C9722A5C18A2150E00C9B971 /* FLDetailView.h */,
 				C9722A5D18A2150E00C9B971 /* FLDetailView.m */,
+				C9DC553B18AEB68800CCC752 /* FLConnectDropboxViewController.h */,
+				C9DC553C18AEB68800CCC752 /* FLConnectDropboxViewController.m */,
 			);
 			path = Flick;
 			sourceTree = "<group>";
@@ -349,6 +354,7 @@
 				C93683FB183B29D30058851A /* FLAppDelegate.m in Sources */,
 				C973777118493ECE00145975 /* FLEntity.m in Sources */,
 				C9722A5E18A2150E00C9B971 /* FLDetailView.m in Sources */,
+				C9DC553D18AEB68800CCC752 /* FLConnectDropboxViewController.m in Sources */,
 				C93683F7183B29D30058851A /* main.m in Sources */,
 				C95E8BCE188C77A500092F90 /* FLGuideView.m in Sources */,
 				C9B2E2D7189234AF009B73DA /* FLSettingsViewController.m in Sources */,

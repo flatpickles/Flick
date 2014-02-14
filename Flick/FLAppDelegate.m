@@ -7,8 +7,6 @@
 //
 
 // todo:
-//  display:
-//      make it not look dumb for fast actions (maybe just a delay for guide?)
 //  settings:
 //      connect dropbox if unconnected (?)
 //      rewrite footer a little
@@ -24,6 +22,7 @@
 //      double check imports
 //      remove unnecessary default declarations
 //      when to synchronize defaults?
+//  copy: use smart quotes, etc
 //  app icon
 //  address all other todos in code
 //  handle all error cases... network, dropbox, unrecognized type
