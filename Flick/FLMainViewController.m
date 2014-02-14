@@ -124,7 +124,9 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
-        [self _displayPasteViewWithObject:pasteboardObject];
+        if (pasteboardObject) {
+            [self _displayPasteViewWithObject:pasteboardObject];
+        }
     });
 }
 

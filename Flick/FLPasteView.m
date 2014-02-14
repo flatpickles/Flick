@@ -71,7 +71,6 @@
         [self addSubview:self.textView];
 
         self.imageView = [[UIImageView alloc] init];
-        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.imageView.autoresizingMask = subviewResizing;
         [self addSubview:self.imageView];
     }
@@ -120,6 +119,9 @@
 
     self.imageView.image = image;
     self.imageView.frame = AVMakeRectWithAspectRatioInsideRect(image.size, CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET));
+
+    BOOL photoTooSmall = image.size.width < self.imageView.frame.size.width && image.size.height < self.imageView.frame.size.height;
+    self.imageView.contentMode = (photoTooSmall) ? UIViewContentModeCenter : UIViewContentModeScaleAspectFit;
 }
 
 - (void)_layoutText:(NSString *)text

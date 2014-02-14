@@ -7,23 +7,15 @@
 //
 
 // todo:
-//  update list upon filesystem change?
 //  display:
-//      pasteview images are scaled to the space, cellview images are always cropped
 //      make it not look dumb for fast actions (maybe just a delay for guide?)
-//      message for upload success
-//      make text trimming in cells look better (truncate by words?)
-//      tilt on swipe to dismiss (a la jelly)
 //  settings:
 //      connect dropbox if unconnected (?)
-//      report a bug
 //      rewrite footer a little
 //  performance:
 //      startup after first install is still buggy, laggy, and generally fucked up
-//      max size: fullscreen
 //      weird bounce lag when pulling up from bottom of list
 //  bugs:
-//      copy from previous pastes -> uninstall -> reinstall -> pasteview nonetheless. Worth fixing?
 //      shadow flash after resize
 //      unexpected flentity type
 //      delete disappearance weirdness
@@ -36,6 +28,12 @@
 //  address all other todos in code
 //  handle all error cases... network, dropbox, unrecognized type
 //  make sure dropbox is connected on launch
+
+// someday:
+//  update list upon filesystem change?
+//  tilt on swipe to dismiss (a la jelly)
+//  max image size: fullscreen?
+//  make text trimming in cells look better (truncate by words?)
 
 #import <Crashlytics/Crashlytics.h>
 

@@ -78,18 +78,20 @@
         NSNumber *currentHeight = [self.loadedHeights objectForKey:info];
         [self.loadedHeights setObject:[NSNumber numberWithFloat:height] forKey:info];
         if (!currentHeight) {
+            // fade out the spinner
+            [UIView animateWithDuration:LOADING_FADE_IN_DURATION animations:^{
+                cell.loadingView.layer.opacity = 0.0f;
+            } completion:nil];
             // update the heights in the table and fade in
             cell.textLabel.layer.opacity = 0.0f;
             cell.imageView.layer.opacity = 0.0f;
             [CATransaction begin];
             [CATransaction setCompletionBlock:^{
+                [cell.loadingView stopAnimating];
                 [UIView animateWithDuration:LOADING_FADE_IN_DURATION animations:^{
                     cell.textLabel.layer.opacity = 1.0f;
                     cell.imageView.layer.opacity = 1.0f;
-                    cell.loadingView.layer.opacity = 0.0f;
-                } completion:^(BOOL finished) {
-                    [cell.loadingView stopAnimating];
-                }];
+                } completion:nil];
             }];
             [self.tableView beginUpdates];
             [self.tableView endUpdates];
@@ -114,15 +116,17 @@
 {
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
     if (editingStyle == UITableViewCellEditingStyleDelete && [self.loadedHeights objectForKey:info]) {
-        [UIView animateWithDuration:0.2f animations:^{
-            // fade out to hide Delete button
-            // todo: is this the best solution?
-            [tableView cellForRowAtIndexPath:indexPath].alpha = 0.0;
-        }];
-        [self.loadedHeights removeObjectForKey:info];
-        [[FLDropboxHelper sharedHelper] deleteFile:info];
-        [self.fileInfoArray removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        BOOL success = [[FLDropboxHelper sharedHelper] deleteFile:info];
+        if (success) {
+            [UIView animateWithDuration:0.2f animations:^{
+                // fade out to hide Delete button
+                // todo: is this the best solution?
+                [tableView cellForRowAtIndexPath:indexPath].alpha = 0.0;
+            }];
+            [self.loadedHeights removeObjectForKey:info];
+            [self.fileInfoArray removeObjectAtIndex:indexPath.row];
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        }
     }
 }
 
