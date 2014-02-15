@@ -8,9 +8,9 @@
 
 #import "FLSettingsViewController.h"
 
-#define SETTINGS_TITLE @"Settings"
-#define CELL_PADDING_TOP 11.0f
 #define CELL_PADDING_LEFT 15.0f
+#define CELL_PADDING_TOP 11.0f
+#define SETTINGS_TITLE @"Settings"
 #define SWITCH_CELL_HEIGHT 50.0f
 
 @interface FLSettingsViewController ()

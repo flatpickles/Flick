@@ -255,6 +255,7 @@
         pastCopies = [[NSMutableArray alloc] initWithObjects:fileName, nil];
         [[NSUserDefaults standardUserDefaults] setObject:pastCopies forKey:PAST_COPIES_KEY];
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)_isFilenameCopied:(NSString *)filename
@@ -272,6 +273,7 @@
     } else {
         // keep track of this link so we don't try to store the link from the clipboard at next open
         [[NSUserDefaults standardUserDefaults] setObject:link forKey:LAST_LINK_KEY];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     return link;
 }

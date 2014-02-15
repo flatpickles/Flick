@@ -8,20 +8,19 @@
 
 #import "FLGuideView.h"
 
-#define GUIDE_HEIGHT 45.0f
-#define GUIDE_SHOW_DURATION 0.15f
-#define GUIDE_HIDE_DURATION 0.3f
-#define GUIDE_TOP_TEXT_HIDE_DURATION 0.1f
-#define GUIDE_FONT [UIFont boldSystemFontOfSize:16.0f]
-#define MESSAGE_DISPLAY_DURATION 0.7f
-
-#define DISMISS_TEXT @"Dismiss Paste"
 #define DISMISS_COLOR [UIColor colorWithRed:0.906f green:0.541f blue:0.239f alpha:1.0f]
-#define UPLOAD_TEXT @"Upload Paste"
-#define UPLOAD_COLOR [UIColor colorWithRed:0.239f green:0.604f blue:0.91f alpha:1.0f]
-#define STATUS_BAR_COLOR [UIColor colorWithRed:0.188f green:0.482f blue:0.725f alpha:1.0f]
+#define DISMISS_TEXT @"Dismiss Paste"
 #define ERROR_COLOR [UIColor colorWithRed:1.0f green:0.263f blue:0.357f alpha:1.0f]
 #define ERROR_STATUS_BAR_COLOR [UIColor colorWithRed:0.773f green:0.204f blue:0.275f alpha:1.0f]
+#define GUIDE_FONT [UIFont boldSystemFontOfSize:16.0f]
+#define GUIDE_HEIGHT 45.0f
+#define GUIDE_HIDE_DURATION 0.3f
+#define GUIDE_SHOW_DURATION 0.15f
+#define GUIDE_TOP_TEXT_HIDE_DURATION 0.1f
+#define MESSAGE_DISPLAY_DURATION 0.7f
+#define STATUS_BAR_COLOR [UIColor colorWithRed:0.188f green:0.482f blue:0.725f alpha:1.0f]
+#define UPLOAD_COLOR [UIColor colorWithRed:0.239f green:0.604f blue:0.91f alpha:1.0f]
+#define UPLOAD_TEXT @"Upload Paste"
 
 @interface FLGuideView ()
 

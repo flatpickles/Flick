@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Matt Nichols. All rights reserved.
 //
 
-#import "FLHistoryDataSource.h"
+#import "FLDetailViewController.h"
 #import "FLDropboxHelper.h"
 #import "FLEntityCell.h"
-#import "FLDetailViewController.h"
+#import "FLHistoryDataSource.h"
 
 #define CELL_IDENTIFIER @"FLCell"
 #define LOADING_FADE_IN_DURATION 0.25f

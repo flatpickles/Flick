@@ -7,27 +7,26 @@
 //
 
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "FLMainViewController.h"
-#import "FLPasteView.h"
-#import "FLHistoryTableViewController.h"
+#import "FLConnectDropboxViewController.h"
 #import "FLDropboxHelper.h"
 #import "FLGuideView.h"
+#import "FLHistoryTableViewController.h"
+#import "FLMainViewController.h"
+#import "FLPasteView.h"
 #import "FLSettingsViewController.h"
-#import "FLConnectDropboxViewController.h"
 
+#define COPY_LINK_MESSAGE @"Dropbox link copied to clipboard"
+#define COPY_MESSAGE @"%@ copied to clipboard"
+#define GUIDEVIEW_DISPLAY_DELAY 0.1f
 #define HISTORY_BACKGROUND_OPACITY 0.5f
 #define HISTORY_FADE_DURATION 0.3f
 #define PASTE_FADE_DURATION 0.3f
-#define STATUS_BAR_FADE_DURATION 0.3f
 #define PASTE_X_INSET 30.0f
 #define PASTE_Y_INSET 70.0f
-#define TITLE_TEXT_FADE_DELAY 0.3f
-#define SETTINGS_FONT_SIZE 24.0f
 #define SETTINGS_FONT_COLOR [UIColor grayColor]
-#define GUIDEVIEW_DISPLAY_DELAY 0.1f
-
-#define COPY_MESSAGE @"%@ copied to clipboard"
-#define COPY_LINK_MESSAGE @"Dropbox link copied to clipboard"
+#define SETTINGS_FONT_SIZE 24.0f
+#define STATUS_BAR_FADE_DURATION 0.3f
+#define TITLE_TEXT_FADE_DELAY 0.3f
 
 @interface FLMainViewController ()
 
@@ -137,7 +136,7 @@
 
 - (void)_displayPasteboardObject
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
         if (pasteboardObject) {
             [self _displayPasteViewWithObject:pasteboardObject];
@@ -147,7 +146,7 @@
 
 - (void)_displayLastPhoto
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
         __weak typeof(self) weakSelf = self;
         [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
@@ -176,7 +175,7 @@
             }
         } failureBlock:^(NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Access Denied" message:@"Looks like you've denied access to your photos. Visit the photos section of your privacy settings to enable." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Access Denied" message:@"Looks like you’ve denied access to your photos. Visit the photos section of your privacy settings to enable." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alert show];
             });
         }];

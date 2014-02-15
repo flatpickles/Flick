@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Matt Nichols. All rights reserved.
 //
 
-#import "FLDetailViewController.h"
 #import "FLDetailView.h"
+#import "FLDetailViewController.h"
 
 @interface FLDetailViewController ()
 

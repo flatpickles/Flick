@@ -6,17 +6,17 @@
 //  Copyright (c) 2014 Matt Nichols. All rights reserved.
 //
 
-#import "FLEntityCell.h"
 #import "FLDropboxHelper.h"
+#import "FLEntityCell.h"
 
+#define CELL_FONT [UIFont systemFontOfSize:18.0f]
+#define CELL_PADDING_LEFT 15.0f
+#define CELL_PADDING_TOP 11.0f
 #define HIGHLIGHT_COLOR [UIColor colorWithRed:0.627 green:0.78 blue:0.91 alpha:1.0]
 #define HIGHLIGHT_FADE_IN 0.0f
 #define HIGHLIGHT_FADE_OUT 0.4f
-#define CELL_FONT [UIFont systemFontOfSize:18.0f]
-#define CELL_PADDING_TOP 11.0f
-#define CELL_PADDING_LEFT 15.0f
-#define MAX_CONTENT_HEIGHT 120.0f
 #define IMAGE_CORNER_RADIUS 5.0f
+#define MAX_CONTENT_HEIGHT 120.0f
 #define SPINNER_SIZE 30.0f
 
 @interface FLEntityCell ()

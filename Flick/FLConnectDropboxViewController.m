@@ -9,13 +9,13 @@
 #import "FLConnectDropboxViewController.h"
 #import "FLDropboxHelper.h"
 
-#define EDGE_INSETS 11.0f
-#define CONNECT_TITLE @"Welcome to Flick!"
-#define ERROR_TITLE @"Whoops"
-#define CONNECT_CAPTION @"To commence the noble effort of pasting to the cloud, we’ll need to create a folder in your Dropbox."
-#define ERROR_CAPTION @"Looks like something went wrong. We’ll still need to connect with your Dropbox to get started, so let’s give it another shot."
 #define CONNECT_BUTTON_LABEL @"Let’s get started"
+#define CONNECT_CAPTION @"To commence the noble effort of pasting to the cloud, we’ll need to create a folder in your Dropbox."
+#define CONNECT_TITLE @"Welcome to Flick!"
+#define EDGE_INSETS 11.0f
 #define ERROR_BUTTON_LABEL @"Try again"
+#define ERROR_CAPTION @"Looks like something went wrong. We’ll still need to connect with your Dropbox to get started, so let’s give it another shot."
+#define ERROR_TITLE @"Whoops"
 
 @interface FLConnectDropboxViewController ()
 

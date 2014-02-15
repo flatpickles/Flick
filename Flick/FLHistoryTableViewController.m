@@ -6,15 +6,15 @@
 //  Copyright (c) 2013 Matt Nichols. All rights reserved.
 //
 
-#import "FLHistoryTableViewController.h"
 #import "FLEntity.h"
+#import "FLHistoryTableViewController.h"
 
+#define HIDDEN_TITLE_OPACITY 0.0f
+#define SEPARATOR_INSET 15.0f
 #define TITLE_FADE_IN 0.3f
 #define TITLE_FADE_OUT 0.1f
-#define HIDDEN_TITLE_OPACITY 0.0f
 #define TITLE_FONT [UIFont boldSystemFontOfSize:18.0f]
 #define TITLE_TEXT @"Your Pastes"
-#define SEPARATOR_INSET 15.0f
 
 @interface FLHistoryTableViewController ()
 

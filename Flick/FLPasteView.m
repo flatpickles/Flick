@@ -6,26 +6,25 @@
 //  Copyright (c) 2013 Matt Nichols. All rights reserved.
 //
 
-#define SCALE_FACTOR 1.04f
-#define START_SPEED 0.05f
-#define RETURN_SPEED 0.25f
-#define EXIT_DISTANCE 960.0f
+#import <AVFoundation/AVFoundation.h>
+#import <QuartzCore/QuartzCore.h>
+#import "FLPasteView.h"
+
+#define CONTENT_INSET 30.0f
+#define CORNER_RADIUS 5.0f
 #define EXIT_ANIMATION_DURATION 0.3f
-#define SWIPE_VELOCITY_THRESHOLD 2000.0f
+#define EXIT_DISTANCE 960.0f
+#define MIN_SIZE CGSizeMake(200.0f, 200.0f)
+#define MORE_TEXT_GRADIENT_START 0.7f
+#define RETURN_SPEED 0.25f
+#define SCALE_FACTOR 1.04f
+#define SHADOW_GROW_KEY @"ShadowGrow"
 #define SHADOW_OPACITY 0.7f
 #define SHADOW_RADIUS 3.0f
 #define SHADOW_SCALE_FACTOR 2.0f
-#define CORNER_RADIUS 5.0f
-#define CONTENT_INSET 30.0f
-#define MORE_TEXT_GRADIENT_START 0.7f
-#define MIN_SIZE CGSizeMake(200.0f, 200.0f)
-
-#define SHADOW_GROW_KEY @"ShadowGrow"
 #define SHADOW_SHRINK_KEY @"ShadowShrink"
-
-#import <QuartzCore/QuartzCore.h>
-#import <AVFoundation/AVFoundation.h>
-#import "FLPasteView.h"
+#define START_SPEED 0.05f
+#define SWIPE_VELOCITY_THRESHOLD 2000.0f
 
 @interface FLPasteView ()
 

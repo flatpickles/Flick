@@ -7,24 +7,18 @@
 //
 
 // todo:
-//  rewrite tips & tricks in settings?
-//  to profile:
+//  bugs:
 //      weird bounce lag when pulling up from bottom of list
 //      speed up startup after install / start up after kill
-//  bugs:
 //      shadow flash after resize
 //      unexpected flentity type
 //      delete disappearance weirdness
 //  cleanup:
-//      order defines
-//      double check imports
-//      remove unnecessary default declarations
-//      when to synchronize defaults?
-//  copy: use smart quotes, etc
+//      remove unnecessary defines and imports
+//      rewrite tips & tricks in settings?
+//      read over stuff for stupidity, maybe
 //  app icon
 //  address all other todos in code
-//  handle all error cases... network, dropbox, unrecognized type
-//  no priority high
 
 // someday:
 //  update list upon filesystem change?
@@ -36,9 +30,9 @@
 #import <Crashlytics/Crashlytics.h>
 
 #import "FLAppDelegate.h"
-#import "FLMainViewController.h"
 #import "FLDropboxHelper.h"
 #import "FLEntity.h"
+#import "FLMainViewController.h"
 
 @implementation FLAppDelegate
 

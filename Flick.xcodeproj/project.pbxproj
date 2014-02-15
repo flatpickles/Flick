@@ -494,6 +494,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Flick/Flick-Prefix.pch";
 				INFOPLIST_FILE = "Flick/Flick-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				"OTHER_LDFLAGS[arch=*]" = (
 					"-ObjC",
 					"-framework",
@@ -521,6 +522,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Flick/Flick-Prefix.pch";
 				INFOPLIST_FILE = "Flick/Flick-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "8A6272C6-CC66-4E46-B9F4-A5DF968676B4";
 				TARGETED_DEVICE_FAMILY = 1;
