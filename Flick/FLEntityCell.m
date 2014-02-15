@@ -23,6 +23,7 @@
 
 @property (atomic) FLEntity *entity;
 @property (atomic) BOOL loading;
+@property (atomic) DBFileInfo *loadingInfo;
 
 @end
 
@@ -66,6 +67,7 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
+    self.loadingInfo = nil;
     [self _setLoading];
 }
 
@@ -79,19 +81,23 @@
 
 - (void)loadEntity:(DBFileInfo *)info width:(CGFloat)width completion:(void (^)(CGFloat height))completionBlock
 {
+    self.loadingInfo = info;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        self.entity = [[FLDropboxHelper sharedHelper] retrieveFile:info];
-        CGFloat height = [self _heightForEntity:self.entity width:width];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.entity.type == PhotoEntity) {
-                self.imageView.image = self.entity.image;
-            } else {
-                self.textLabel.text = self.entity.text;
-            }
-            self.loading = NO;
-            [self setNeedsLayout];
-            completionBlock(height);
-        });
+        FLEntity *retrievedEntity = [[FLDropboxHelper sharedHelper] retrieveFile:info];
+        if (self.loadingInfo == info) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.entity = retrievedEntity;
+                CGFloat height = [self _heightForEntity:self.entity width:width];
+                if (self.entity.type == PhotoEntity) {
+                    self.imageView.image = self.entity.image;
+                } else {
+                    self.textLabel.text = self.entity.text;
+                }
+                self.loading = NO;
+                [self setNeedsLayout];
+                completionBlock(height);
+            });
+        }
     });
 }
 

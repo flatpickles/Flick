@@ -211,7 +211,6 @@
         } completion:^(BOOL finished) {
             if (!dismissed) {
                 // more performance heavy to upload, wait until it's off the screen
-                // todo: is this the best way to do this?
                 [self _handleExit];
             }
         }];
@@ -254,7 +253,6 @@
     } else {
         // swiped upwards
         [self.delegate shouldStorePaste:self.entity];
-        // todo: handle non-text clipboard entries, handle result of shouldStorePaste
     }
 }
 
@@ -266,8 +264,6 @@
         CGPoint trans = [pgr translationInView:pasteView];
         center = CGPointMake(center.x, center.y + trans.y);
         pasteView.center = center;
-
-        // todo: rotate here?
 
         [pgr setTranslation:CGPointZero inView:pasteView];
         pasteView.lastVelocity = [pgr velocityInView:pasteView];

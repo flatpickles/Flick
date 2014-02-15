@@ -34,6 +34,9 @@
         // setup dropbox manager
         DBAccountManager *mgr = [[DBAccountManager alloc] initWithAppKey:APP_KEY secret:APP_SECRET];
         [DBAccountManager setSharedManager:mgr];
+        if ([mgr linkedAccount] && ![DBFilesystem sharedFilesystem]) {
+            [DBFilesystem setSharedFilesystem:[[DBFilesystem alloc] initWithAccount:[mgr linkedAccount]]];
+        }
     }
     return helper;
 }
@@ -79,14 +82,17 @@
     });
 }
 
+- (BOOL)isLinked
+{
+    return [[DBAccountManager sharedManager] linkedAccount] != nil;
+}
+
 - (void)linkIfUnlinked:(UIViewController *)controller completion:(void (^)(BOOL))completionBlock
 {
-    DBAccountManager *manager = [DBAccountManager sharedManager];
-    if (![manager linkedAccount]) {
-        [manager linkFromController:controller];
+    if (![self isLinked]) {
+        [[DBAccountManager sharedManager] linkFromController:controller];
         self.linkCompletion = completionBlock;
-    } else if (![DBFilesystem sharedFilesystem]) {
-        [DBFilesystem setSharedFilesystem:[[DBFilesystem alloc] initWithAccount:[manager linkedAccount]]];
+    } else {
         completionBlock(YES);
     }
 }
@@ -181,7 +187,6 @@
             } else {
                 UIImage *imgCandidate = [UIImage imageWithData:fileData];
                 entity = [[FLEntity alloc] initWithObject:(imgCandidate) ? imgCandidate : [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding]];
-                // todo: maybe handle case of neither text nor image?
                 [self.entityCache setObject:entity forKey:fileInfo];
             }
         }
@@ -228,7 +233,7 @@
             [UIPasteboard generalPasteboard].URL = [NSURL URLWithString:path];
         }
     });
-    [delegate didCopyLinkForFile:fileInfo]; // todo: okay that it's not a callback??
+    [delegate didCopyLinkForFile:fileInfo];
 }
 
 - (void)_setPastCopiedFile:(FLEntity *)file copied:(BOOL)copied

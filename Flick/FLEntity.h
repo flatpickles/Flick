@@ -12,7 +12,6 @@ typedef enum {
     TextEntity,
     PhotoEntity
 } FLEntityType;
-// todo: add URL?
 
 @interface FLEntity : NSObject
 

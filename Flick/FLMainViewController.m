@@ -86,28 +86,34 @@
 {
     [super viewDidAppear:animated];
 
+    // setup block, to be executed immediately or after linking to dropbox
+    __weak typeof(self) weakSelf = self;
+    void (^setupBlock)() = ^{
+        typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf) {
+            [self becomeFirstResponder];
+            [FLDropboxHelper sharedHelper].guideView = self.guideView;
+            [strongSelf _displayPasteboardObject];
+
+            strongSelf.historyViewController.dataSource.fileInfoArray = [[[FLDropboxHelper sharedHelper] fileListing] mutableCopy];
+            [strongSelf.historyViewController.tableView reloadData];
+        }
+    };
+
     // show dropbox connect if need be
-    if (![DBFilesystem sharedFilesystem]) {
-        // show connect to dropbox VC
+    if (![[FLDropboxHelper sharedHelper] isLinked]) {
         FLConnectDropboxViewController *connect = [[FLConnectDropboxViewController alloc] init];
-        __weak typeof(self) weakSelf = self;
         connect.linkSuccess = ^{
-            typeof(weakSelf) strongSelf = weakSelf;
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                strongSelf.historyViewController.dataSource.fileInfoArray = [[[FLDropboxHelper sharedHelper] fileListing] mutableCopy];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    // make sure UI updates happen on main thread
-                    [strongSelf.historyViewController.tableView reloadData];
-                    [strongSelf _displayPasteboardObject];
-                });
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // make sure UI updates happen on main thread
+                setupBlock();
             });
         };
         [self.navigation setNavigationBarHidden:YES animated:YES];
         [self.navigation presentViewController:connect animated:YES completion:nil];
     } else {
-        [self becomeFirstResponder];
-        [FLDropboxHelper sharedHelper].guideView = self.guideView;
         [self.navigation setNavigationBarHidden:NO animated:YES];
+        setupBlock();
     }
 }
 
@@ -239,13 +245,10 @@
         typeof(weakSelf) strongSelf = weakSelf;
         if (strongSelf) {
             if (info) {
-                // todo: display success
                 [strongSelf.historyViewController addNewEntity:info];
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:COPY_LINK_ON_UPLOAD_KEY]) {
                     [[FLDropboxHelper sharedHelper] copyLinkForFile:info delegate:self];
                 }
-            } else {
-                // todo: display error
             }
         }
     }];

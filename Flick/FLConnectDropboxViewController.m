@@ -32,7 +32,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.navigationItem.title = @"Connect to Dropbox";
-        [self.navigationItem setHidesBackButton:YES]; // todo: undo this
     }
     return self;
 }
@@ -64,6 +63,8 @@
 
 - (void)viewDidLayoutSubviews
 {
+    // this is hella gross and should have its own view, but YOLO
+
     [super viewDidLayoutSubviews];
     CGFloat topOffset = EDGE_INSETS + [[UIApplication sharedApplication] statusBarFrame].size.height;
 

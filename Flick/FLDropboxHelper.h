@@ -21,6 +21,7 @@
 @property (nonatomic) FLGuideView *guideView;
 @property (nonatomic, readonly) NSArray *fileListing;
 
+- (BOOL)isLinked;
 - (void)linkIfUnlinked:(UIViewController *)controller completion:(void (^)(BOOL))completionBlock;
 - (BOOL)finishLinking:(NSURL *)url;
 - (void)handleError:(DBError *)error;

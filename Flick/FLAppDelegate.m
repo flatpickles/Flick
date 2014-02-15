@@ -7,12 +7,10 @@
 //
 
 // todo:
-//  settings:
-//      connect dropbox if unconnected (?)
-//      rewrite footer a little
-//  performance:
-//      startup after first install is still buggy, laggy, and generally fucked up
+//  rewrite tips & tricks in settings?
+//  to profile:
 //      weird bounce lag when pulling up from bottom of list
+//      speed up startup after install / start up after kill
 //  bugs:
 //      shadow flash after resize
 //      unexpected flentity type
@@ -26,13 +24,14 @@
 //  app icon
 //  address all other todos in code
 //  handle all error cases... network, dropbox, unrecognized type
-//  make sure dropbox is connected on launch
+//  no priority high
 
 // someday:
 //  update list upon filesystem change?
 //  tilt on swipe to dismiss (a la jelly)
 //  max image size: fullscreen?
 //  make text trimming in cells look better (truncate by words?)
+//  paste URLs, tappable in detail view to open a browser
 
 #import <Crashlytics/Crashlytics.h>
 
