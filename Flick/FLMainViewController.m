@@ -85,34 +85,28 @@
 {
     [super viewDidAppear:animated];
 
-    // setup block, to be executed immediately or after linking to dropbox
-    __weak typeof(self) weakSelf = self;
-    void (^setupBlock)() = ^{
-        typeof(weakSelf) strongSelf = weakSelf;
-        if (strongSelf) {
-            [self becomeFirstResponder];
-            [FLDropboxHelper sharedHelper].guideView = self.guideView;
-            [strongSelf _displayPasteboardObject];
-
-            strongSelf.historyViewController.dataSource.fileInfoArray = [[[FLDropboxHelper sharedHelper] fileListing] mutableCopy];
-            [strongSelf.historyViewController.tableView reloadData];
-        }
-    };
-
     // show dropbox connect if need be
     if (![[FLDropboxHelper sharedHelper] isLinked]) {
         FLConnectDropboxViewController *connect = [[FLConnectDropboxViewController alloc] init];
-        connect.linkSuccess = ^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // make sure UI updates happen on main thread
-                setupBlock();
-            });
-        };
         [self.navigation setNavigationBarHidden:YES animated:YES];
         [self.navigation presentViewController:connect animated:YES completion:nil];
     } else {
         [self.navigation setNavigationBarHidden:NO animated:YES];
-        setupBlock();
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            // will be executed on appearance or after linking to dropbox (and this once again appears)
+            typeof(weakSelf) strongSelf = weakSelf;
+            if (strongSelf) {
+                [self becomeFirstResponder];
+                [FLDropboxHelper sharedHelper].guideView = self.guideView;
+                strongSelf.historyViewController.dataSource.fileInfoArray = [[[FLDropboxHelper sharedHelper] fileListing] mutableCopy];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // make sure UI updates happen on main thread
+                    [strongSelf.historyViewController.tableView reloadData];
+                    [strongSelf _displayPasteboardObject];
+                });
+            }
+        });
     }
 }
 

@@ -8,6 +8,7 @@
 
 // todo:
 //  bugs:
+//      pasteview should display doesn't wait for dropbox sync (should it?)
 //      weird bounce lag when pulling up from bottom of list
 //      speed up startup after install / start up after kill
 //      shadow flash after resize
@@ -51,7 +52,7 @@
     return YES;
 }
 
--(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     return [[FLDropboxHelper sharedHelper] finishLinking:url];
 }

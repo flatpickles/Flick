@@ -22,6 +22,7 @@
 @property (nonatomic) UILabel *titleLabel;
 @property (nonatomic) UILabel *description;
 @property (nonatomic) UIButton *connect;
+@property (nonatomic) BOOL shouldDismiss;
 
 @end
 
@@ -61,6 +62,14 @@
     [self.view addSubview:self.connect];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (self.shouldDismiss) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
 - (void)viewDidLayoutSubviews
 {
     // this is hella gross and should have its own view, but YOLO
@@ -93,10 +102,17 @@
     [[FLDropboxHelper sharedHelper] linkIfUnlinked:self completion:^(BOOL success) {
         typeof(weakSelf) strongSelf = weakSelf;
         if (strongSelf && success) {
-            if (self.linkSuccess) {
-                self.linkSuccess();
+            if (strongSelf.presentingViewController.presentedViewController == weakSelf) {
+                // dropbox panel isn't displayed, so we can go ahead and dismiss this guy
+                [strongSelf.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                // this should dismiss on next appearance
+                strongSelf.shouldDismiss = YES;
             }
-            [self dismissViewControllerAnimated:YES completion:nil];
+
+            if (strongSelf.linkSuccess) {
+                strongSelf.linkSuccess();
+            }
         } else if (strongSelf) {
             // failed to connect! say so!
             strongSelf.titleLabel.text = ERROR_TITLE;
