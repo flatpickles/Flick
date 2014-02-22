@@ -8,8 +8,6 @@
 
 // todo:
 //  bugs:
-//      shake doesn't dismiss current pasteview
-//      pasteview over settings
 //      pasteview should display doesn't wait for dropbox sync (should it?)
 //      weird bounce lag when pulling up from bottom of list
 //      speed up startup after install / start up after kill

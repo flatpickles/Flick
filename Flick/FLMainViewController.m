@@ -179,8 +179,8 @@
 - (void)_displayPasteViewWithObject:(id)object
 {
     // should be called on background thread, canStoreObject is slow
-    // check if we should (if the thing displayed has already been stored, dropbox is good to go)
-    if (![DBFilesystem sharedFilesystem] || ![[FLDropboxHelper sharedHelper] canStoreObject:object]) {
+    // check if we should (if the thing displayed has already been stored, dropbox is good to go, main view is forefront)
+    if (![DBFilesystem sharedFilesystem] || ![[FLDropboxHelper sharedHelper] canStoreObject:object] || [self.navigation topViewController] != self.historyViewController) {
         return;
     }
 
@@ -203,7 +203,7 @@
             self.pasteView.delegate = self;
             [self.view addSubview:self.pasteView];
         } else if (self.pasteView.isDisplayed) {
-            if (![self.pasteView.entity isEqualToEntity:self.pasteView.entity]) {
+            if (![self.pasteView.entity isEqualToEntity:entityToDisplay]) {
                 [self.pasteView animateExitWithCompletion:displayBlock];
             }
             return;
