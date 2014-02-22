@@ -21,7 +21,7 @@
 
 @interface FLPasteView : UIView
 
-@property (nonatomic) id<FLPasteViewDelegate> delegate;
+@property (nonatomic, weak) id<FLPasteViewDelegate> delegate;
 @property (nonatomic) FLEntity *entity;
 @property (nonatomic, getter = isDisplayed) BOOL displayed;
 

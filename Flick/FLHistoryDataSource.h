@@ -20,7 +20,7 @@
 @interface FLHistoryDataSource : NSObject <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic) NSMutableArray *fileInfoArray;
-@property (nonatomic) id<FLHistoryActionsDelegate> delegate;
+@property (nonatomic, weak) id<FLHistoryActionsDelegate> delegate;
 @property (atomic) UITableView *tableView;
 
 - (void)handleLongPress:(NSIndexPath *)indexPath;
