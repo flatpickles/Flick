@@ -16,7 +16,8 @@
 
 @property (atomic, readonly) BOOL loading;
 @property (nonatomic) UIActivityIndicatorView *loadingView;
+@property (atomic) DBFileInfo *currentInfo;
 
-- (void)loadEntity:(DBFileInfo *)info width:(CGFloat)width completion:(void (^)(CGFloat height))completionBlock;
+- (void)loadEntity:(DBFileInfo *)info width:(CGFloat)width showSpinner:(BOOL)showSpinner completion:(void (^)(CGFloat height))completionBlock;
 
 @end

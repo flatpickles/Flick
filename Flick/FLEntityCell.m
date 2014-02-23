@@ -23,7 +23,6 @@
 
 @property (atomic) FLEntity *entity;
 @property (atomic) BOOL loading;
-@property (atomic) DBFileInfo *loadingInfo;
 
 @end
 
@@ -46,7 +45,6 @@
         self.loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         self.loadingView.hidesWhenStopped = YES;
         [self addSubview:self.loadingView];
-        [self _setLoading];
     }
     return self;
 }
@@ -64,13 +62,6 @@
     }
 }
 
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    self.loadingInfo = nil;
-    [self _setLoading];
-}
-
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
     [super setHighlighted:highlighted animated:animated];
@@ -79,12 +70,14 @@
     }];
 }
 
-- (void)loadEntity:(DBFileInfo *)info width:(CGFloat)width completion:(void (^)(CGFloat height))completionBlock
+- (void)loadEntity:(DBFileInfo *)info width:(CGFloat)width showSpinner:(BOOL)showSpinner completion:(void (^)(CGFloat height))completionBlock
 {
-    self.loadingInfo = info;
+    [self _setLoading:showSpinner];
+    self.currentInfo = info;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         FLEntity *retrievedEntity = [[FLDropboxHelper sharedHelper] retrieveFile:info];
-        if (self.loadingInfo == info) {
+        if (self.currentInfo == info && self.loading) {
+            self.loading = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.entity = retrievedEntity;
                 CGFloat height = [self _heightForEntity:self.entity width:width];
@@ -93,22 +86,22 @@
                 } else {
                     self.textLabel.text = self.entity.text;
                 }
-                self.loading = NO;
-                [self setNeedsLayout];
                 completionBlock(height);
             });
         }
     });
 }
 
-- (void)_setLoading
+- (void)_setLoading:(BOOL)showSpinner
 {
     self.imageView.image = nil;
     self.textLabel.text = nil;
     self.loading = YES;
-    self.loadingView.layer.opacity = 1.0f;
-    [self.loadingView startAnimating];
-    [self setNeedsLayout];
+    if (showSpinner) {
+        self.loadingView.layer.opacity = 1.0f;
+        [self.loadingView startAnimating];
+        [self setNeedsLayout];
+    }
 }
 
 - (CGFloat)_heightForEntity:(FLEntity *)entity width:(CGFloat)width

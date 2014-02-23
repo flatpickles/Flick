@@ -8,10 +8,6 @@
 
 // todo:
 //  bugs:
-//      pasteview should display doesn't wait for dropbox sync (should it?)
-//      weird bounce lag when pulling up from bottom of list
-//      speed up startup after install / start up after kill
-//      shadow flash after resize
 //      unexpected flentity type
 //      delete disappearance weirdness
 //  cleanup:
@@ -27,6 +23,14 @@
 //  max image size: fullscreen?
 //  make text trimming in cells look better (truncate by words?)
 //  paste URLs, tappable in detail view to open a browser
+//  iPad
+//  performance:
+//      when downloading a bunch of things, want to prioritize
+//      displaying already downloaded things (bug: scroll a lot
+//      while downloading, some cells are temporarily hidden)
+
+// unreproducible:
+//  shadow flash after resize
 
 #import <Crashlytics/Crashlytics.h>
 

@@ -74,20 +74,25 @@
     }
 
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-    [cell loadEntity:info width:self.tableView.frame.size.width completion:^(CGFloat height) {
-        NSNumber *currentHeight = [self.loadedHeights objectForKey:info];
+    if (cell.currentInfo == info && !cell.loading) {
+        // if we've loaded this already, let's just use it!
+        return cell;
+    }
+
+    NSNumber *currentHeight = [self.loadedHeights objectForKey:info];
+    [cell loadEntity:info width:self.tableView.frame.size.width showSpinner:!currentHeight completion:^(CGFloat height) {
         [self.loadedHeights setObject:[NSNumber numberWithFloat:height] forKey:info];
         if (!currentHeight) {
             // fade out the spinner
             [UIView animateWithDuration:LOADING_FADE_IN_DURATION animations:^{
                 cell.loadingView.layer.opacity = 0.0f;
-            } completion:nil];
-            // update the heights in the table and fade in
+            } completion:^(BOOL finished) {
+                [cell.loadingView stopAnimating];
+            }];
             cell.textLabel.layer.opacity = 0.0f;
             cell.imageView.layer.opacity = 0.0f;
             [CATransaction begin];
             [CATransaction setCompletionBlock:^{
-                [cell.loadingView stopAnimating];
                 [UIView animateWithDuration:LOADING_FADE_IN_DURATION animations:^{
                     cell.textLabel.layer.opacity = 1.0f;
                     cell.imageView.layer.opacity = 1.0f;
@@ -96,12 +101,8 @@
             [self.tableView beginUpdates];
             [self.tableView endUpdates];
             [CATransaction commit];
-        } else {
-            // update height without animation
-            [cell.loadingView stopAnimating];
-            [self.tableView beginUpdates];
-            [self.tableView endUpdates];
         }
+        [cell setNeedsLayout];
     }];
     return cell;
 }
