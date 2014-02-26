@@ -7,6 +7,7 @@
 //
 
 #import "FLEntity.h"
+#import "FLEntityCell.h"
 #import "FLHistoryTableViewController.h"
 
 #define HIDDEN_TITLE_OPACITY 0.0f
@@ -32,6 +33,7 @@
         self.tableView.delegate = self.dataSource;
         self.tableView.dataSource = self.dataSource;
         self.tableView.separatorInset = UIEdgeInsetsMake(0.0f, SEPARATOR_INSET, 0.0f, SEPARATOR_INSET);
+        self.tableView.rowHeight = CELL_LOADING_HEIGHT;
     }
     return self;
 }
@@ -109,7 +111,9 @@
         // only call once per gesture
         CGPoint pt = [gestureRec locationInView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:pt];
-        [self.dataSource handleRightSwipe:indexPath navController:self.navigationController];
+        if (indexPath) {
+            [self.dataSource handleRightSwipe:indexPath navController:self.navigationController];
+        }
     }
 }
 

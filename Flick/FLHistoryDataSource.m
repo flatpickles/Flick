@@ -35,16 +35,16 @@
 - (void)handleLongPress:(NSIndexPath *)indexPath
 {
     // copy the shortened DB link to the file at this index path
-    DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-    if ([self.loadedHeights objectForKey:info]) {
+    DBFileInfo *info = [self _infoAtIndex:indexPath.row];
+    if (info && [self.loadedHeights objectForKey:info]) {
         [[FLDropboxHelper sharedHelper] copyLinkForFile:info delegate:self.delegate];
     }
 }
 
 - (void)handleRightSwipe:(NSIndexPath *)indexPath navController:(UINavigationController *)nav
 {
-    DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
-    if ([self.loadedHeights objectForKey:info]) {
+    DBFileInfo *info = [self _infoAtIndex:indexPath.row];
+    if (info && [self.loadedHeights objectForKey:info]) {
         FLDetailViewController *detailVC = [[FLDetailViewController alloc] initWithEntity:[[FLDropboxHelper sharedHelper] retrieveFile:info]];
         [UIView animateWithDuration:FLIP_DURATION animations:^{
             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -52,6 +52,14 @@
             [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:nav.view cache:NO];
         }];
     }
+}
+
+- (DBFileInfo *)_infoAtIndex:(NSInteger)index
+{
+    if (index < [self.fileInfoArray count]) {
+        return [self.fileInfoArray objectAtIndex:index];
+    }
+    return nil;
 }
 
 #pragma mark - Table view data source

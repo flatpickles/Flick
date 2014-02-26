@@ -79,7 +79,7 @@
     }
     const char *cStr = [someStr UTF8String];
     unsigned char result[CC_MD5_DIGEST_LENGTH];
-    CC_MD5(cStr, strlen(cStr), result);
+    CC_MD5(cStr, (int)strlen(cStr), result);
     NSString *hash = [NSString stringWithFormat:
             @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
             result[0], result[1], result[2], result[3],

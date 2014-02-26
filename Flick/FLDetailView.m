@@ -23,6 +23,7 @@
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
     // reset everything
     [self.textView removeFromSuperview];
     [self.imageScrollView removeFromSuperview];
@@ -47,10 +48,11 @@
         self.imageScrollView.maximumZoomScale = 3.0f;
         self.imageScrollView.contentSize = self.imageView.frame.size;
 
-        self.imageView = [[UIImageView alloc] initWithFrame:self.imageScrollView.bounds];
+        self.imageView = [[UIImageView alloc] init];
         self.imageView.image = self.entity.image;
-        BOOL photoTooSmall = self.entity.image.size.width < self.imageView.frame.size.width && self.entity.image.size.height < self.imageView.frame.size.height;
+        BOOL photoTooSmall = self.entity.image.size.width < self.imageScrollView.bounds.size.width && self.entity.image.size.height < self.imageScrollView.bounds.size.height;
         self.imageView.contentMode = (photoTooSmall) ? UIViewContentModeCenter : UIViewContentModeScaleAspectFit;
+        self.imageView.frame = self.imageScrollView.bounds;
 
         [self addSubview:self.imageScrollView];
         [self.imageScrollView addSubview:self.imageView];

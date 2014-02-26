@@ -117,10 +117,11 @@
     self.imageView.layer.opacity = 1.0f;
 
     self.imageView.image = image;
-    self.imageView.frame = AVMakeRectWithAspectRatioInsideRect(image.size, CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET));
+    CGRect imageSize = AVMakeRectWithAspectRatioInsideRect(image.size, CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET));
 
-    BOOL photoTooSmall = image.size.width < self.imageView.frame.size.width && image.size.height < self.imageView.frame.size.height;
+    BOOL photoTooSmall = image.size.width < imageSize.size.width && image.size.height < imageSize.size.height;
     self.imageView.contentMode = (photoTooSmall) ? UIViewContentModeCenter : UIViewContentModeScaleAspectFit;
+    self.imageView.frame = imageSize;
 }
 
 - (void)_layoutText:(NSString *)text
