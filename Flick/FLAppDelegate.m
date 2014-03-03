@@ -18,11 +18,13 @@
 //  address all other todos in code
 
 // someday:
+//  animate gifs
 //  update list upon filesystem change?
 //  tilt on swipe to dismiss (a la jelly)
 //  max image size: fullscreen?
 //  make text trimming in cells look better (truncate by words?)
 //  paste URLs, tappable in detail view to open a browser
+//  plus button - reappear when you delete whatever is in your clipboard
 //  iPad
 //  performance:
 //      when downloading a bunch of things, want to prioritize

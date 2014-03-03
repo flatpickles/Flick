@@ -36,6 +36,8 @@
 @property (atomic) FLPasteView *pasteView;
 @property (atomic) FLGuideView *guideView;
 @property (nonatomic) BOOL shouldDisplayGuide;
+@property (nonatomic) UIBarButtonItem *addButton;
+@property (nonatomic) FLPasteOrigin currentOrigin;
 
 @end
 
@@ -70,11 +72,15 @@
     [self addChildViewController:self.navigation];
     [self.view addSubview:self.navigation.view];
 
+    // set up add button
+    self.addButton = [[UIBarButtonItem alloc] initWithTitle:@"\uFF0B" style:UIBarButtonItemStylePlain target:self action:@selector(_displayPasteboardObject)];
+    [self.addButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:SETTINGS_FONT_SIZE], NSForegroundColorAttributeName: SETTINGS_FONT_COLOR} forState:UIControlStateNormal];
+
     // set up settings
     self.settingsViewController = [[FLSettingsViewController alloc] init];
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(_displaySettings)];
-    [button setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:SETTINGS_FONT_SIZE], NSForegroundColorAttributeName: SETTINGS_FONT_COLOR} forState:UIControlStateNormal];
-    self.historyViewController.navigationItem.rightBarButtonItem = button;
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"\u2699" style:UIBarButtonItemStylePlain target:self action:@selector(_displaySettings)];
+    [settingsButton setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:SETTINGS_FONT_SIZE], NSForegroundColorAttributeName: SETTINGS_FONT_COLOR} forState:UIControlStateNormal];
+    self.historyViewController.navigationItem.rightBarButtonItem = settingsButton;
 
     // setup guide view
     self.guideView = [[FLGuideView alloc] initWithFrame:self.view.frame];
@@ -134,6 +140,7 @@
         id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
         if (pasteboardObject) {
             [self _displayPasteViewWithObject:pasteboardObject];
+            self.currentOrigin = FLPasteOriginClipboard;
         }
     });
 }
@@ -162,6 +169,7 @@
 
                         // UI stuff will happen on main thread within _displayPasteViewWithObject
                         [strongSelf _displayPasteViewWithObject:image];
+                        strongSelf.currentOrigin = FLPasteOriginCameraRoll;
                         *stop = YES;
                     }
                 }];
@@ -189,6 +197,7 @@
         // configure
         [self.historyViewController setOpacity:HISTORY_BACKGROUND_OPACITY withDuration:PASTE_FADE_DURATION];
         self.navigation.view.userInteractionEnabled = NO;
+        [self _updateAddButton:NO];
 
         // set content
         self.pasteView.entity = entityToDisplay;
@@ -223,6 +232,11 @@
     self.navigation.view.userInteractionEnabled = YES;
 }
 
+- (void)_updateAddButton:(BOOL)displayed
+{
+    [self.historyViewController.navigationItem setLeftBarButtonItem:(displayed ? self.addButton : nil) animated:YES];
+}
+
 #pragma mark - FLPasteViewDelegate
 
 - (void)shouldStorePaste:(FLEntity *)pasteEntity
@@ -231,6 +245,7 @@
     [self.guideView hide:FLGuideDisplayTypeTop];
     [self.historyViewController hideTitle:NO animate:NO];
     [self _setupForHistoryViewing];
+    [self _updateAddButton:NO];
 
     // upload and display file
     __weak typeof(self) weakSelf = self;
@@ -255,6 +270,9 @@
         [self.historyViewController hideTitle:NO animate:YES];
     }];
     [self _setupForHistoryViewing];
+    if (self.currentOrigin == FLPasteOriginClipboard) {
+        [self _updateAddButton:YES];
+    }
 }
 
 - (void)pasteViewActive

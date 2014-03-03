@@ -10,6 +10,11 @@
 #import "FLHistoryDataSource.h"
 #import "FLPasteView.h"
 
+typedef enum {
+    FLPasteOriginCameraRoll,
+    FLPasteOriginClipboard
+} FLPasteOrigin;
+
 @interface FLMainViewController : UIViewController <FLPasteViewDelegate, FLHistoryActionsDelegate>
 
 @end
