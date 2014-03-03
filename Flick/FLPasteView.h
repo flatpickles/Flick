@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "FLEntity.h"
 
+#define AUTO_SWIPE_DISTANCE 50.0f
+
 @protocol FLPasteViewDelegate <NSObject>
 
 - (void)shouldStorePaste:(FLEntity *)pasteEntity;

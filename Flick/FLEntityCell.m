@@ -10,6 +10,7 @@
 #import "FLEntityCell.h"
 
 #define CELL_FONT [UIFont systemFontOfSize:18.0f]
+#define CELL_MIN_HEIGHT 50.0f
 #define CELL_PADDING_LEFT 15.0f
 #define CELL_PADDING_TOP 11.0f
 #define HIGHLIGHT_COLOR [UIColor colorWithRed:0.627 green:0.78 blue:0.91 alpha:1.0]
@@ -113,7 +114,7 @@
         CGRect textSize = [entity.text boundingRectWithSize:CGSizeMake(width - CELL_PADDING_LEFT * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:CELL_FONT} context:nil];
         baseHeight = MIN(textSize.size.height, MAX_CONTENT_HEIGHT);
     }
-    return baseHeight + CELL_PADDING_TOP * 2;
+    return MAX(CELL_MIN_HEIGHT, baseHeight + CELL_PADDING_TOP * 2);
 }
 
 @end

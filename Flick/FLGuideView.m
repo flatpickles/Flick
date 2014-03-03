@@ -7,6 +7,7 @@
 //
 
 #import "FLGuideView.h"
+#import "FLPasteView.h"
 
 #define DISMISS_COLOR [UIColor colorWithRed:0.906f green:0.541f blue:0.239f alpha:1.0f]
 #define DISMISS_TEXT @"Dismiss Paste"
@@ -82,7 +83,7 @@
 
 - (void)fadeRelativeToPasteOffset:(CGFloat)yOffset
 {
-    CGFloat maxDistance = [[UIScreen mainScreen] bounds].size.height/4;
+    CGFloat maxDistance = [[UIScreen mainScreen] bounds].size.height/2 - AUTO_SWIPE_DISTANCE;
     CGFloat newOpacity = 1 - MIN(1, ABS(yOffset) / maxDistance);
     if (yOffset > 0.0f) {
         self.bottomView.layer.opacity = 1.0f;

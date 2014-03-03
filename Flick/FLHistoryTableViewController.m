@@ -101,7 +101,9 @@
         // only call once per gesture
         CGPoint pt = [gestureRec locationInView:self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:pt];
-        [self.dataSource handleLongPress:indexPath];
+        if (indexPath) {
+            [self.dataSource handleLongPress:indexPath];
+        }
     }
 }
 

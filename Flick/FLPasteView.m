@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "FLPasteView.h"
 
+#define AUTO_SWIPE_DURATION 0.5f
 #define CONTENT_INSET 30.0f
 #define CORNER_RADIUS 5.0f
 #define EXIT_ANIMATION_DURATION 0.3f
@@ -192,13 +193,21 @@
 - (void)_endAnimation
 {
     CGFloat velocity = sqrt(pow(self.lastVelocity.x, 2.0) + pow(self.lastVelocity.y, 2.0));
-    if (velocity < SWIPE_VELOCITY_THRESHOLD) {
+    BOOL shouldAutoDismiss = self.center.y < AUTO_SWIPE_DISTANCE || self.center.y > [[UIScreen mainScreen] bounds].size.height - AUTO_SWIPE_DISTANCE;
+    if (velocity < SWIPE_VELOCITY_THRESHOLD && !shouldAutoDismiss) {
         [self _resetWithAnimations:YES];
     } else {
-        // continue animation in the direction of last swipe, at the right speed
-        CGFloat theta = atan2f(self.lastVelocity.y, 0.0f);
-        CGPoint target = CGPointMake(EXIT_DISTANCE * cosf(theta), EXIT_DISTANCE * sinf(theta));
-        NSTimeInterval duration = EXIT_DISTANCE / velocity;
+        CGPoint target;
+        NSTimeInterval duration;
+        if (shouldAutoDismiss) {
+            target = CGPointMake(0, ((self.center.y > [[UIScreen mainScreen] bounds].size.height/2) ? EXIT_DISTANCE : - EXIT_DISTANCE));
+            duration = AUTO_SWIPE_DURATION;
+        } else {
+            // continue animation in the direction of last swipe, at the right speed
+            CGFloat theta = atan2f(self.lastVelocity.y, 0.0f);
+            target = CGPointMake(EXIT_DISTANCE * cosf(theta), EXIT_DISTANCE * sinf(theta));
+            duration = EXIT_DISTANCE / velocity;
+        }
 
         [self.delegate pasteViewMoved:target.y - self.originalCenter.y];
         BOOL dismissed = target.y > [[UIScreen mainScreen] bounds].size.height/2;
