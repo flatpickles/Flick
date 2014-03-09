@@ -32,10 +32,13 @@
     [self.navigationController setNavigationBarHidden:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
 
-    // swipe recognizer
-    UISwipeGestureRecognizer *swipeRec = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(_dismiss:)];
-    swipeRec.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self.view addGestureRecognizer:swipeRec];
+    // swipe recognizers
+    UISwipeGestureRecognizer *swipeRecLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(_dismissLeft:)];
+    swipeRecLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:swipeRecLeft];
+    UISwipeGestureRecognizer *swipeRecRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(_dismissRight:)];
+    swipeRecRight.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:swipeRecRight];
 
     // tap recognizer
     UITapGestureRecognizer *tapRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dismiss:)];
@@ -56,17 +59,30 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)_dismiss:(UISwipeGestureRecognizer *)gestureRec
+- (void)_dismissRight:(UISwipeGestureRecognizer *)gestureRec
 {
     if (gestureRec.state == UIGestureRecognizerStateRecognized) {
-        [UIView animateWithDuration:FLIP_DURATION animations:^{
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-            [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
-        }];
-        [self.navigationController setNavigationBarHidden:NO];
-        [self.navigationController popViewControllerAnimated:NO];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [self _dismiss:NO];
     }
+}
+
+- (void)_dismissLeft:(UISwipeGestureRecognizer *)gestureRec
+{
+    if (gestureRec.state == UIGestureRecognizerStateRecognized) {
+        [self _dismiss:YES];
+    }
+
+}
+
+- (void)_dismiss:(BOOL)flipRight
+{
+    [UIView animateWithDuration:FLIP_DURATION animations:^{
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView setAnimationTransition:((flipRight) ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) forView:self.navigationController.view cache:NO];
+    }];
+    [self.navigationController setNavigationBarHidden:NO];
+    [self.navigationController popViewControllerAnimated:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 }
 
 @end
