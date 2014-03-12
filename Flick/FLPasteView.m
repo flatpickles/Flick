@@ -98,7 +98,9 @@
 {
     _entity = entity;
 
+    self.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
     self.frame = self.originalFrame; // so subviews will be positioned with offsets independent of previous state
+
     UIView *displayView;
     if (entity.type == TextEntity) {
         [self _layoutText:entity.text];

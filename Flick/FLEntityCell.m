@@ -53,14 +53,13 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if (self.loading) {
-        self.loadingView.frame = CGRectMake(self.bounds.size.width/2 - SPINNER_SIZE/2, CELL_LOADING_HEIGHT/2 - SPINNER_SIZE/2, SPINNER_SIZE, SPINNER_SIZE);
-        self.loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    } else {
-        [self.imageView sizeToFit];
-        self.imageView.frame = CGRectIntersection(CGRectInset(self.bounds, CELL_PADDING_LEFT, CELL_PADDING_TOP), self.imageView.frame);
-        self.imageView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
-    }
+
+    self.loadingView.frame = CGRectMake(self.bounds.size.width/2 - SPINNER_SIZE/2, CELL_LOADING_HEIGHT/2 - SPINNER_SIZE/2, SPINNER_SIZE, SPINNER_SIZE);
+    self.loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+
+    [self.imageView sizeToFit];
+    self.imageView.frame = CGRectIntersection(CGRectInset(self.bounds, CELL_PADDING_LEFT, CELL_PADDING_TOP), self.imageView.frame);
+    self.imageView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated

@@ -102,7 +102,7 @@
     [[FLDropboxHelper sharedHelper] linkIfUnlinked:self completion:^(BOOL success) {
         typeof(weakSelf) strongSelf = weakSelf;
         if (strongSelf && success) {
-            if (strongSelf.presentingViewController.presentedViewController == weakSelf) {
+            if (strongSelf.presentingViewController.presentedViewController == strongSelf) {
                 // dropbox panel isn't displayed, so we can go ahead and dismiss this guy
                 [strongSelf.presentingViewController dismissViewControllerAnimated:YES completion:nil];
             } else {

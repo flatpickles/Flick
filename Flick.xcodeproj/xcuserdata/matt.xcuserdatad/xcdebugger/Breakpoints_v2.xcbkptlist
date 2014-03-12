@@ -10,41 +10,57 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Flick/FLPasteView.m"
-            timestampString = "415503145.086888"
+            timestampString = "416295214.721587"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
-            landmarkName = "-_endAnimation"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
+            landmarkName = "-setEntity:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Flick/FLHistoryDataSource.m"
+            timestampString = "416295461.989248"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[FLPasteView _endAnimation]"
+                  symbolName = "__55-[FLHistoryDataSource tableView:cellForRowAtIndexPath:]_block_invoke_2"
                   moduleName = "Flick"
-                  urlString = "file:///Users/matt/dev/iOS/Flick/Flick/FLPasteView.m"
-                  timestampString = "416005280.52855"
+                  urlString = "file:///Users/matt/dev/iOS/Flick/Flick/FLHistoryDataSource.m"
+                  timestampString = "416296088.79074"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "212"
-                  endingLineNumber = "212"
-                  offsetFromSymbolStart = "498">
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "2">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[FLPasteView _endAnimation]"
+                  symbolName = "__55-[FLHistoryDataSource tableView:cellForRowAtIndexPath:]_block_invoke_2"
                   moduleName = "Flick"
-                  urlString = "file:///Users/matt/dev/iOS/Flick/Flick/FLPasteView.m"
-                  timestampString = "416005282.931028"
+                  urlString = "file:///Users/matt/dev/iOS/Flick/Flick/FLHistoryDataSource.m"
+                  timestampString = "416296088.790983"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "212"
-                  endingLineNumber = "212"
-                  offsetFromSymbolStart = "504">
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "8">
                </Location>
             </Locations>
          </BreakpointContent>
