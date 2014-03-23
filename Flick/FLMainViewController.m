@@ -15,6 +15,7 @@
 #import "FLPasteView.h"
 #import "FLSettingsViewController.h"
 
+#define AFTER_INTRO_DELAY 0.4f
 #define COPY_LINK_MESSAGE @"Dropbox link copied to clipboard"
 #define COPY_MESSAGE @"%@ copied to clipboard"
 #define GUIDEVIEW_DISPLAY_DELAY 0.1f
@@ -28,6 +29,9 @@
 #define STATUS_BAR_FADE_DURATION 0.3f
 #define TITLE_TEXT_FADE_DELAY 0.3f
 
+#define INTRO_DEFAULT_KEY @"userHasSeenIntroKey"
+#define INTRO_TEXT @"Whenever you open Flick, one of these cards will pop up with whatever is currently copied to your clipboard. Flick up to upload it to Dropbox, or down to dismiss. Tap \u2699 for more options and usage tips. Dismiss this card to get started!"
+
 @interface FLMainViewController ()
 
 @property (nonatomic) UINavigationController *navigation;
@@ -37,6 +41,7 @@
 @property (atomic) FLGuideView *guideView;
 @property (nonatomic) BOOL shouldDisplayGuide;
 @property (nonatomic) UIBarButtonItem *addButton;
+@property (nonatomic) BOOL isDisplayingIntro;
 
 @end
 
@@ -109,7 +114,12 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     // make sure UI updates happen on main thread
                     [strongSelf.historyViewController.tableView reloadData];
-                    [strongSelf _displayPasteboardObject];
+                    BOOL shouldShowIntro = ![[NSUserDefaults standardUserDefaults] boolForKey:INTRO_DEFAULT_KEY];
+                    if (shouldShowIntro) {
+                        [strongSelf _displayIntro];
+                    } else {
+                        [strongSelf _displayPasteboardObject];
+                    }
                 });
             }
         });
@@ -130,6 +140,7 @@
 
 - (void)_displayPasteboardObject
 {
+    self.isDisplayingIntro = NO;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
         if (pasteboardObject) {
@@ -140,6 +151,7 @@
 
 - (void)_displayLastPhoto
 {
+    self.isDisplayingIntro = NO;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
         __weak typeof(self) weakSelf = self;
@@ -173,6 +185,24 @@
                 [alert show];
             });
         }];
+    });
+}
+
+- (void)_displayIntro
+{
+    self.isDisplayingIntro = YES;
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:INTRO_DEFAULT_KEY];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self _displayPasteViewWithObject:INTRO_TEXT];
+    });
+}
+
+- (void)_introWasDisplayed
+{
+    double delayInSeconds = AFTER_INTRO_DELAY;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        [self _displayPasteboardObject];
     });
 }
 
@@ -258,13 +288,19 @@
         if (strongSelf) {
             if (info) {
                 [strongSelf.historyViewController addNewEntity:info];
-                [self _updateAddButtonForceHidden:NO];
+                if (!self.isDisplayingIntro) {
+                    [self _updateAddButtonForceHidden:NO];
+                }
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:COPY_LINK_ON_UPLOAD_KEY]) {
                     [[FLDropboxHelper sharedHelper] copyLinkForFile:info delegate:self];
                 }
             }
         }
     }];
+
+    if (self.isDisplayingIntro) {
+        [self _introWasDisplayed];
+    }
 }
 
 - (void)didDismissPaste:(FLEntity *)pasteEntity
@@ -275,7 +311,13 @@
         [self.historyViewController hideTitle:NO animate:YES];
     }];
     [self _setupForHistoryViewing];
-    [self _updateAddButtonForceHidden:NO];
+
+
+    if (self.isDisplayingIntro) {
+        [self _introWasDisplayed];
+    } else {
+        [self _updateAddButtonForceHidden:NO];
+    }
 }
 
 - (void)pasteViewActive

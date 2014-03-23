@@ -9,7 +9,7 @@
 #import "FLConnectDropboxViewController.h"
 #import "FLDropboxHelper.h"
 
-#define CONNECT_BUTTON_LABEL @"Let’s get started"
+#define CONNECT_BUTTON_LABEL @"Let’s rock and roll"
 #define CONNECT_CAPTION @"To commence the noble effort of pasting to the cloud, we’ll need to create a folder in your Dropbox."
 #define CONNECT_TITLE @"Welcome to Flick!"
 #define EDGE_INSETS 11.0f
