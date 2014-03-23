@@ -76,7 +76,7 @@
 - (void)handleError:(DBError *)error
 {
     DBErrorCode code = error.code;
-    CLS_LOG(@"Dropbox error: %d", code);
+    CLS_LOG(@"Dropbox error: %ld", (long)code);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.guideView displayError:DROPBOX_ERROR_TEXT];
     });
@@ -194,7 +194,7 @@
     }
 }
 
-- (BOOL)deleteFile:(DBFileInfo *)fileInfo
+- (BOOL)deleteFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate
 {
     DBError *error = nil;
     FLEntity *entity = [self retrieveFile:fileInfo];
@@ -204,6 +204,7 @@
     }
     if (success) {
         [self _setPastCopiedFile:entity copied:NO];
+        [delegate didDeleteFile];
     }
     return success;
 }

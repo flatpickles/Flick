@@ -28,15 +28,6 @@
 
 @implementation FLConnectDropboxViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.navigationItem.title = @"Connect to Dropbox";
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -90,17 +81,11 @@
     self.connect.center = CGPointMake(self.view.bounds.size.width/2, self.connect.center.y);
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)_beginDropbox
 {
     __weak typeof(self) weakSelf = self;
     [[FLDropboxHelper sharedHelper] linkIfUnlinked:self completion:^(BOOL success) {
-        typeof(weakSelf) strongSelf = weakSelf;
+        typeof(self) strongSelf = weakSelf;
         if (strongSelf && success) {
             if (strongSelf.presentingViewController.presentedViewController == strongSelf) {
                 // dropbox panel isn't displayed, so we can go ahead and dismiss this guy

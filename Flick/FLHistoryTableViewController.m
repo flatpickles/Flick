@@ -84,8 +84,8 @@
 - (void)setOpacity:(CGFloat)opacity withDuration:(NSTimeInterval)duration
 {
     [UIView animateWithDuration:duration animations:^{
+        // this could be self.navigationController.view - is is, the nav bar is not faded
         self.view.layer.opacity = opacity;
-        // todo: should this be self.navigationController.view? That would include title
     } completion:nil];
 }
 
@@ -117,12 +117,6 @@
             [self.dataSource handleRightSwipe:indexPath navController:self.navigationController];
         }
     }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

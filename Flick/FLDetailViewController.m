@@ -53,12 +53,6 @@
     self.view = detailView;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)_dismissRight:(UISwipeGestureRecognizer *)gestureRec
 {
     if (gestureRec.state == UIGestureRecognizerStateRecognized) {

@@ -37,7 +37,6 @@
 @property (atomic) FLGuideView *guideView;
 @property (nonatomic) BOOL shouldDisplayGuide;
 @property (nonatomic) UIBarButtonItem *addButton;
-@property (nonatomic) FLPasteOrigin currentOrigin;
 
 @end
 
@@ -71,6 +70,7 @@
     self.navigation = [[UINavigationController alloc] initWithRootViewController:self.historyViewController];
     [self addChildViewController:self.navigation];
     [self.view addSubview:self.navigation.view];
+    self.navigation.delegate = self;
 
     // set up add button
     self.addButton = [[UIBarButtonItem alloc] initWithTitle:@"\uFF0B" style:UIBarButtonItemStylePlain target:self action:@selector(_displayPasteboardObject)];
@@ -101,7 +101,7 @@
         __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             // will be executed on appearance or after linking to dropbox (and this once again appears)
-            typeof(weakSelf) strongSelf = weakSelf;
+            typeof(self) strongSelf = weakSelf;
             if (strongSelf) {
                 [self becomeFirstResponder];
                 [FLDropboxHelper sharedHelper].guideView = self.guideView;
@@ -128,19 +128,12 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)_displayPasteboardObject
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
         if (pasteboardObject) {
             [self _displayPasteViewWithObject:pasteboardObject];
-            self.currentOrigin = FLPasteOriginClipboard;
         }
     });
 }
@@ -154,7 +147,7 @@
             if (group && group.numberOfAssets > 0) {
                 [group setAssetsFilter:[ALAssetsFilter allPhotos]];
                 [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                    typeof(weakSelf) strongSelf = weakSelf;
+                    typeof(self) strongSelf = weakSelf;
                     if (result && strongSelf) {
                         ALAssetRepresentation *rep = [result defaultRepresentation];
 
@@ -169,7 +162,6 @@
 
                         // UI stuff will happen on main thread within _displayPasteViewWithObject
                         [strongSelf _displayPasteViewWithObject:image];
-                        strongSelf.currentOrigin = FLPasteOriginCameraRoll;
                         *stop = YES;
                     }
                 }];
@@ -197,11 +189,11 @@
         // configure
         [self.historyViewController setOpacity:HISTORY_BACKGROUND_OPACITY withDuration:PASTE_FADE_DURATION];
         self.navigation.view.userInteractionEnabled = NO;
-        [self _updateAddButton:NO];
 
         // set content
         self.pasteView.entity = entityToDisplay;
         [self.pasteView fadeIn:PASTE_FADE_DURATION];
+        [self _updateAddButtonForceHidden:YES];
     };
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -232,9 +224,21 @@
     self.navigation.view.userInteractionEnabled = YES;
 }
 
-- (void)_updateAddButton:(BOOL)displayed
+- (void)_updateAddButtonForceHidden:(BOOL)hidden
 {
-    [self.historyViewController.navigationItem setLeftBarButtonItem:(displayed ? self.addButton : nil) animated:YES];
+    if (hidden) {
+        // force hide, avoid DB check. Can be used for faster evaluation.
+        [self.historyViewController.navigationItem setLeftBarButtonItem:nil animated:YES];
+        return;
+    }
+
+    id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL display = !self.pasteView.isDisplayed && [DBFilesystem sharedFilesystem] && [[FLDropboxHelper sharedHelper] canStoreObject:pasteboardObject];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.historyViewController.navigationItem setLeftBarButtonItem:(display ? self.addButton : nil) animated:YES];
+        });
+    });
 }
 
 #pragma mark - FLPasteViewDelegate
@@ -245,15 +249,16 @@
     [self.guideView hide:FLGuideDisplayTypeTop];
     [self.historyViewController hideTitle:NO animate:NO];
     [self _setupForHistoryViewing];
-    [self _updateAddButton:NO];
+
 
     // upload and display file
     __weak typeof(self) weakSelf = self;
     [[FLDropboxHelper sharedHelper] storeEntity:pasteEntity completion:^(DBFileInfo *info) {
-        typeof(weakSelf) strongSelf = weakSelf;
+        typeof(self) strongSelf = weakSelf;
         if (strongSelf) {
             if (info) {
                 [strongSelf.historyViewController addNewEntity:info];
+                [self _updateAddButtonForceHidden:NO];
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:COPY_LINK_ON_UPLOAD_KEY]) {
                     [[FLDropboxHelper sharedHelper] copyLinkForFile:info delegate:self];
                 }
@@ -270,9 +275,7 @@
         [self.historyViewController hideTitle:NO animate:YES];
     }];
     [self _setupForHistoryViewing];
-    if (self.currentOrigin == FLPasteOriginClipboard) {
-        [self _updateAddButton:YES];
-    }
+    [self _updateAddButtonForceHidden:NO];
 }
 
 - (void)pasteViewActive
@@ -305,11 +308,28 @@
 - (void)didCopyEntity:(FLEntity *)entity
 {
     [self.guideView displayMessage:[NSString stringWithFormat:COPY_MESSAGE, (entity.type == TextEntity) ? @"Text" : @"Image"]];
+    [self _updateAddButtonForceHidden:YES];
 }
 
 - (void)didCopyLinkForFile:(DBFileInfo *)entity
 {
     [self.guideView displayMessage:COPY_LINK_MESSAGE];
+    [self _updateAddButtonForceHidden:YES];
+}
+
+- (void)didDeleteFile
+{
+    [self _updateAddButtonForceHidden:NO];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([viewController isKindOfClass:[FLHistoryTableViewController class]]) {
+        // whenever the history view controller is shown, update the button
+        [self _updateAddButtonForceHidden:NO];
+    }
 }
 
 @end

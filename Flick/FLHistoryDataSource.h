@@ -14,6 +14,7 @@
 
 - (void)didCopyEntity:(FLEntity *)entity;
 - (void)didCopyLinkForFile:(DBFileInfo *)entity;
+- (void)didDeleteFile;
 
 @end
 

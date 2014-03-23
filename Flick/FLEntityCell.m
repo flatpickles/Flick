@@ -100,7 +100,6 @@
     if (showSpinner) {
         self.loadingView.layer.opacity = 1.0f;
         [self.loadingView startAnimating];
-        [self setNeedsLayout];
     }
 }
 

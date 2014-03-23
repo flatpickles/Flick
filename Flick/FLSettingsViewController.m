@@ -40,12 +40,6 @@
     self.navigationItem.title = SETTINGS_TITLE;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (NSArray *)sections
 {
     if (!_sections) {
@@ -53,7 +47,7 @@
 
         // copy link on upload
         [sections addObject:[self _switchCellContentsForTitle:@"Copy link on file upload:" key:COPY_LINK_ON_UPLOAD_KEY]];
-        [sections addObject:[self _switchCellContentsForTitle:@"Shake to use last photo:" key:SHAKE_TO_USE_PHOTO_KEY]];
+        [sections addObject:[self _switchCellContentsForTitle:@"Shake to paste last photo:" key:SHAKE_TO_USE_PHOTO_KEY]];
         [sections addObject:[self _qualitySliderCellContents]];
         [sections addObject:[self _infoCellContents]];
         
@@ -64,8 +58,8 @@
 
 - (UIView *)_infoCellContents
 {
-    NSString *title = @"Tips and tricks:";
-    NSString *copy = @"From the list of your pasted items, you can tap to copy, long press to copy a shortened Dropbox link, right swipe to view in fullscreen, and left swipe to delete.";
+    NSString *title = @"Hints:";
+    NSString *copy = @"From the list of your pasted items, you can tap to copy, long press to copy a shortened Dropbox link, right swipe to view in fullscreen, and left swipe to delete. A plus button will appear in the top left when you have unsaved content available in your clipboard.";
 
     CGFloat width = self.tableView.frame.size.width;
     UIFont *infoFont = [UIFont systemFontOfSize:15.0f];

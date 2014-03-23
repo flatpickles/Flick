@@ -29,7 +29,7 @@
 - (BOOL)canStoreObject:(id)object;
 - (void)storeEntity:(FLEntity *)entity completion:(void (^)(DBFileInfo *info))completionBlock;
 - (FLEntity *)retrieveFile:(DBFileInfo *)fileInfo;
-- (BOOL)deleteFile:(DBFileInfo *)fileInfo;
+- (BOOL)deleteFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate;
 - (void)copyFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate;
 - (void)copyLinkForFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate;
 

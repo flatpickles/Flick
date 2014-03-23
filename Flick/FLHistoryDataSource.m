@@ -125,11 +125,10 @@
 {
     DBFileInfo *info = [self.fileInfoArray objectAtIndex:indexPath.row];
     if (editingStyle == UITableViewCellEditingStyleDelete && [self.loadedHeights objectForKey:info]) {
-        BOOL success = [[FLDropboxHelper sharedHelper] deleteFile:info];
+        BOOL success = [[FLDropboxHelper sharedHelper] deleteFile:info delegate:self.delegate];
         if (success) {
             [UIView animateWithDuration:0.2f animations:^{
-                // fade out to hide Delete button
-                // todo: is this the best solution?
+                // fade out to hide Delete button - janky, but looks even jankier without in some cases
                 [tableView cellForRowAtIndexPath:indexPath].alpha = 0.0;
             }];
             [self.loadedHeights removeObjectForKey:info];

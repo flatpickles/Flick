@@ -67,7 +67,7 @@
 		C936840D183B29D30058851A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C936840F183B29D30058851A /* FlickTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlickTests.m; sourceTree = "<group>"; };
 		C9368419183B2A050058851A /* FLMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLMainViewController.h; sourceTree = "<group>"; };
-		C936841A183B2A050058851A /* FLMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLMainViewController.m; sourceTree = "<group>"; };
+		C936841A183B2A050058851A /* FLMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FLMainViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C936841C183B2A730058851A /* FLPasteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLPasteView.h; sourceTree = "<group>"; };
 		C936841D183B2A730058851A /* FLPasteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLPasteView.m; sourceTree = "<group>"; };
 		C93DDFED18947B5E00BDD4B5 /* Dropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Dropbox.framework; sourceTree = "<group>"; };
@@ -98,7 +98,7 @@
 		C9B2E2D5189234AF009B73DA /* FLSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLSettingsViewController.h; sourceTree = "<group>"; };
 		C9B2E2D6189234AF009B73DA /* FLSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLSettingsViewController.m; sourceTree = "<group>"; };
 		C9DC553B18AEB68800CCC752 /* FLConnectDropboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLConnectDropboxViewController.h; sourceTree = "<group>"; };
-		C9DC553C18AEB68800CCC752 /* FLConnectDropboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLConnectDropboxViewController.m; sourceTree = "<group>"; };
+		C9DC553C18AEB68800CCC752 /* FLConnectDropboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FLConnectDropboxViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
