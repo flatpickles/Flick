@@ -192,6 +192,7 @@
 {
     self.isDisplayingIntro = YES;
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:INTRO_DEFAULT_KEY];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self _displayPasteViewWithObject:INTRO_TEXT];
     });
@@ -262,13 +263,15 @@
         return;
     }
 
-    id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : [UIPasteboard generalPasteboard].string;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOOL display = !self.pasteView.isDisplayed && [DBFilesystem sharedFilesystem] && [[FLDropboxHelper sharedHelper] canStoreObject:pasteboardObject];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.historyViewController.navigationItem setLeftBarButtonItem:(display ? self.addButton : nil) animated:YES];
+    id pasteboardObject = ([UIPasteboard generalPasteboard].image) ? [UIPasteboard generalPasteboard].image : ([[UIPasteboard generalPasteboard].string length] > 0) ? [UIPasteboard generalPasteboard].string : nil;
+    if (pasteboardObject != nil) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BOOL display = !self.pasteView.isDisplayed && [DBFilesystem sharedFilesystem] && [[FLDropboxHelper sharedHelper] canStoreObject:pasteboardObject];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.historyViewController.navigationItem setLeftBarButtonItem:(display ? self.addButton : nil) animated:YES];
+            });
         });
-    });
+    }
 }
 
 #pragma mark - FLPasteViewDelegate

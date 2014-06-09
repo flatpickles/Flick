@@ -119,16 +119,19 @@
 - (BOOL)canStoreObject:(id)object
 {
     FLEntity *entity = [[FLEntity alloc] initWithObject:object];
-    if ([entity.text isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:LAST_LINK_KEY]]) {
-        // we've copied this link from the app
-        return NO;
-    } else if ([self _isFilenameCopied:entity.nameForFile]) {
-        // we've copied this entity from the app
-        return NO;
-    } else {
-        DBPath *path = [[DBPath root] childPath:[entity nameForFile]];
-        return ![self _isStored:path];
+    if (entity) {
+        if ([entity.text isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:LAST_LINK_KEY]]) {
+            // we've copied this link from the app
+            return NO;
+        } else if ([self _isFilenameCopied:entity.nameForFile]) {
+            // we've copied this entity from the app
+            return NO;
+        } else {
+            DBPath *path = [[DBPath root] childPath:[entity nameForFile]];
+            return ![self _isStored:path];
+        }
     }
+    return YES;
 }
 
 - (BOOL)_isStored:(DBPath *)path
@@ -198,31 +201,36 @@
 {
     DBError *error = nil;
     FLEntity *entity = [self retrieveFile:fileInfo];
-    BOOL success = [[DBFilesystem sharedFilesystem] deletePath:fileInfo.path error:&error];
-    if (error) {
-        [self handleError:error];
+    if (entity) {
+        BOOL success = [[DBFilesystem sharedFilesystem] deletePath:fileInfo.path error:&error];
+        if (error) {
+            [self handleError:error];
+        }
+        if (success) {
+            [self _setPastCopiedFile:entity copied:NO];
+            [delegate didDeleteFile];
+        }
+        return success;
     }
-    if (success) {
-        [self _setPastCopiedFile:entity copied:NO];
-        [delegate didDeleteFile];
-    }
-    return success;
+    return NO;
 }
 
 - (void)copyFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate
 {
     // copy the entity to clipboard
     FLEntity *entity = [[FLDropboxHelper sharedHelper] retrieveFile:fileInfo];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // slow as balls for big images, do it in the background to not clog up UI
-        if (entity.type == PhotoEntity) {
-            [UIPasteboard generalPasteboard].image = entity.image;
-        } else {
-            [UIPasteboard generalPasteboard].string = entity.text;
-        }
-    });
-    [self _setPastCopiedFile:entity copied:YES];
-    [delegate didCopyEntity:entity];
+    if (entity) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            // slow as balls for big images, do it in the background to not clog up UI
+            if (entity.type == PhotoEntity) {
+                [UIPasteboard generalPasteboard].image = entity.image;
+            } else {
+                [UIPasteboard generalPasteboard].string = entity.text;
+            }
+        });
+        [self _setPastCopiedFile:entity copied:YES];
+        [delegate didCopyEntity:entity];
+    }
 }
 
 - (void)copyLinkForFile:(DBFileInfo *)fileInfo delegate:(id<FLHistoryActionsDelegate>)delegate

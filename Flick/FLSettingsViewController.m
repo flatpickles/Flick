@@ -59,7 +59,7 @@
 - (UIView *)_infoCellContents
 {
     NSString *title = @"Hints:";
-    NSString *copy = @"From the list of your pasted items, you can tap to copy, long press to copy a shortened Dropbox link, right swipe to view in fullscreen, and left swipe to delete. A plus button will appear in the top left when you have unsaved content available in your clipboard.";
+    NSString *copy = @"From the list of your pasted items, you can tap to copy, long press to copy a short Dropbox link, right swipe to view in fullscreen, and left swipe to delete. A plus button will appear in the top left when you have unsaved content available in your clipboard.";
 
     CGFloat width = self.tableView.frame.size.width;
     UIFont *infoFont = [UIFont systemFontOfSize:15.0f];
