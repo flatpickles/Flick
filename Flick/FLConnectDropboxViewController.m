@@ -20,7 +20,7 @@
 @interface FLConnectDropboxViewController ()
 
 @property (nonatomic) UILabel *titleLabel;
-@property (nonatomic) UILabel *description;
+@property (nonatomic) UILabel *descriptionLabel;
 @property (nonatomic) UIButton *connect;
 @property (nonatomic) BOOL shouldDismiss;
 
@@ -39,12 +39,12 @@
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.titleLabel];
 
-    self.description = [[UILabel alloc] init];
-    self.description.text = CONNECT_CAPTION;
-    self.description.textAlignment = NSTextAlignmentCenter;
-    self.description.lineBreakMode = NSLineBreakByWordWrapping;
-    self.description.numberOfLines = 0;
-    [self.view addSubview:self.description];
+    self.descriptionLabel = [[UILabel alloc] init];
+    self.descriptionLabel.text = CONNECT_CAPTION;
+    self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
+    self.descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.descriptionLabel.numberOfLines = 0;
+    [self.view addSubview:self.descriptionLabel];
 
     self.connect = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     self.connect.titleLabel.font = [UIFont systemFontOfSize:18.0f];
@@ -72,11 +72,11 @@
     [self.titleLabel sizeToFit];
     self.titleLabel.center = CGPointMake(self.view.bounds.size.width/2, self.titleLabel.center.y);
 
-    self.description.frame = CGRectInset(CGRectMake(0, CGRectGetMaxY(self.titleLabel.frame), self.view.bounds.size.width, self.view.bounds.size.height - topOffset), EDGE_INSETS, EDGE_INSETS);
-    [self.description sizeToFit];
-    self.description.center = CGPointMake(self.view.bounds.size.width/2, self.description.center.y);
+    self.descriptionLabel.frame = CGRectInset(CGRectMake(0, CGRectGetMaxY(self.titleLabel.frame), self.view.bounds.size.width, self.view.bounds.size.height - topOffset), EDGE_INSETS, EDGE_INSETS);
+    [self.descriptionLabel sizeToFit];
+    self.descriptionLabel.center = CGPointMake(self.view.bounds.size.width/2, self.descriptionLabel.center.y);
 
-    self.connect.frame = CGRectMake(0, CGRectGetMaxY(self.description.frame) + EDGE_INSETS*2, 200, 40);
+    self.connect.frame = CGRectMake(0, CGRectGetMaxY(self.descriptionLabel.frame) + EDGE_INSETS*2, 200, 40);
     [self.connect sizeToFit];
     self.connect.center = CGPointMake(self.view.bounds.size.width/2, self.connect.center.y);
 }
@@ -101,7 +101,7 @@
         } else if (strongSelf) {
             // failed to connect! say so!
             strongSelf.titleLabel.text = ERROR_TITLE;
-            strongSelf.description.text = ERROR_CAPTION;
+            strongSelf.descriptionLabel.text = ERROR_CAPTION;
             [strongSelf.connect setTitle:ERROR_BUTTON_LABEL forState:UIControlStateNormal];
             [strongSelf.view setNeedsLayout];
         }
