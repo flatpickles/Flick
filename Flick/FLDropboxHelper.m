@@ -10,8 +10,8 @@
 #import "FLDropboxHelper.h"
 #import "FLSettingsViewController.h"
 
-#define APP_KEY @"ynm3dgog8z5rr7t"
-#define APP_SECRET @"mt17g6d4cv44vif"
+#define APP_KEY @"app_key"
+#define APP_SECRET @"app_secret"
 #define LAST_LINK_KEY @"LastLinkCopied"
 #define PAST_COPIES_KEY @"FilenamesOnceCopied"
 #define DROPBOX_ERROR_TEXT @"Dropbox error encountered!"
